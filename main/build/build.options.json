@@ -1,0 +1,10 @@
+{
+  "additionalFiles": "../..,../..,../..,../../..,../../..,../..",
+  "builtInToolsFolders": "",
+  "compiler.optimization_flags": "-Os",
+  "customBuildProperties": "build.warn_data_percentage=75",
+  "fqbn": "esp32:esp32:heltec_wifi_kit_32_V3",
+  "hardwareFolders": "/Users/c2k/Library/Arduino15/packages",
+  "otherLibrariesFolders": "/Users/c2k/Documents/Arduino/libraries",
+  "sketchLocation": "/Users/c2k/ArduinoProjects/LEDARMv2/main"
+}
