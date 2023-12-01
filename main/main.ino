@@ -14,7 +14,11 @@ int mode = EFFECT_MODE;
 // OLED
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C g_OLED(U8G2_R0, /* reset=*/21, /* clock=*/18, /* data=*/17);
 int g_lineHeight = 0;
+double fps = 0;
+int displayRate = 500;
+int lastUpdateDisplay = 0;
 
+// LEDs
 CRGB leds[NUM_LEDS] = {0};
 int hue = 100;
 
@@ -51,6 +55,21 @@ void updateDisplay(int data)
     char str[32];
     sprintf(str, "Data: %d", data);
     printMsg(str);
+}
+
+double FramesPerSecond(double seconds)
+{
+    static double framesPerSecond;
+    framesPerSecond = (framesPerSecond * 0.9) + (1.0 / seconds * 0.1);
+    return framesPerSecond;
+}
+
+void displayFPS()
+{
+    g_OLED.clearBuffer();
+    g_OLED.setCursor(0, g_lineHeight);
+    g_OLED.printf("FPS: %.1lf", fps);
+    g_OLED.sendBuffer();
 }
 
 void setup()
@@ -98,6 +117,13 @@ unsigned long lastColorChangeTime = 0;
 unsigned long colorChangeDelay = 300;
 void loop()
 {
+    double dStart = millis() / 1000.0;
+    if (millis() - lastUpdateDisplay > displayRate)
+    {
+        lastUpdateDisplay = millis();
+        displayFPS();
+    }
+
     pollButtons(POLL_RATE);
     if (millis() - lastAuxPressedMillis > auxButtonDelay && auxButtonPressed)
     {
@@ -106,4 +132,6 @@ void loop()
     }
     effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();
+
+    fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }
