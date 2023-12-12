@@ -3,12 +3,12 @@
 
 #include <FastLED.h>
 
-#include "effects/BaseEffect.h"
-#include "effects/Pew.h"
-#include "effects/Flash.h"
-#include "effects/Blast.h"
-#include "effects/RainbowWorm.h"
-#include "effects/Twinkle.h"
+#include "src/BaseEffect.h"
+#include "src/Pew.h"
+#include "src/Flash.h"
+#include "src/Blast.h"
+#include "src/RainbowWorm.h"
+#include "src/Twinkle.h"
 
 #include "config.h"
 #include "palettes.h"

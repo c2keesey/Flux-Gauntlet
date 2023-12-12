@@ -20,7 +20,7 @@ private:
 public:
     EffectsHandler()
     {
-        activeEffects[PRIMARY_BUTTON] = effectLibrary.getEffect(preset, PRIMARY_BUTTON);
+        // activeEffects[PRIMARY_BUTTON] = effectLibrary.getEffect(preset, PRIMARY_BUTTON);
         activeEffects[SECONDARY_BUTTON] = effectLibrary.getEffect(preset, SECONDARY_BUTTON);
         activeEffects[SPEC_BUTTON] = effectLibrary.getEffect(preset, SPEC_BUTTON);
     }
@@ -91,7 +91,7 @@ public:
                 effect->draw();
             }
         }
-        FastLED.clear();
+        FastLED.clear(false);
         for (auto &effect : activeEffects)
         {
             if (effect != nullptr)

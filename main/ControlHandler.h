@@ -29,10 +29,10 @@ private:
     unsigned int curEffect;
     CRGB effectSettingColor[3] = {CRGB::Red, CRGB::Green, CRGB::Blue};
     unsigned long modeChangeTime = 0;
+    int encoderPos = 5;
     int lastEncoderPos = 0;
 
     // Rotary Encoder
-    int encoderPos = 5;
     int lastEncoded = 0;
 
     unsigned long lastEncoderPoll = 0;
@@ -46,32 +46,48 @@ public:
     {
     }
 
+    void reset()
+    {
+        encoderPos = 0;
+        lastEncoderPos = 0;
+        curButton = NO_BUTTON;
+    }
+
+    int getPos()
+    {
+        return encoderPos;
+    }
+
     void setCurButton(uint8_t button)
     {
         curButton = button;
     }
 
-    void handleEncoderChange()
+    void handleButtonPress()
     {
-        if (encoderPos == lastEncoderPos)
-        {
-            return;
-        }
-        if (curButton == NO_BUTTON)
-        {
-            return;
-        }
-        if (encoderPos < 0)
-        {
-            curEffect = (LIBRARY_SIZE - (-encoderPos % LIBRARY_SIZE)) % LIBRARY_SIZE;
-        }
-        else
-        {
-            curEffect = encoderPos % LIBRARY_SIZE;
-        }
-        lastEncoderPos = encoderPos;
-        effectsHandler.updateEffect(curButton, curEffect);
     }
+
+    // void handleEncoderChange()
+    // {
+    //     if (encoderPos == lastEncoderPos)
+    //     {
+    //         return;
+    //     }
+    //     if (curButton == NO_BUTTON)
+    //     {
+    //         return;
+    //     }
+    //     if (encoderPos < 0)
+    //     {
+    //         curEffect = (LIBRARY_SIZE - (-encoderPos % LIBRARY_SIZE)) % LIBRARY_SIZE;
+    //     }
+    //     else
+    //     {
+    //         curEffect = encoderPos % LIBRARY_SIZE;
+    //     }
+    //     lastEncoderPos = encoderPos;
+    //     effectsHandler.updateEffect(curButton, curEffect);
+    // }
 
     void drawFrame()
     {

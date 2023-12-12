@@ -11,7 +11,6 @@ private:
     uint8_t hue;
     uint8_t len;
     int speed;
-    unsigned long prevMillis = 0;
     bool rainbow;
 
 public:

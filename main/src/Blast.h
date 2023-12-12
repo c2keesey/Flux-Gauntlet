@@ -11,7 +11,6 @@ private:
     uint8_t hue = 0;
     uint8_t len = 6;
     int speed = 15;
-    unsigned long prevMillis = 0;
     int rings[16] = {21, 27, 25, 23, 23, 22, 20, 19, 19, 19, 17, 16, 15, 12, 12, 10};
     int ringsLength = 16;
     int breakpoints[17] = {0};
@@ -35,6 +34,7 @@ public:
         }
     }
 
+    // TODO: Add additional vleds to ends of vleds, and return update BaseEffect getVleds() to draw first ring properly
     void draw() override
     {
         if (millis() - prevMillis > speed)
