@@ -4,13 +4,12 @@
 #define TWINKLE_H
 
 #include "BaseEffect.h"
-#include "config.h"
+#include "../config.h"
 
 class Twinkle : public BaseEffect
 {
 private:
     int speed;
-    unsigned long prevMillis = 0;
     unsigned long fadeMillis = 0;
     uint8_t value = 0;
     bool active = false;

@@ -18,8 +18,9 @@ Safety margin ~15%
 #define COLOR_MODE 2
 
 // LED Strip
-#define NUM_LEDS 300
+#define NUM_LEDS 25
 #define LED_PIN 1
+#define BRIGHTNESS 255
 
 // Effects
 #define LIBRARY_SIZE 4

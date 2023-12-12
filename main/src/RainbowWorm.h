@@ -9,7 +9,6 @@ class RainbowWorm : public BaseEffect
 {
 private:
     int speed = 10;
-    unsigned long prevMillis = 0;
     uint8_t value = 30;
     bool active = false;
     int move = 0;

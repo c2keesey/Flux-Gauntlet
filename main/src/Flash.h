@@ -8,11 +8,6 @@
 class Flash : public BaseEffect
 {
 private:
-    uint8_t hue = 0;
-    uint8_t len = 6;
-    int speed = 15;
-    unsigned long prevMillis = 0;
-
 public:
     Flash()
     {
