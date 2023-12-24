@@ -4,20 +4,21 @@
 #define TWINKLE_H
 
 #include "BaseEffect.h"
-#include "../config.h"
+#include "../../config/config.h"
 
 class Twinkle : public BaseEffect
 {
 private:
-    int speed;
     unsigned long fadeMillis = 0;
     uint8_t value = 0;
     bool active = false;
+    int fadeSpeed = 20;
 
 public:
     Twinkle(int speed = 20, CRGBPalette256 pal = DEFAULT_PALETTE)
-        : speed(speed), BaseEffect(pal)
+        : BaseEffect(pal)
     {
+        this->speed = speed;
         triggerDelay = 500;
     }
 
@@ -29,7 +30,7 @@ public:
 
     void draw() override
     {
-        if (millis() >= fadeMillis + 5)
+        if (millis() >= fadeMillis + fadeSpeed)
         {
             fadeMillis = millis();
             for (int i = 0; i < NUM_LEDS; i++)
@@ -50,6 +51,9 @@ public:
                 vleds[random16(NUM_LEDS)] = ColorFromPalette(palette, random8());
             }
         }
+    }
+     void update() override
+    {
     }
 };
 

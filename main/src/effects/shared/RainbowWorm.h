@@ -54,7 +54,7 @@ public:
                 }
                 for (int i = 0; i < NUM_LEDS; i++)
                 {
-                    vleds[i] = CHSV(move + i * 2, 255, value);
+                    vleds[i] = ColorFromPalette(palette, move + i * 2);
                 }
                 move = (move + 2) % 255;
             }
@@ -67,15 +67,8 @@ public:
             }
         }
     }
-
-    CHSV getColor(uint8_t hue)
+    void update() override
     {
-        CRGB rgbColor = ColorFromPalette(palette, random8());
-
-        // Convert CRGB to CHSV
-        CHSV hsvColor;
-        hsv2rgb_rainbow(hsvColor, rgbColor);
-        return hsvColor;
     }
 };
 

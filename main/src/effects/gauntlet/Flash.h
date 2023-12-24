@@ -3,7 +3,7 @@
 #ifndef FLASH_H
 #define FLASH_H
 
-#include "BaseEffect.h"
+#include "../shared/BaseEffect.h"
 
 class Flash : public BaseEffect
 {
@@ -27,6 +27,9 @@ public:
         {
             vleds[i].fadeToBlackBy(random(1, 70));
         }
+    }
+     void update() override
+    {
     }
 };
 #endif // BLAST_H

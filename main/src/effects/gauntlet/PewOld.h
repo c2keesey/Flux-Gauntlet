@@ -3,7 +3,7 @@
 #ifndef PEW_H
 #define PEW_H
 
-#include "BaseEffect.h"
+#include "../shared/BaseEffect.h"
 
 class Pew : public BaseEffect
 {
