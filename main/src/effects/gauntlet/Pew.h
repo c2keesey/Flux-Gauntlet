@@ -5,21 +5,24 @@
 
 #include <vector>
 #include <tuple>
-#include "BaseEffect.h"
-#include "EffectHelpers.h"
+#include "../shared/BaseEffect.h"
+#include "../EffectHelpers.h"
 class Pew : public BaseEffect
 {
 private:
     uint8_t hue;
     uint8_t len;
-    int speed;
+    float MIN_STEP_SIZE = 0.001f;
+    float stepSize;
     bool rainbow;
     std::vector<Beam> beams = {};
 
 public:
     Pew(uint8_t hue = 0, uint8_t len = 4, int speed = 1, bool rainbow = true)
-        : hue(hue), len(len), speed(speed), rainbow(rainbow)
+        : BaseEffect(), hue(hue), len(len), rainbow(rainbow)
     {
+        this->speed = speed;
+        stepSize = speed * MIN_STEP_SIZE;
     }
 
     void trigger() override
@@ -38,7 +41,7 @@ public:
         {
             CRGB color;
             drawPrecise(beams[i].pos, len, beams[i].color, vleds);
-            beams[i].pos -= 0.01f;
+            beams[i].pos -= 0.01f * speed;
 
             if (beams[i].pos <= 0.0)
             {
@@ -46,6 +49,10 @@ public:
             }
         }
     }
+    // float getStepSize()
+    // {
+    //     return speed * MIN_STEP_SIZE * getUpdatePeriod();
+    // }
 };
 
 #endif // PEW_H

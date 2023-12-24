@@ -1,4 +1,4 @@
-#include <FastLED.h>
+#include "palettes.h"
 
 DEFINE_GRADIENT_PALETTE(ocean_gp){
     0, 19, 22, 255,

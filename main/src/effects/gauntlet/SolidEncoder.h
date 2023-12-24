@@ -3,7 +3,7 @@
 #ifndef SOLIDENCODER_H
 #define SOLIDENCODER_H
 
-#include "BaseEffect.h"
+#include "../shared/BaseEffect.h"
 
 extern volatile int encoderPos;
 

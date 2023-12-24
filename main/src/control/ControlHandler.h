@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#include "EffectsHandler.h"
-#include "config.h"
+#include "../effects/EffectsHandler.h"
+#include "../config/config.h"
 
 #define NO_BUTTON 99
 #define MODE_CHANGE_DELAY 200

@@ -1,5 +1,5 @@
 #include "EffectHelpers.h"
-#include "../config.h"
+#include "../config/config.h"
 
 void clearVleds(CRGB *vleds)
 {

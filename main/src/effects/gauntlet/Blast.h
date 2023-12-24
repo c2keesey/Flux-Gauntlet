@@ -3,7 +3,7 @@
 #ifndef BLAST_H
 #define BLAST_H
 
-#include "BaseEffect.h"
+#include "../shared/BaseEffect.h"
 
 class Blast : public BaseEffect
 {
@@ -59,6 +59,10 @@ public:
                 }
             }
         }
+    }
+
+    void update() override
+    {
     }
 };
 #endif // BLAST_H
