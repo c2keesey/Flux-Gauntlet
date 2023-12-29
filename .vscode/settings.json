@@ -2,5 +2,6 @@
   "cmake.configureOnOpen": true,
   "files.associations": {
     "vector": "cpp"
-  }
+  },
+  "C_Cpp.default.compilerPath": "/Users/c2k/.platformio/packages/toolchain-xtensa-esp32s3/bin/xtensa-esp32s3-elf-gcc"
 }

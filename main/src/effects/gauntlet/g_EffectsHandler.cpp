@@ -1,15 +1,15 @@
-#include "EffectsHandler.h"
+#include "g_EffectsHandler.h"
 
 #include <Arduino.h>
 #include <FastLED.h>
 
-#include "EffectLibrary.h"
-#include "../config/config.h"
+#include "../shared/EffectLibrary.h"
+#include "../../config/config.h"
 
 extern CRGB leds[];
 extern bool *effectButtons[];
 
-EffectsHandler::EffectsHandler()
+g_EffectsHandler::g_EffectsHandler()
 {
     activeEffects[PRIMARY_BUTTON] = effectLibrary.getEffect(1, SPEC_BUTTON);
     activeEffects[PRIMARY_BUTTON]->trigger();
@@ -17,7 +17,7 @@ EffectsHandler::EffectsHandler()
     activeEffects[SPEC_BUTTON] = effectLibrary.getEffect(preset, SPEC_BUTTON);
 }
 
-void EffectsHandler::handleButtonPress()
+void g_EffectsHandler::handleButtonPress()
 {
     for (int buttonNumber = 0; buttonNumber < NUM_EFFECT_BUTTONS; buttonNumber++)
     {
@@ -33,7 +33,7 @@ void EffectsHandler::handleButtonPress()
     }
 }
 
-void EffectsHandler::rotatePreset()
+void g_EffectsHandler::rotatePreset()
 {
     // TODO: move to a type of active effect
     if (preset == 0)
@@ -60,7 +60,7 @@ void EffectsHandler::rotatePreset()
     }
 }
 
-void EffectsHandler::changeColor(int buttonNumber)
+void g_EffectsHandler::changeColor(int buttonNumber)
 {
     if (activeEffects[buttonNumber] != nullptr)
     {
@@ -70,7 +70,7 @@ void EffectsHandler::changeColor(int buttonNumber)
     }
 }
 
-void EffectsHandler::drawFrame()
+void g_EffectsHandler::drawFrame()
 {
     for (auto &effect : activeEffects)
     {

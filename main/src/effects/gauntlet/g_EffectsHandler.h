@@ -1,15 +1,15 @@
-#ifndef EFFECTSHANDLER_H
-#define EFFECTSHANDLER_H
+#ifndef g_EFFECTSHANDLER_H
+#define g_EFFECTSHANDLER_H
 
 #include <Arduino.h>
 #include <FastLED.h>
-#include "EffectLibrary.h"
-#include "config.h"
+#include "../shared/EffectLibrary.h"
+#include "../../config/config.h"
 
 extern CRGB leds[];
 extern bool *effectButtons[];
 
-class EffectsHandler
+class g_EffectsHandler
 {
 private:
     BaseEffect *activeEffects[NUM_EFFECT_BUTTONS] = {nullptr, nullptr, nullptr};
@@ -18,7 +18,7 @@ private:
     long lastShow = 0;
 
 public:
-    EffectsHandler();
+    g_EffectsHandler();
 
     void handleButtonPress();
     void rotatePreset();
@@ -26,4 +26,4 @@ public:
     void drawFrame();
 };
 
-#endif // EFFECTSHANDLER_H
+#endif // g_EFFECTSHANDLER_H

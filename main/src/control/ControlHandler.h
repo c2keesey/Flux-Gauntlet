@@ -4,14 +4,11 @@
 #include <Arduino.h>
 #include <FastLED.h>
 
-#include "../effects/EffectsHandler.h"
 #include "../config/config.h"
 
 #define NO_BUTTON 99
 #define MODE_CHANGE_DELAY 200
 #define ENCODER_POLL_RATE 10
-
-extern EffectsHandler effectsHandler;
 
 extern int mode;
 
@@ -128,4 +125,4 @@ public:
     }
 };
 
-#endif // EFFECTSHANDLER_H
+#endif // CONTROLHANDLER_H

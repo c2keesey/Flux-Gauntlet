@@ -5,8 +5,8 @@
 
 #include <vector>
 #include <tuple>
-#include "../shared/BaseEffect.h"
-#include "../EffectHelpers.h"
+#include "../../shared/effects/BaseEffect.h"
+#include "../../shared/EffectHelpers.h"
 class Pew : public BaseEffect
 {
 private:

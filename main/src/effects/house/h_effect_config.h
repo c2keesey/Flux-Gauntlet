@@ -1,0 +1,8 @@
+#ifndef HOUSECONFIG_H
+#define HOUSECONFIG_H
+
+#define BFL_CORNER 122
+#define BFR_CORNER 439
+#define BF_CENTER 281
+
+#endif // HOUSECONFIG_H

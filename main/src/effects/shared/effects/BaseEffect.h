@@ -2,7 +2,7 @@
 #define BASEEFFECT_H
 
 #include <FastLED.h>
-#include "../../config/config.h"
+#include "../../../config/config.h"
 
 extern double fps;
 
@@ -15,6 +15,7 @@ struct Beam
 class BaseEffect
 {
 protected:
+    // Each effect has its own virtual LED array
     CRGB vleds[NUM_LEDS] = {0};
     unsigned long lastTrigger = 0;
     int triggerDelay = 100;

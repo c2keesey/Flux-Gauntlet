@@ -1,26 +1,29 @@
-#ifndef GAUNTLETCONFIG_H
-#define GAUNTLETCONFIG_H
+#ifndef H_CONFIG_H
+#define H_CONFIG_H
 
 /*
 Device config:
 
-Battery voltage 5V
-Battery current 3.1A
+Power supply voltage 5V
+Power supply power 60W
 Device draw 300mA
 Per LED draw 60mA
 Safety margin ~15%
 */
-#define MAX_STRIP_DRAW 2400
+#define MAX_STRIP_DRAW 800
 #define LED_BUILTIN 35
 
 #define EFFECT_MODE 0
-#define SET_MODE 1
-#define COLOR_MODE 2
 
 // LED Strip
-#define NUM_LEDS 300
-#define LED_PIN 1
-#define BRIGHTNESS 255
+// Balcony Front Left and Right strips
+#define NUM_BFR 263
+#define NUM_BFL 298
+const int NUM_LEDS = NUM_BFR + NUM_BFL;
+
+#define PIN_BFL 1
+#define PIN_BFR 48
+#define BRIGHTNESS 200
 
 // Effects
 #define LIBRARY_SIZE 4
@@ -54,4 +57,4 @@ Safety margin ~15%
 #define ENCODER_PIN_A 33
 #define ENCODER_PIN_B 26
 
-#endif // GAUNTLETCONFIG_H
+#endif // H_CONFIG_H

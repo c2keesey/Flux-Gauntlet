@@ -6,7 +6,10 @@ def main(data):
     vals = re.findall(r"rgba\((\d+),(\d+),(\d+),\d+\) (\d+)%", data)
     print("DEFINE_GRADIENT_PALETTE (__NAME__) {")
     for val in vals:
-        print("    %d, %s, %s, %s," % (int(val[3]) * 2.55, val[0], val[1], val[2]))
+        print(
+            "    %d, %s, %s, %s," % (round(int(val[3]) * 2.55), val[0], val[1], val[2])
+        )
+
     print("};")
 
 

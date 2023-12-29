@@ -5,7 +5,7 @@
 
 // TODO: use onebutton.h
 #include "src/config/config.h"
-#include "src/effects/EffectsHandler.h"
+#include "src/effects/gauntlet/g_EffectsHandler.h"
 #include "src/control/ControlHandler.h"
 #include "src/control/buttons.h"
 #include "src/utils/timing.h"
@@ -35,7 +35,7 @@ bool *effectButtons[] = {&primaryButtonPressed, &secondaryButtonPressed, &specBu
 unsigned long lastAuxPressedMillis = 0;
 unsigned long auxButtonDelay = 500;
 // Effects
-EffectsHandler effectsHandler;
+g_EffectsHandler effectsHandler;
 
 // Controls
 ControlHandler controlHandler;
@@ -95,7 +95,7 @@ void loop()
     if (millis() - lastUpdateDisplay > displayRate)
     {
         lastUpdateDisplay = millis();
-        sendStats();
+        oledControl.displayFPSOLED(fps);
     }
     pollButtons(POLL_RATE);
     if (mode == EFFECT_MODE)

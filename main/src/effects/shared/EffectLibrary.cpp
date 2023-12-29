@@ -1,14 +1,14 @@
 
 #include <FastLED.h>
 #include "EffectLibrary.h"
-#include "shared/BaseEffect.h"
-#include "gauntlet/Pew.h"
-#include "gauntlet/Flash.h"
-#include "gauntlet/Blast.h"
-#include "shared/RainbowWorm.h"
-#include "shared/Twinkle.h"
+#include "effects/BaseEffect.h"
+#include "../gauntlet/g_effects/Pew.h"
+#include "../gauntlet/g_effects/Flash.h"
+#include "../gauntlet/g_effects/Blast.h"
+#include "effects/RainbowWorm.h"
+#include "effects/Twinkle.h"
 
-#include "../config/config.h"
+#include "../../config/config.h"
 #include "palettes.h"
 
 EffectLibrary::EffectLibrary()
@@ -33,7 +33,7 @@ void EffectLibrary::setupPaletteLibrary()
     paletteLibrary[0] = RainbowColors_p;
     paletteLibrary[1] = ocean_gp_v2;
     paletteLibrary[2] = strong_watermellon;
-    paletteLibrary[3] = emerald_dragon;
+    paletteLibrary[3] = emerald_dragon_gp;
     paletteLibrary[4] = valentine;
 }
 
@@ -51,14 +51,14 @@ void EffectLibrary::setupEffectsLibrary()
 
     // Chill
     library[2][0] = new Blast(ocean_gp_v2);
-    library[2][1] = new Twinkle(200, emerald_dragon);
+    library[2][1] = new Twinkle(200, emerald_dragon_gp);
     library[2][2] = new Flash();
 
     // Test House
     library[3][0] = new Pew();
     library[3][0]->setSpeed(100);
-    library[3][1] = new Twinkle(200, emerald_dragon);
-    library[3][2] = new RainbowWorm(emerald_dragon);
+    library[3][1] = new Twinkle(200, emerald_dragon_gp);
+    library[3][2] = new RainbowWorm(emerald_dragon_gp);
 }
 
 BaseEffect *EffectLibrary::getEffect(int preset, int button)

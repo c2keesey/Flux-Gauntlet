@@ -21,22 +21,37 @@ DEFINE_GRADIENT_PALETTE(soft_blue_pink_gp){
 DEFINE_GRADIENT_PALETTE(soft_watermellon){
     0, 252, 142, 142,
     127, 98, 255, 96,
-    254, 252, 142, 142};
+    255, 252, 142, 142};
 
 DEFINE_GRADIENT_PALETTE(strong_watermellon){
     0, 255, 9, 9,
     127, 23, 255, 20,
-    254, 255, 9, 9};
+    255, 255, 9, 9};
 
-DEFINE_GRADIENT_PALETTE(emerald_dragon){
+DEFINE_GRADIENT_PALETTE(emerald_dragon_gp){
     0, 86, 250, 66,
     63, 8, 175, 34,
     127, 9, 231, 255,
     191, 8, 175, 34,
-    254, 86, 250, 66};
+    255, 86, 250, 66};
 
 DEFINE_GRADIENT_PALETTE(valentine){
     0, 208, 27, 80,
     84, 108, 78, 250,
     170, 200, 53, 242,
-    254, 252, 55, 170};
+    255, 252, 55, 170};
+
+DEFINE_GRADIENT_PALETTE(green_purple_gp){
+    0,
+    89,
+    0,
+    217,
+    127,
+    87,
+    255,
+    22,
+    255,
+    89,
+    0,
+    217,
+};

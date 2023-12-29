@@ -34,8 +34,8 @@ void OLEDControl::updateDisplay(int data)
 void OLEDControl::displayFPSOLED(double fps)
 {
     g_OLED.clearBuffer();
-    g_OLED.setCursor(0, g_lineHeight * 4);
-    g_OLED.printf("FPS: %u", fps);
+    g_OLED.setCursor(0, g_lineHeight);
+    g_OLED.printf("FPS: %.2f", fps);
     g_OLED.setCursor(0, g_lineHeight * 2 + 2);
     g_OLED.printf("Brite: %u mW", calculate_max_brightness_for_power_mW(maxBrightness, MAX_STRIP_DRAW));
     g_OLED.sendBuffer();

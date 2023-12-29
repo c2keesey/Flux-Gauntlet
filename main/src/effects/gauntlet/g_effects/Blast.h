@@ -3,7 +3,7 @@
 #ifndef BLAST_H
 #define BLAST_H
 
-#include "../shared/BaseEffect.h"
+#include "../../shared/effects/BaseEffect.h"
 
 class Blast : public BaseEffect
 {

@@ -4,7 +4,7 @@
 #define TWINKLE_H
 
 #include "BaseEffect.h"
-#include "../../config/config.h"
+#include "../../../config/config.h"
 
 class Twinkle : public BaseEffect
 {
@@ -52,7 +52,7 @@ public:
             }
         }
     }
-     void update() override
+    void update() override
     {
     }
 };

@@ -1,5 +1,4 @@
 #include <FastLED.h>
-#include "../../config/config.h"
 #include "BaseEffect.h"
 
 BaseEffect::BaseEffect(CRGBPalette256 palette) : palette(palette)
@@ -45,7 +44,7 @@ void BaseEffect::setPalNum(uint8_t num)
 //         return minUpdatePeriod;
 //     }
 
-//     // Exponential decay
+//     // Exponential halfLife
 //     int updatePeriod = minUpdatePeriod + (maxUpdatePeriod - minUpdatePeriod) * exp(-k * fps);
 
 //     return updatePeriod;

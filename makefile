@@ -34,11 +34,11 @@ monitor:
 # Copy configuration and main files based on CONFIG_TYPE
 copy:
 ifeq ($(PROJ), HOUSE)
-	cp $(CONFIG_DIR)/houseConfig.h $(CONFIG_DIR)/config.h
-	cp $(PROJECT_DIR)/houseMain.h $(PROJECT_DIR)/main.ino
+	cp $(CONFIG_DIR)/h_Config.h $(CONFIG_DIR)/config.h
+	cp $(PROJECT_DIR)/h_Main.h $(PROJECT_DIR)/main.ino
 else ifeq ($(PROJ), GAUNTLET)
-	cp $(CONFIG_DIR)/gauntletConfig.h $(CONFIG_DIR)/config.h
-	cp $(PROJECT_DIR)/gauntletMain.h $(PROJECT_DIR)/main.ino
+	cp $(CONFIG_DIR)/g_Config.h $(CONFIG_DIR)/config.h
+	cp $(PROJECT_DIR)/g_Main.h $(PROJECT_DIR)/main.ino
 else
 	$(error PROJ is not set to HOUSE or GAUNTLET)
 endif
