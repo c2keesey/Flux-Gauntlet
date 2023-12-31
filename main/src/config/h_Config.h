@@ -10,7 +10,7 @@ Device draw 300mA
 Per LED draw 60mA
 Safety margin ~15%
 */
-#define MAX_STRIP_DRAW 800
+#define MAX_STRIP_DRAW 2200 // mA
 #define LED_BUILTIN 35
 
 #define EFFECT_MODE 0
@@ -23,7 +23,7 @@ const int NUM_LEDS = NUM_BFR + NUM_BFL;
 
 #define PIN_BFL 1
 #define PIN_BFR 48
-#define BRIGHTNESS 200
+#define BRIGHTNESS 255
 
 // Effects
 #define LIBRARY_SIZE 4

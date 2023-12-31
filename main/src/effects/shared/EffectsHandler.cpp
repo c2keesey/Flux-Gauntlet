@@ -3,7 +3,7 @@
 #include <FastLED.h>
 #include "../../config/config.h"
 
-extern CRGB *leds[];
+extern CRGB leds[];
 
 EffectsHandler::EffectsHandler()
 {
@@ -12,26 +12,27 @@ EffectsHandler::EffectsHandler()
 void EffectsHandler::drawFrame()
 {
     FastLED.clear(false);
-    for (auto &effect : activeEffects)
+    for (size_t i = 0; i < getEffectCount(); i++)
     {
-        effect->draw();
+
+        getEffect(i)->draw();
     }
-    for (auto &effect : activeEffects)
+    for (size_t i = 0; i < getEffectCount(); i++)
     {
-        if (effect != nullptr)
+        if (getEffect(i) != nullptr)
         {
-            CRGB *copyArray = effect->getVleds();
-            for (int i = 0; i < NUM_LEDS; i++)
+            CRGB *copyArray = getEffect(i)->getVleds();
+            for (int j = 0; j < NUM_LEDS; j++)
             {
-                *leds[i] += copyArray[i];
+                leds[j] += copyArray[j];
             }
         }
     }
     for (int i = 0; i < NUM_LEDS; i++)
     {
-        leds[i]->r = min(leds[i]->r, (uint8_t)255);
-        leds[i]->g = min(leds[i]->g, (uint8_t)255);
-        leds[i]->b = min(leds[i]->b, (uint8_t)255);
+        leds[i].r = min(leds[i].r, (uint8_t)255);
+        leds[i].g = min(leds[i].g, (uint8_t)255);
+        leds[i].b = min(leds[i].b, (uint8_t)255);
     }
     FastLED.show();
 }

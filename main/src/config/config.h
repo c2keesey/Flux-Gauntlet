@@ -13,7 +13,7 @@ Safety margin ~15%
 Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 
 */
-#define MAX_STRIP_DRAW 500
+#define MAX_STRIP_DRAW 500 // TODO: attatch to pin to dynamically adjust
 #define LED_BUILTIN 35
 
 #define EFFECT_MODE 0
@@ -26,10 +26,10 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 #define BRIGHTNESS 255
 
 // Effects
-#define LIBRARY_SIZE 4
+// #define LIBRARY_SIZE 4
 #define NUM_EFFECT_BUTTONS 3
 
-#define NUM_PRESETS 3
+#define NUM_PRESETS 4
 #define ACTION_PRESET 0
 #define AMBIENT_PRESET 1
 

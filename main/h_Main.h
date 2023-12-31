@@ -41,7 +41,9 @@ void setup()
     pinMode(PIN_BFL, OUTPUT);
     pinMode(PIN_BFR, OUTPUT);
 
-    // LEDs
+    // LEDs TODO: make into single array not pointer to two arrays
+    // CRGBSet reversed_leds(&(leds[NUM_BFL]), NUM_BFR);
+
     FastLED.addLeds<WS2812, PIN_BFL, GRB>(bfl_leds, NUM_BFL);
     FastLED.addLeds<WS2812, PIN_BFR, GRB>(bfr_leds, NUM_BFR);
 
@@ -53,9 +55,8 @@ void setup()
     {
         leds[NUM_BFL + i] = &bfr_leds[NUM_BFR - i - 1];
     }
-
-    FastLED.setBrightness(BRIGHTNESS);
     FastLED.clear();
+    FastLED.setBrightness(BRIGHTNESS);
     FastLED.setMaxPowerInVoltsAndMilliamps(5, MAX_STRIP_DRAW);
 
     // OLED
@@ -84,7 +85,10 @@ void loop()
     }
 
     lastLoopStart = loopStart;
-
+    EVERY_N_MILLIS(random(3000, 6000))
+    {
+        effectsHandler.triggerEffect(0);
+    }
     effectsHandler.drawFrame();
 
     // if (millis() - lastUpdateDisplay > displayRate)

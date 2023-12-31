@@ -10,7 +10,6 @@ OLEDControl::OLEDControl()
 void OLEDControl::init()
 {
     g_OLED.begin();
-    g_OLED.setFlipMode(1);
     g_OLED.clear();
     g_OLED.setFont(u8g2_font_profont15_tf);
     g_lineHeight = g_OLED.getFontAscent() - g_OLED.getFontDescent() + 2;

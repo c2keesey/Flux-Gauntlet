@@ -1,21 +1,22 @@
 #ifndef g_EFFECTSHANDLER_H
 #define g_EFFECTSHANDLER_H
 
-#include <Arduino.h>
-#include <FastLED.h>
 #include "../shared/EffectLibrary.h"
 #include "../../config/config.h"
+#include "../shared/EffectsHandler.h"
 
-extern CRGB leds[];
-extern bool *effectButtons[];
-
-class g_EffectsHandler
+class g_EffectsHandler : public EffectsHandler
 {
 private:
     BaseEffect *activeEffects[NUM_EFFECT_BUTTONS] = {nullptr, nullptr, nullptr};
     EffectLibrary effectLibrary;
-    int preset = 3;
+    int preset = ACTION_PRESET;
     long lastShow = 0;
+
+protected:
+    BaseEffect *getEffect(size_t index) override;
+    size_t getEffectCount() const override;
+    void setupEffectLibrary() override;
 
 public:
     g_EffectsHandler();
@@ -23,7 +24,6 @@ public:
     void handleButtonPress();
     void rotatePreset();
     void changeColor(int buttonNumber);
-    void drawFrame();
 };
 
 #endif // g_EFFECTSHANDLER_H

@@ -30,7 +30,7 @@ bool auxButtonPressed;
 bool secondaryButtonPressed;
 bool primaryButtonPressed;
 bool encoderButtonPressed;
-bool *effectButtons[] = {&primaryButtonPressed, &secondaryButtonPressed, &specButtonPressed, &auxButtonPressed};
+bool *effectButtons[] = {&primaryButtonPressed, &secondaryButtonPressed, &specButtonPressed};
 
 unsigned long lastAuxPressedMillis = 0;
 unsigned long auxButtonDelay = 500;
@@ -98,35 +98,44 @@ void loop()
         oledControl.displayFPSOLED(fps);
     }
     pollButtons(POLL_RATE);
-    if (mode == EFFECT_MODE)
+
+    if (auxButtonPressed && (millis() - lastAuxPressedMillis > auxButtonDelay))
     {
-        if (auxButtonPressed && millis() - lastAuxPressedMillis > auxButtonDelay)
-        {
-            lastAuxPressedMillis = millis();
-            mode = SET_MODE;
-        }
-        else
-        {
-            effectsHandler.handleButtonPress();
-            effectsHandler.drawFrame();
-        }
+        lastAuxPressedMillis = millis();
+        effectsHandler.rotatePreset();
     }
-    else
-    {
-        ind();
-        controlHandler.pollEncoder(POLL_RATE);
-        if (auxButtonPressed && millis() - lastAuxPressedMillis > auxButtonDelay)
-        {
-            lastAuxPressedMillis = millis();
-            controlHandler.reset();
-            mode = EFFECT_MODE;
-        }
-        else
-        {
-            controlHandler.handleButtonPress();
-            controlHandler.drawFrame();
-        }
-    }
+
+    effectsHandler.handleButtonPress();
+    effectsHandler.drawFrame();
+    // if (mode == EFFECT_MODE)
+    // {
+    //     if (auxButtonPressed && millis() - lastAuxPressedMillis > auxButtonDelay)
+    //     {
+    //         lastAuxPressedMillis = millis();
+    //         mode = SET_MODE;
+    //     }
+    //     else
+    //     {
+    //         effectsHandler.handleButtonPress();
+    //         effectsHandler.drawFrame();
+    //     }
+    // }
+    // else
+    // {
+    //     ind();
+    //     controlHandler.pollEncoder(POLL_RATE);
+    //     if (auxButtonPressed && millis() - lastAuxPressedMillis > auxButtonDelay)
+    //     {
+    //         lastAuxPressedMillis = millis();
+    //         controlHandler.reset();
+    //         mode = EFFECT_MODE;
+    //     }
+    //     else
+    //     {
+    //         controlHandler.handleButtonPress();
+    //         controlHandler.drawFrame();
+    //     }
+    // }
 
     fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }

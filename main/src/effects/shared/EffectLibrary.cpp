@@ -7,6 +7,7 @@
 #include "../gauntlet/g_effects/Blast.h"
 #include "effects/RainbowWorm.h"
 #include "effects/Twinkle.h"
+#include "effects/FireworkShow.h"
 
 #include "../../config/config.h"
 #include "palettes.h"
@@ -41,7 +42,9 @@ void EffectLibrary::setupEffectsLibrary()
 {
     // Action
     library[ACTION_PRESET][PRIMARY_BUTTON] = new Blast();
-    library[ACTION_PRESET][SECONDARY_BUTTON] = new Pew();
+    Pew *p = new Pew();
+    p->setSpeed(100);
+    library[ACTION_PRESET][SECONDARY_BUTTON] = p;
     library[ACTION_PRESET][SPEC_BUTTON] = new Flash();
 
     // Ambient
@@ -54,10 +57,9 @@ void EffectLibrary::setupEffectsLibrary()
     library[2][1] = new Twinkle(200, emerald_dragon_gp);
     library[2][2] = new Flash();
 
-    // Test House
-    library[3][0] = new Pew();
-    library[3][0]->setSpeed(100);
-    library[3][1] = new Twinkle(200, emerald_dragon_gp);
+    // Fireworks
+    library[3][0] = new Blast();
+    library[3][1] = new FireworkShow(10, DEFAULT_PALETTE, 0.03f, 50.0f);
     library[3][2] = new RainbowWorm(emerald_dragon_gp);
 }
 

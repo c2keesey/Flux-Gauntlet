@@ -1,20 +1,37 @@
 #include "g_EffectsHandler.h"
 
-#include <Arduino.h>
 #include <FastLED.h>
 
 #include "../shared/EffectLibrary.h"
 #include "../../config/config.h"
+#include "../shared/effects/FireworkShow.h"
 
 extern CRGB leds[];
 extern bool *effectButtons[];
+extern bool auxButtonPressed;
 
 g_EffectsHandler::g_EffectsHandler()
 {
-    activeEffects[PRIMARY_BUTTON] = effectLibrary.getEffect(1, SPEC_BUTTON);
-    activeEffects[PRIMARY_BUTTON]->trigger();
+    setupEffectLibrary();
+    activeEffects[PRIMARY_BUTTON] = effectLibrary.getEffect(preset, PRIMARY_BUTTON);
     activeEffects[SECONDARY_BUTTON] = effectLibrary.getEffect(preset, SECONDARY_BUTTON);
     activeEffects[SPEC_BUTTON] = effectLibrary.getEffect(preset, SPEC_BUTTON);
+
+    // activeEffects[SECONDARY_BUTTON] = new FireworkShow();
+}
+
+BaseEffect *g_EffectsHandler::getEffect(size_t index)
+{
+    return activeEffects[index];
+}
+
+size_t g_EffectsHandler::getEffectCount() const
+{
+    return NUM_EFFECT_BUTTONS;
+}
+
+void g_EffectsHandler::setupEffectLibrary()
+{
 }
 
 void g_EffectsHandler::handleButtonPress()
@@ -36,20 +53,9 @@ void g_EffectsHandler::handleButtonPress()
 void g_EffectsHandler::rotatePreset()
 {
     // TODO: move to a type of active effect
-    if (preset == 0)
+    for (int i = 0; i < preset + 1; i++)
     {
-        leds[NUM_LEDS - 14] = CRGB::Purple;
-    }
-    else if (preset == 1)
-    {
-        leds[NUM_LEDS - 13] = CRGB::Green;
-        leds[NUM_LEDS - 15] = CRGB::Green;
-    }
-    else
-    {
-        leds[NUM_LEDS - 12] = CRGB::Red;
-        leds[NUM_LEDS - 14] = CRGB::Red;
-        leds[NUM_LEDS - 16] = CRGB::Red;
+        leds[NUM_LEDS - 14 - i] = CRGB::White;
     }
     FastLED.show();
 
@@ -68,37 +74,4 @@ void g_EffectsHandler::changeColor(int buttonNumber)
         activeEffects[buttonNumber]->setPalette(effectLibrary.getPalette(nextPal));
         activeEffects[buttonNumber]->setPalNum(nextPal);
     }
-}
-
-void g_EffectsHandler::drawFrame()
-{
-    for (auto &effect : activeEffects)
-    {
-        if (effect != nullptr)
-        {
-            effect->draw();
-        }
-    }
-    FastLED.clear(false);
-    for (auto &effect : activeEffects)
-    {
-        if (effect != nullptr)
-        {
-            CRGB *copyArray = effect->getVleds();
-            for (int i = 0; i < NUM_LEDS; i++)
-            {
-                leds[i] += copyArray[i];
-            }
-        }
-    }
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-        if (leds[i].r > 255)
-            leds[i].r = 255;
-        if (leds[i].g > 255)
-            leds[i].g = 255;
-        if (leds[i].b > 255)
-            leds[i].b = 255;
-    }
-    FastLED.show();
 }
