@@ -31,7 +31,7 @@ clean:
 monitor:
 	arduino-cli monitor -p $(PORT)
 
-# Copy configuration and main files based on CONFIG_TYPE
+# Copy configuration and main files based on PROJ
 copy:
 ifeq ($(PROJ), HOUSE)
 	cp $(CONFIG_DIR)/h_Config.h $(CONFIG_DIR)/config.h
