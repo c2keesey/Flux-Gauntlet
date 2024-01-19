@@ -29,7 +29,7 @@ private:
     std::vector<Particle> particles;
 
 public:
-    Firework(int pos, float deceleration = 0.01f, float explosionStrength = 50.0f, int numParticleSpread = 50)
+    Firework(int pos, float deceleration = 0.01f, float explosionStrength = 25.0f, int numParticleSpread = 15, int nParticles = 0)
     {
         this->deceleration = deceleration;
         this->pos = pos;
@@ -37,8 +37,9 @@ public:
         uint8_t hueSpread = random8(50, 255);
         uint8_t hueStart = random8();
         uint8_t hueEnd = (hueStart + hueSpread) % 255;
+        int numParticles = nParticles > 0 ? nParticles : (5, 5 + numParticleSpread);
 
-        for (int i = 0; i < random(10, 10 + numParticleSpread); i++)
+        for (int i = 0; i < numParticles; i++)
         {
             particles.push_back(Particle(pos, CHSV(random8(hueStart, hueEnd), 255, 255), randomAbsRange(10, 2)));
         }
@@ -128,7 +129,7 @@ private:
     int fireworkOffset = 50;
 
 public:
-    FireworkShow(int speed = 20, CRGBPalette256 pal = DEFAULT_PALETTE, float deceleration = 0.01f, float explosionStrength = 50.0f)
+    FireworkShow(int speed = 20, CRGBPalette256 pal = DEFAULT_PALETTE, float deceleration = 0.01f, float explosionStrength = 25.0f)
         : BaseEffect(pal), explosionStrength(explosionStrength), deceleration(deceleration)
     {
         this->speed = speed;
@@ -136,7 +137,18 @@ public:
 
     void trigger() override
     {
-        fireworks.push_back(Firework(random(fireworkOffset, NUM_LEDS - fireworkOffset), deceleration, explosionStrength));
+        if (random(100) == 0)
+        {
+            fireworks.push_back(Firework(random(fireworkOffset, NUM_LEDS - fireworkOffset), randomVariance(deceleration, 1), 15.0f, 50, 200));
+        }
+        else if (random(20) == 0)
+        {
+            fireworks.push_back(Firework(random(fireworkOffset, NUM_LEDS - fireworkOffset), randomVariance(deceleration, 1), 25.0f, 50, 50));
+        }
+        else
+        {
+            fireworks.push_back(Firework(random(fireworkOffset, NUM_LEDS - fireworkOffset), randomVariance(deceleration, 1), randomVariance(explosionStrength, 25)));
+        }
     }
 
     void update() override

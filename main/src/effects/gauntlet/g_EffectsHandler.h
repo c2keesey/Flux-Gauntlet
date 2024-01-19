@@ -8,7 +8,7 @@
 class g_EffectsHandler : public EffectsHandler
 {
 private:
-    BaseEffect *activeEffects[NUM_EFFECT_BUTTONS] = {nullptr, nullptr, nullptr};
+    BaseEffect *activeEffects[NUM_EFFECT_BUTTONS] = {};
     EffectLibrary effectLibrary;
     int preset = ACTION_PRESET;
     long lastShow = 0;

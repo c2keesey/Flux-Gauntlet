@@ -49,8 +49,3 @@ void BaseEffect::setPalNum(uint8_t num)
 
 //     return updatePeriod;
 // }
-
-void BaseEffect::setSpeed(int speed)
-{
-    this->speed = speed;
-}

@@ -6,6 +6,7 @@
 #include "../house/h_effects/Eminate.h"
 #include "../house/h_effects/Sparks.h"
 #include "../shared/effects/FireworkShow.h"
+#include "../shared/effects/Ataraxy.h"
 
 extern CRGB *leds[];
 
@@ -26,7 +27,10 @@ size_t h_EffectsHandler::getEffectCount() const
 
 void h_EffectsHandler::setupEffectLibrary()
 {
-    BaseEffect *effect = new FireworkShow(10, DEFAULT_PALETTE, 0.05f, 25.0f);
+    BaseEffect *effect = new FireworkShow(10, DEFAULT_PALETTE, 0.05f, 40.0f);
+    effect->triggerDelay = 0;
+    // BaseEffect *effect = new Ataraxy();
+    // effect->trigger();
     activeEffects.push_back(effect);
 }
 

@@ -55,3 +55,48 @@ DEFINE_GRADIENT_PALETTE(green_purple_gp){
     0,
     217,
 };
+
+DEFINE_GRADIENT_PALETTE(purple_gp){
+    0,
+    125,
+    0,
+    217,
+    127,
+    96,
+    0,
+    255,
+    255,
+    143,
+    0,
+    255,
+};
+
+DEFINE_GRADIENT_PALETTE(blue_gp){
+    0,
+    30,
+    0,
+    217,
+    127,
+    22,
+    103,
+    255,
+    255,
+    30,
+    0,
+    217,
+};
+
+DEFINE_GRADIENT_PALETTE(red_gp){
+    0,
+    217,
+    0,
+    0,
+    127,
+    255,
+    0,
+    0,
+    255,
+    217,
+    0,
+    0,
+};

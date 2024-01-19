@@ -33,6 +33,7 @@ monitor:
 
 # Copy configuration and main files based on PROJ
 copy:
+
 ifeq ($(PROJ), HOUSE)
 	cp $(CONFIG_DIR)/h_Config.h $(CONFIG_DIR)/config.h
 	cp $(PROJECT_DIR)/h_Main.h $(PROJECT_DIR)/main.ino
@@ -41,6 +42,9 @@ else ifeq ($(PROJ), GAUNTLET)
 	cp $(PROJECT_DIR)/g_Main.h $(PROJECT_DIR)/main.ino
 else
 	$(error PROJ is not set to HOUSE or GAUNTLET)
+endif
+ifeq ($(DEV), true)
+	cp $(PROJECT_DIR)/test_Main.h $(PROJECT_DIR)/main.ino
 endif
 
 .PHONY: all compile upload clean copy monitor pre-compile post-compile

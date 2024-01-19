@@ -62,3 +62,9 @@ float randomAbsRange(float x, float y)
 
     return randomNumber;
 }
+
+float randomVariance(float number, float variancePercent)
+{
+    float fraction = static_cast<float>(rand()) / RAND_MAX;
+    return number * (1.0f + (fraction - 0.5f) * variancePercent / 100);
+}

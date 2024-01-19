@@ -27,14 +27,14 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 
 // Effects
 // #define LIBRARY_SIZE 4
-#define NUM_EFFECT_BUTTONS 3
+#define NUM_EFFECT_BUTTONS 2
 
-#define NUM_PRESETS 4
+#define NUM_PRESETS 6
 #define ACTION_PRESET 0
 #define AMBIENT_PRESET 1
 
 #define DEFAULT_PALETTE RainbowColors_p
-#define NUM_PALETTES 6
+#define NUM_PALETTES 7
 
 #define PRIMARY_BUTTON 0
 #define SECONDARY_BUTTON 1

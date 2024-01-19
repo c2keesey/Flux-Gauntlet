@@ -4,11 +4,12 @@
 #include <FastLED.h>
 #include "effects/BaseEffect.h"
 #include "palettes.h"
+#include "../../config/config.h"
 
 class EffectLibrary
 {
 private:
-    BaseEffect *library[4][3] = {};
+    BaseEffect *library[NUM_PRESETS][NUM_EFFECT_BUTTONS] = {};
     CRGBPalette256 paletteLibrary[5] = {}; // TODO: make this a vector
 
 public:

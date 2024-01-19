@@ -10,5 +10,8 @@ extern const TProgmemRGBGradientPalette_byte strong_watermellon[];
 extern const TProgmemRGBGradientPalette_byte emerald_dragon_gp[];
 extern const TProgmemRGBGradientPalette_byte valentine[];
 extern const TProgmemRGBGradientPalette_byte green_purple_gp[];
+extern const TProgmemRGBGradientPalette_byte purple_gp[];
+extern const TProgmemRGBGradientPalette_byte blue_gp[];
+extern const TProgmemRGBGradientPalette_byte red_gp[];
 
 #endif // PALETTES_H

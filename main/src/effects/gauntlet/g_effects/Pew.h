@@ -18,8 +18,8 @@ private:
     std::vector<Beam> beams = {};
 
 public:
-    Pew(uint8_t hue = 0, uint8_t len = 4, int speed = 1, bool rainbow = true)
-        : BaseEffect(), hue(hue), len(len), rainbow(rainbow)
+    Pew(CRGBPalette256 pal = DEFAULT_PALETTE, uint8_t hue = 0, uint8_t len = 4, int speed = 1, bool rainbow = true)
+        : BaseEffect(pal), hue(hue), len(len), rainbow(rainbow)
     {
         this->speed = speed;
         stepSize = speed * MIN_STEP_SIZE;
@@ -28,9 +28,7 @@ public:
     void trigger() override
     {
 
-        hue = rainbow ? random8() : hue;
-        CRGB color;
-        hsv2rgb_rainbow(CHSV(hue, 255, 255), color);
+        CRGB color = ColorFromPalette(palette, random8());
         beams.push_back({NUM_LEDS - 1, color});
     }
 
@@ -53,6 +51,11 @@ public:
     // {
     //     return speed * MIN_STEP_SIZE * getUpdatePeriod();
     // }
+
+    void setSpeed(int speed)
+    {
+        this->speed = speed;
+    }
 };
 
 #endif // PEW_H

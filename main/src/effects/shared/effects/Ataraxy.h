@@ -4,12 +4,27 @@
 #define ATARAXY_H
 
 #include "BaseEffect.h"
+#include <vector>
+#include "../EffectHelpers.h"
+
+const int minV = 50;
+// Want high saturation <200 but val can be low
+// Mid sat low val is nice too around 200 50 before goes red
+
+struct Orb
+{
+    float pos;
+    int size;
+    CRGB color;
+    float velocity;
+    uint8_t intensity;
+    Orb(float p, int s, CRGB c, float v, uint8_t i) : pos(p), size(s), color(c), velocity(v), intensity(i) {}
+};
 
 class Ataraxy : public BaseEffect
 {
 private:
-    int speed = 10;
-    unsigned long prevMillis = 0;
+    std::vector<Orb> orbs;
 
 public:
     Ataraxy(CRGBPalette256 pal = DEFAULT_PALETTE)
@@ -20,59 +35,33 @@ public:
 
     void trigger() override
     {
-        active = !active;
-        value = 0;
+        orbs.push_back(Orb(200, 2, CHSV(20, 255, 255), 0, 100));
     }
 
-    void draw() override
+    void update() override
     {
-        if (active)
-        {
-            if (millis() - prevMillis > speed)
-            {
-                prevMillis = millis();
+        drawOrbs();
+    }
 
-                if (fadeIn)
-                {
-                    value += value < 150 ? 2 : 1;
-                }
-                else
-                {
-                    value -= 1;
-                }
-                if (value >= 255)
-                {
-                    fadeIn = false;
-                    value = 255;
-                }
-                else if (value <= 200)
-                {
-                    fadeIn = true;
-                }
-                for (int i = 0; i < NUM_LEDS; i++)
-                {
-                    vleds[i] = CHSV(move + i * 2, 255, value);
-                }
-                move = (move + 2) % 255;
-            }
-        }
-        else
+    void drawOrbs()
+    {
+        for (auto orb = orbs.begin(); orb != orbs.end();)
         {
-            for (int i = 0; i < NUM_LEDS; i++)
+            if (orb->pos < 0 || orb->pos > NUM_LEDS - 1)
             {
-                vleds[i].fadeToBlackBy(random(1, 20));
+                orb = orbs.erase(orb);
+            }
+            else
+            {
+                drawOrb(&*orb);
+                orb++;
             }
         }
     }
 
-    CHSV getColor(uint8_t hue)
+    void drawOrb(Orb *orb)
     {
-        CRGB rgbColor = ColorFromPalette(palette, random8());
-
-        // Convert CRGB to CHSV
-        CHSV hsvColor;
-        hsv2rgb_rainbow(hsvColor, rgbColor);
-        return hsvColor;
+        drawPrecise(orb->pos, orb->size, orb->color, vleds);
     }
 };
 

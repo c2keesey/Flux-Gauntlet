@@ -53,7 +53,7 @@ void g_EffectsHandler::handleButtonPress()
 void g_EffectsHandler::rotatePreset()
 {
     // TODO: move to a type of active effect
-    for (int i = 0; i < preset + 1; i++)
+    for (int i = 0; i < preset; i++)
     {
         leds[NUM_LEDS - 14 - i] = CRGB::White;
     }

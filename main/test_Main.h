@@ -64,37 +64,12 @@ void setup()
 
     // Serial
     Serial.begin(9600);
-    randomSeed(analogRead(0));
 }
 
 void loop()
 {
-    static unsigned long lastLoopStart = 0;
-    unsigned long loopStart = millis();
-    double loopTime = 0;
-
-    if (lastLoopStart != 0)
-    {
-        loopTime = (loopStart - lastLoopStart) / 1000.0;
-        if (loopTime > 0)
-        {
-            fps = FramesPerSecond(loopTime);
-        }
-    }
-
-    lastLoopStart = loopStart;
-    EVERY_N_SECONDS(random(2, 5))
-    {
-        effectsHandler.triggerEffect(0);
-    }
-
-    EVERY_N_MINUTES(random(5, 10))
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            effectsHandler.triggerEffect(0);
-        }
-    }
+    
+   
     effectsHandler.drawFrame();
 
     // if (millis() - lastUpdateDisplay > displayRate)

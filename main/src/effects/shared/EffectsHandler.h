@@ -16,6 +16,9 @@ public:
 
     virtual void setupEffectLibrary() = 0;
     virtual void drawFrame();
+
+private:
+    CRGB getLed(size_t index0);
 };
 
 #endif // EFFECTSHANDLER_H
