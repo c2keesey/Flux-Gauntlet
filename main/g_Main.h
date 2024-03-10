@@ -91,6 +91,8 @@ unsigned long lastColorChangeTime = 0;
 unsigned long colorChangeDelay = 300;
 void loop()
 {
+    controlHandler.pollEncoder(POLL_RATE);
+    Serial.println(controlHandler.getPos());
     double dStart = millis() / 1000.0;
     if (millis() - lastUpdateDisplay > displayRate)
     {

@@ -3,7 +3,8 @@
 #ifndef BUTTONS_H
 #define BUTTONS_H
 
-#include "config.h"
+#include "../config/config.h"
+#include <Arduino.h>
 
 extern bool specButtonPressed;
 extern bool auxButtonPressed;

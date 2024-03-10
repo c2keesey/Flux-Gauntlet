@@ -5,102 +5,100 @@
 
 // TODO: use onebutton.h
 #include "src/config/config.h"
-#include "src/effects/house/h_EffectsHandler.h"
+#include "src/effects/gauntlet/g_EffectsHandler.h"
+#include "src/control/ControlHandler.h"
+#include "src/control/buttons.h"
 #include "src/utils/timing.h"
 #include "src/oled/OLEDControl.h"
 
 // OLED
-OLEDControl oledControl;
-
 double fps = 0;
-int displayRate = 1000;
+int displayRate = 200;
 int lastUpdateDisplay = 0;
 
+OLEDControl oledControl;
+
 // LEDs
-CRGB bfr_leds[NUM_BFR] = {0};
-CRGB bfl_leds[NUM_BFL] = {0};
-CRGB *leds[NUM_BFL + NUM_BFR] = {0};
+CRGB leds[NUM_LEDS] = {0};
 int hue = 100;
-int maxBrightness = 255;
+
+// Buttons
+bool specButtonPressed;
+bool auxButtonPressed;
+bool secondaryButtonPressed;
+bool primaryButtonPressed;
+bool encoderButtonPressed;
+bool *effectButtons[] = {&primaryButtonPressed, &secondaryButtonPressed, &specButtonPressed};
 
 // Effects
-h_EffectsHandler effectsHandler;
+g_EffectsHandler effectsHandler;
+
+// Controls
+ControlHandler controlHandler;
 
 // LEDs
-
-void sendStats()
-{
-    Serial.print("FPS: ");
-    Serial.print(fps);
-    Serial.print(" Brite: ");
-    Serial.print(calculate_max_brightness_for_power_mW(maxBrightness, MAX_STRIP_DRAW));
-}
 
 void setup()
 {
-    pinMode(PIN_BFL, OUTPUT);
-    pinMode(PIN_BFR, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
 
-    FastLED.addLeds<WS2812, PIN_BFL, GRB>(bfl_leds, NUM_BFL);
-    FastLED.addLeds<WS2812, PIN_BFR, GRB>(bfr_leds, NUM_BFR);
-
-    for (int i = 0; i < NUM_BFL; i++)
-    {
-        leds[i] = &bfl_leds[i];
-    }
-    for (int i = 0; i < NUM_BFR; i++)
-    {
-        leds[NUM_BFL + i] = &bfr_leds[NUM_BFR - i - 1];
-    }
-    FastLED.clear();
+    // LEDs
+    pinMode(LED_PIN, OUTPUT);
+    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
     FastLED.setBrightness(BRIGHTNESS);
+    FastLED.clear();
     FastLED.setMaxPowerInVoltsAndMilliamps(5, MAX_STRIP_DRAW);
+
+    // Buttons
+    pinMode(PRIMARY_BUTTON_PIN, INPUT_PULLUP);
+    pinMode(SECONDARY_BUTTON_PIN, INPUT_PULLUP);
+    pinMode(SPEC_BUTTON_PIN, INPUT_PULLUP);
+    pinMode(AUX_BUTTON_PIN, INPUT_PULLUP);
+    pinMode(ENCODER_BUTTON_PIN, INPUT_PULLUP);
+
+    // Encoder
+    pinMode(ENCODER_PIN_A, INPUT_PULLUP);
+    pinMode(ENCODER_PIN_B, INPUT_PULLUP);
 
     // OLED
     oledControl.init();
-    oledControl.printProjectName("Flux Arch");
 
     // Effects
 
+    // Controls
+    controlHandler.reset();
+
     // Serial
     Serial.begin(9600);
-    randomSeed(analogRead(0));
+}
+
+void ind()
+{
+    leds[NUM_LEDS - 14] = CRGB::Red;
+    FastLED.show();
 }
 
 void loop()
 {
-    static unsigned long lastLoopStart = 0;
-    unsigned long loopStart = millis();
-    double loopTime = 0;
-
-    if (lastLoopStart != 0)
+    double dStart = millis() / 1000.0;
+    if (millis() - lastUpdateDisplay > displayRate)
     {
-        loopTime = (loopStart - lastLoopStart) / 1000.0;
-        if (loopTime > 0)
-        {
-            fps = FramesPerSecond(loopTime);
-        }
+        lastUpdateDisplay = millis();
+        oledControl.clearLines();
+        oledControl.addEncoder(controlHandler.getPos());
+        oledControl.addFPS(fps);
+        oledControl.addBrightness(fps);
+        oledControl.addMode(controlHandler.getMode());
+        oledControl.printLines();
     }
+    pollButtons(POLL_RATE);
 
-    lastLoopStart = loopStart;
-    EVERY_N_SECONDS(random(2, 5))
-    {
-        effectsHandler.triggerEffect(0);
-    }
-
-    EVERY_N_MINUTES(random(5, 10))
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            effectsHandler.triggerEffect(0);
-        }
-    }
+    effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();
 
-    // if (millis() - lastUpdateDisplay > displayRate)
-    // {
-    //     lastUpdateDisplay = millis();
-    //     oledControl.displayFPSOLED(fps);
-    //     sendStats();
-    // }
+    controlHandler.pollEncoder(POLL_RATE);
+    controlHandler.handleButtonPress();
+    controlHandler.setMode();
+
+    fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }

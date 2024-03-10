@@ -11,8 +11,9 @@ void clearVleds(CRGB *vleds)
 
 CRGB ColorFraction(CRGB colorIn, float fraction)
 {
-    fraction = min(1.0f, fraction);
-    return CRGB(colorIn).fadeToBlackBy(255 * (1.0f - fraction));
+    fraction = max(0.0f, min(1.0f, fraction));
+    uint8_t scale = fraction * 255;
+    return colorIn.nscale8_video(scale);
 }
 
 void drawPrecise(float fPos, float len, CRGB color, CRGB *vleds)
@@ -49,7 +50,7 @@ float randomAbsRange(float x, float y)
         return 0.0;
     }
 
-    float randomNumber = random(0, (x - y) * 2000) / 1000.0;
+    float randomNumber = random(0, (x - y) * 2000000.0) / 1000000.0;
 
     if (randomNumber < (x - y))
     {

@@ -61,6 +61,7 @@ void setup()
     oledControl.printProjectName("Flux Arch");
 
     // Effects
+    effectsHandler.setupEffectLibrary();
 
     // Serial
     Serial.begin(9600);

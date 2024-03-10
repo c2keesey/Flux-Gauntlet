@@ -1,10 +1,11 @@
 #include "g_EffectsHandler.h"
 
 #include <FastLED.h>
-
+#include <stdexcept>
 #include "../shared/EffectLibrary.h"
 #include "../../config/config.h"
 #include "../shared/effects/FireworkShow.h"
+#include "g_effects/ControlRing.h"
 
 extern CRGB leds[];
 extern bool *effectButtons[];
@@ -13,21 +14,29 @@ extern bool auxButtonPressed;
 g_EffectsHandler::g_EffectsHandler()
 {
     setupEffectLibrary();
+    // Resize the vector to accommodate the necessary elements.
+    activeEffects.resize(NUM_EFFECT_BUTTONS, nullptr);
+
+    // Now you can directly assign effects to the specific buttons.
     activeEffects[PRIMARY_BUTTON] = effectLibrary.getEffect(preset, PRIMARY_BUTTON);
     activeEffects[SECONDARY_BUTTON] = effectLibrary.getEffect(preset, SECONDARY_BUTTON);
     activeEffects[SPEC_BUTTON] = effectLibrary.getEffect(preset, SPEC_BUTTON);
 
-    // activeEffects[SECONDARY_BUTTON] = new FireworkShow();
+    controlEffect = new ControlRing(DEFAULT_PALETTE);
 }
 
 BaseEffect *g_EffectsHandler::getEffect(size_t index)
 {
+    if (index >= activeEffects.size())
+    {
+        throw std::out_of_range("Index is out of bounds for the activeEffects vector.");
+    }
     return activeEffects[index];
 }
 
 size_t g_EffectsHandler::getEffectCount() const
 {
-    return NUM_EFFECT_BUTTONS;
+    return activeEffects.size();
 }
 
 void g_EffectsHandler::setupEffectLibrary()
@@ -47,6 +56,26 @@ void g_EffectsHandler::handleButtonPress()
                 activeEffects[buttonNumber]->triggerWrite();
             }
         }
+    }
+}
+
+void g_EffectsHandler::triggerControl(unsigned long holdTime)
+{
+    controlEffect->setHoldTime(holdTime);
+    if (std::find(activeEffects.begin(), activeEffects.end(), controlEffect) == activeEffects.end())
+    {
+        activeEffects.push_back(controlEffect);
+    }
+    controlEffect->triggerWrite();
+}
+
+void g_EffectsHandler::cancelControl()
+{
+    auto it = std::find(activeEffects.begin(), activeEffects.end(), controlEffect);
+    if (it != activeEffects.end())
+    {
+        controlEffect->cancel();
+        activeEffects.erase(it);
     }
 }
 

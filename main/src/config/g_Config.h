@@ -16,10 +16,6 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 #define MAX_STRIP_DRAW 500 // TODO: attatch to pin to dynamically adjust
 #define LED_BUILTIN 35
 
-#define EFFECT_MODE 0
-#define SET_MODE 1
-#define COLOR_MODE 2
-
 // LED Strip
 #define NUM_LEDS 300
 #define LED_PIN 48
@@ -27,9 +23,9 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 
 // Effects
 // #define LIBRARY_SIZE 4
-#define NUM_EFFECT_BUTTONS 2
+#define NUM_EFFECT_BUTTONS 3
 
-#define NUM_PRESETS 6
+#define NUM_PRESETS 4
 #define ACTION_PRESET 0
 #define AMBIENT_PRESET 1
 

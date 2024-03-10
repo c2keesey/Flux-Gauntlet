@@ -12,7 +12,7 @@ extern CRGB *leds[];
 
 h_EffectsHandler::h_EffectsHandler() : EffectsHandler()
 {
-    setupEffectLibrary();
+    // setupEffectLibrary();
 }
 
 BaseEffect *h_EffectsHandler::getEffect(size_t index)
@@ -29,9 +29,13 @@ void h_EffectsHandler::setupEffectLibrary()
 {
     BaseEffect *effect = new FireworkShow(10, DEFAULT_PALETTE, 0.05f, 40.0f);
     effect->triggerDelay = 0;
-    // BaseEffect *effect = new Ataraxy();
-    // effect->trigger();
     activeEffects.push_back(effect);
+}
+
+void h_EffectsHandler::setupTestLibrary()
+{
+    // BaseEffect *effect = new Ataraxy();
+    // activeEffects.push_back(effect);
 }
 
 void h_EffectsHandler::triggerEffect(size_t index)

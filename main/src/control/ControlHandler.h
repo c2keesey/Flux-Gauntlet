@@ -5,12 +5,17 @@
 #include <FastLED.h>
 
 #include "../config/config.h"
+#include "../effects/gauntlet/g_EffectsHandler.h"
 
 #define NO_BUTTON 99
 #define MODE_CHANGE_DELAY 200
 #define ENCODER_POLL_RATE 10
 
-extern int mode;
+#define EFFECT_MODE 0
+#define SET_MODE 1
+#define PRESET_MODE 2
+
+#define HOLD_TIME 500
 
 extern CRGB leds[];
 
@@ -19,16 +24,20 @@ extern bool secondaryButtonPressed;
 extern bool primaryButtonPressed;
 extern bool specButtonPressed;
 
+extern g_EffectsHandler effectsHandler;
+
 class ControlHandler
 {
 private:
+    int mode = EFFECT_MODE;
     uint8_t curButton = NO_BUTTON;
     unsigned int curEffect;
     CRGB effectSettingColor[3] = {CRGB::Red, CRGB::Green, CRGB::Blue};
-    unsigned long modeChangeTime = 0;
     int encoderPos = 5;
     int lastEncoderPos = 0;
-
+    bool lastAuxButtonState = false;
+    unsigned long modeChangeTimer = 0;
+    bool modeWasSet = false;
     // Rotary Encoder
     int lastEncoded = 0;
 
@@ -50,6 +59,28 @@ public:
         curButton = NO_BUTTON;
     }
 
+    void setMode()
+    {
+        if (!modeWasSet && lastAuxButtonState && millis() - modeChangeTimer > HOLD_TIME)
+        {
+            modeWasSet = true;
+            if (mode == EFFECT_MODE)
+            {
+                mode = SET_MODE;
+            }
+            else
+            {
+                reset();
+                mode = EFFECT_MODE;
+            }
+        }
+    }
+
+    int getMode()
+    {
+        return mode;
+    }
+
     int getPos()
     {
         return encoderPos;
@@ -59,9 +90,20 @@ public:
     {
         curButton = button;
     }
-
     void handleButtonPress()
     {
+        if (auxButtonPressed && !lastAuxButtonState)
+        {
+            modeChangeTimer = millis();
+            lastAuxButtonState = true;
+            effectsHandler.triggerControl(HOLD_TIME);
+        }
+        else if (!auxButtonPressed && lastAuxButtonState)
+        {
+            lastAuxButtonState = false;
+            effectsHandler.cancelControl();
+            modeWasSet = false;
+        }
     }
 
     // void handleEncoderChange()

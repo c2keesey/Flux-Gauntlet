@@ -4,7 +4,7 @@ include .env
 # Variables
 BOARD := esp32:esp32:heltec_wifi_kit_32_V3
 PORT := /dev/cu.usbserial-0001
-PROJECT_DIR := /Users/c2k/ArduinoProjects/Flux/main
+PROJECT_DIR := /Users/c2k/Projects/Flux-Gauntlet/main
 CONFIG_DIR := $(PROJECT_DIR)/src/config
 PROJECT_FILE := $(PROJECT_DIR)/main.ino
 BUILD_DIR := $(PROJECT_DIR)/build
@@ -14,6 +14,10 @@ COMPILE_FLAGS := --fqbn $(BOARD) --verbose
 
 # Default target
 all: compile upload
+ifeq ($(MONITOR), true)
+	make monitor
+endif
+
 
 # Compile
 compile: copy
