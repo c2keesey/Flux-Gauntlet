@@ -14,7 +14,6 @@ protected:
 public:
     EffectsHandler();
 
-    virtual void setupEffectLibrary() = 0;
     virtual void drawFrame();
 
 private:

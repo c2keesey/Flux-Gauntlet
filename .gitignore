@@ -36,4 +36,4 @@
 .vscode/launch.json
 .vscode/ipch
 
-build
+main/build

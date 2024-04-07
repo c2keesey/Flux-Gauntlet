@@ -33,6 +33,9 @@ bool *effectButtons[] = {&primaryButtonPressed, &secondaryButtonPressed, &specBu
 // Effects
 g_EffectsHandler effectsHandler;
 
+// Library
+// EffectLibrary effectLibrary;
+
 // Controls
 ControlHandler controlHandler;
 
@@ -93,12 +96,16 @@ void loop()
     }
     pollButtons(POLL_RATE);
 
+    controlHandler.handleAuxButtonPress();
+
+    if (controlHandler.getMode() == SET_MODE)
+    {
+        controlHandler.pollEncoder(POLL_RATE);
+        controlHandler.handleButtonPress();
+    }
+
     effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();
-
-    controlHandler.pollEncoder(POLL_RATE);
-    controlHandler.handleButtonPress();
-    controlHandler.setMode();
 
     fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }

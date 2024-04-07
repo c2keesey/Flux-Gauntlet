@@ -11,10 +11,6 @@
 #define MODE_CHANGE_DELAY 200
 #define ENCODER_POLL_RATE 10
 
-#define EFFECT_MODE 0
-#define SET_MODE 1
-#define PRESET_MODE 2
-
 #define HOLD_TIME 500
 
 extern CRGB leds[];
@@ -25,13 +21,21 @@ extern bool primaryButtonPressed;
 extern bool specButtonPressed;
 
 extern g_EffectsHandler effectsHandler;
+// extern EffectLibrary effectLibrary;
 
 class ControlHandler
 {
 private:
     int mode = EFFECT_MODE;
-    uint8_t curButton = NO_BUTTON;
-    unsigned int curEffect;
+    enum ControlState : int
+    {
+        NONE,
+        BUTTON_SELECT,
+        EFFECT_SELECT,
+    };
+    ControlState controlState = NONE;
+    int preset = -1;
+    EffectButton curButton = NONE_BUTTON;
     CRGB effectSettingColor[3] = {CRGB::Red, CRGB::Green, CRGB::Blue};
     int encoderPos = 5;
     int lastEncoderPos = 0;
@@ -40,6 +44,7 @@ private:
     bool modeWasSet = false;
     // Rotary Encoder
     int lastEncoded = 0;
+    bool initSet = true;
 
     unsigned long lastEncoderPoll = 0;
 
@@ -56,23 +61,19 @@ public:
     {
         encoderPos = 0;
         lastEncoderPos = 0;
-        curButton = NO_BUTTON;
+        curButton = NONE_BUTTON;
+        initSet = true;
     }
 
-    void setMode()
+    void handleButtonPress()
     {
-        if (!modeWasSet && lastAuxButtonState && millis() - modeChangeTimer > HOLD_TIME)
+        if (controlState == BUTTON_SELECT)
         {
-            modeWasSet = true;
-            if (mode == EFFECT_MODE)
-            {
-                mode = SET_MODE;
-            }
-            else
-            {
-                reset();
-                mode = EFFECT_MODE;
-            }
+            handleEffectButtonPress();
+        }
+        else if (controlState == EFFECT_SELECT)
+        {
+            handleEncoderChange();
         }
     }
 
@@ -86,11 +87,59 @@ public:
         return encoderPos;
     }
 
-    void setCurButton(uint8_t button)
+    void handleEffectButtonPress()
     {
-        curButton = button;
+        if (!initSet)
+        {
+            return;
+        }
+        if (primaryButtonPressed)
+        {
+            Serial.println("Primary button pressed");
+            handleEffectButtonSelect(PRIMARY_BUTTON);
+        }
+        else if (secondaryButtonPressed)
+        {
+            Serial.println("Secondary button pressed");
+            handleEffectButtonSelect(SECONDARY_BUTTON);
+        }
+        else if (specButtonPressed)
+        {
+            handleEffectButtonSelect(SPEC_BUTTON);
+        }
     }
-    void handleButtonPress()
+
+    void handleEffectButtonSelect(EffectButton button)
+    {
+        initSet = false;
+        curButton = button;
+        encoderPos = 0;
+        effectsHandler.selectButton(button);
+        controlState = EFFECT_SELECT;
+        // effectsHandler.unsuppressEffects();
+    }
+
+    void setMode()
+    {
+        if (!modeWasSet && lastAuxButtonState && millis() - modeChangeTimer > HOLD_TIME)
+        {
+            modeWasSet = true;
+            if (mode == EFFECT_MODE)
+            {
+                mode = SET_MODE;
+                controlState = BUTTON_SELECT;
+            }
+            else
+            {
+                reset();
+                mode = EFFECT_MODE;
+                controlState = NONE;
+            }
+            effectsHandler.triggerModeChange(mode);
+        }
+    }
+
+    void handleAuxButtonPress()
     {
         if (auxButtonPressed && !lastAuxButtonState)
         {
@@ -104,41 +153,7 @@ public:
             effectsHandler.cancelControl();
             modeWasSet = false;
         }
-    }
-
-    // void handleEncoderChange()
-    // {
-    //     if (encoderPos == lastEncoderPos)
-    //     {
-    //         return;
-    //     }
-    //     if (curButton == NO_BUTTON)
-    //     {
-    //         return;
-    //     }
-    //     if (encoderPos < 0)
-    //     {
-    //         curEffect = (LIBRARY_SIZE - (-encoderPos % LIBRARY_SIZE)) % LIBRARY_SIZE;
-    //     }
-    //     else
-    //     {
-    //         curEffect = encoderPos % LIBRARY_SIZE;
-    //     }
-    //     lastEncoderPos = encoderPos;
-    //     effectsHandler.updateEffect(curButton, curEffect);
-    // }
-
-    void drawFrame()
-    {
-        if (curButton == NO_BUTTON)
-        {
-            return;
-        }
-        for (int i = NUM_LEDS - 1; i > NUM_LEDS - curEffect - 2; i--)
-        {
-            leds[i] = effectSettingColor[curButton];
-        }
-        FastLED.show();
+        setMode();
     }
 
     void updateEncoder()
@@ -159,11 +174,24 @@ public:
 
     void pollEncoder(unsigned long interval)
     {
+        if (mode == EFFECT_MODE)
+        {
+            return;
+        }
         if (millis() - lastEncoderPoll > interval)
         {
             updateEncoder();
             lastEncoderPoll = millis();
         }
+    }
+
+    void handleEncoderChange()
+    {
+        if (curButton == NONE_BUTTON)
+        {
+            return;
+        }
+        effectsHandler.selectEffect(curButton, getPos());
     }
 };
 

@@ -13,7 +13,7 @@ Safety margin ~15%
 Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 
 */
-#define MAX_STRIP_DRAW 500 // TODO: attatch to pin to dynamically adjust
+#define MAX_STRIP_DRAW 500 // TODO: attatch to voltage pin to dynamically adjust
 #define LED_BUILTIN 35
 
 // LED Strip
@@ -25,17 +25,29 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 // #define LIBRARY_SIZE 4
 #define NUM_EFFECT_BUTTONS 3
 
-#define NUM_PRESETS 4
-#define ACTION_PRESET 0
-#define AMBIENT_PRESET 1
+#define NUM_PRESETS 2
+enum class Preset : int
+{
+    ACTION,
+    TEST,
+};
 
 #define DEFAULT_PALETTE RainbowColors_p
 #define NUM_PALETTES 7
 
-#define PRIMARY_BUTTON 0
-#define SECONDARY_BUTTON 1
-#define SPEC_BUTTON 2
 #define AUX_BUTTON 3
+
+enum EffectButton
+{
+    NONE_BUTTON = -1,
+    PRIMARY_BUTTON = 0,
+    SECONDARY_BUTTON = 1,
+    SPEC_BUTTON = 2,
+};
+
+#define EFFECT_MODE 0
+#define SET_MODE 1
+#define PRESET_MODE 2
 
 // OLED
 #define OLED_FRAME_RATE 30
@@ -48,7 +60,7 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 #define ENCODER_BUTTON_PIN 40
 
 #define DEBOUNCE_DELAY 50
-#define POLL_RATE 5
+#define POLL_RATE 1
 
 // Rotary Encoder
 #define ENCODER_PIN_A 33

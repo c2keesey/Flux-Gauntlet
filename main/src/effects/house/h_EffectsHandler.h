@@ -16,7 +16,7 @@ protected:
 public:
     h_EffectsHandler();
 
-    void setupEffectLibrary() override;
+    void setupEffectLibrary();
     void setupTestLibrary();
     void triggerEffect(size_t index);
     void drawFrame() override;

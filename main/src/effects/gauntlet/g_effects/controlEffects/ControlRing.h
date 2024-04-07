@@ -3,9 +3,9 @@
 #ifndef CONTROLRING_H
 #define CONTROLRING_H
 
-#include "../../shared/effects/BaseEffect.h"
-#include "../Rings.h"
-#include "../../shared/EffectHelpers.h"
+#include "../../../shared/effects/BaseEffect.h"
+#include "../../Rings.h"
+#include "../../../shared/EffectHelpers.h"
 
 class ControlRing : public BaseEffect
 {
