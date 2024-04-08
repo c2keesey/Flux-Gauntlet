@@ -18,7 +18,7 @@ private:
     std::vector<Beam> beams = {};
 
 public:
-    Pew(CRGBPalette256 pal = DEFAULT_PALETTE, uint8_t hue = 0, uint8_t len = 4, int speed = 1, bool rainbow = true)
+    Pew(CRGBPalette256 pal = DEFAULT_PALETTE, uint8_t hue = 0, uint8_t len = 4, int speed = 100, bool rainbow = true)
         : BaseEffect(pal), hue(hue), len(len), rainbow(rainbow)
     {
         this->speed = speed;

@@ -29,6 +29,7 @@ protected:
 
 public:
     g_EffectsHandler();
+    ~g_EffectsHandler();
 
     void handleButtonPress();
     void triggerControl(unsigned long holdTime);

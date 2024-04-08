@@ -15,23 +15,32 @@
 extern CRGB leds[];
 extern bool *effectButtons[];
 extern bool auxButtonPressed;
-// extern EffectLibrary effectLibrary;
+extern EffectLibrary effectLibrary;
 
 g_EffectsHandler::g_EffectsHandler()
 {
     activeEffects.resize(NUM_EFFECT_BUTTONS, nullptr);
 
-    // activeEffects[PRIMARY_BUTTON] = effectLibrary.getPreset(PRIMARY_BUTTON, curPreset);
-    // activeEffects[SECONDARY_BUTTON] = effectLibrary.getPreset(SECONDARY_BUTTON, curPreset);
-    // activeEffects[SPEC_BUTTON] = effectLibrary.getPreset(SPEC_BUTTON, curPreset);
-
-    activeEffects[PRIMARY_BUTTON] = new Blast();
-    activeEffects[SECONDARY_BUTTON] = new Flash();
-    activeEffects[SPEC_BUTTON] = new Blast();
+    activeEffects[PRIMARY_BUTTON] = effectLibrary.getPreset(PRIMARY_BUTTON, curPreset);
+    activeEffects[SECONDARY_BUTTON] = effectLibrary.getPreset(SECONDARY_BUTTON, curPreset);
+    activeEffects[SPEC_BUTTON] = effectLibrary.getPreset(SPEC_BUTTON, curPreset);
 
     modeChangeEffect = new ControlRing();
     buttonSelectEffect = new ButtonSelect();
     effectSelectEffect = new SelectRing();
+}
+
+g_EffectsHandler::~g_EffectsHandler()
+{
+    for (BaseEffect *effect : activeEffects)
+    {
+        delete effect;
+    }
+    activeEffects.clear();
+
+    delete modeChangeEffect;
+    delete buttonSelectEffect;
+    delete effectSelectEffect;
 }
 
 BaseEffect *g_EffectsHandler::getEffect(size_t index)
@@ -86,34 +95,9 @@ void g_EffectsHandler::cancelControl()
     {
         modeChangeEffect->cancel();
         activeEffects.erase(it);
+        delete *it;
     }
 }
-
-// void g_EffectsHandler::rotatePreset()
-// {
-//     // TODO: move to a type of active effect
-//     for (int i = 0; i < curPreset; i++)
-//     {
-//         leds[NUM_LEDS - 14 - i] = CRGB::White;
-//     }
-//     FastLED.show();
-
-//     curPreset = (curPreset + 1) % NUM_PRESETS;
-//     for (int buttonNumber = 0; buttonNumber < NUM_EFFECT_BUTTONS; buttonNumber++)
-//     {
-//         activeEffects[buttonNumber] = effectLibrary.getEffect(curPreset, buttonNumber);
-//     }
-// }
-
-// void g_EffectsHandler::changeColor(int buttonNumber)
-// {
-//     if (activeEffects[buttonNumber] != nullptr)
-//     {
-//         uint8_t nextPal = activeEffects[buttonNumber]->getPalNum() + 1;
-//         activeEffects[buttonNumber]->setPalette(effectLibrary.getPalette(nextPal));
-//         activeEffects[buttonNumber]->setPalNum(nextPal);
-//     }
-// }
 
 void g_EffectsHandler::triggerModeChange(int mode)
 {
@@ -166,6 +150,7 @@ void g_EffectsHandler::removeEffect(BaseEffect *effect)
     if (it != activeEffects.end())
     {
         activeEffects.erase(it);
+        delete *it;
     }
 }
 
@@ -181,11 +166,11 @@ void g_EffectsHandler::removeEffect(BaseEffect *effect)
 
 void g_EffectsHandler::selectEffect(EffectButton button, int encoderPos)
 {
-    int effectIndex = getEffectSelectIndex(button, encoderPos);
-    // activeEffects[button] = effectLibrary.getEffect(button, effectIndex);
-    // effectSelectEffect->setEffect(effectIndex, effectLibrary.getNumEffects(button));
 
-    effectSelectEffect->setEffect(effectIndex, 1);
+    int effectIndex = getEffectSelectIndex(button, encoderPos);
+    delete activeEffects[button];
+    activeEffects[button] = effectLibrary.getEffect(button, effectIndex);
+    effectSelectEffect->setEffect(effectIndex, effectLibrary.getNumEffects(button));
 }
 
 int g_EffectsHandler::getEffectSelectIndex(EffectButton button, int encoderPos)

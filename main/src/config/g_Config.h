@@ -26,7 +26,7 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 #define NUM_EFFECT_BUTTONS 3
 
 #define NUM_PRESETS 2
-enum class Preset : int
+enum Preset
 {
     ACTION,
     TEST,

@@ -187,11 +187,11 @@ public:
 
     void handleEncoderChange()
     {
-        if (curButton == NONE_BUTTON)
+        if (encoderPos != lastEncoderPos)
         {
-            return;
+            lastEncoderPos = encoderPos;
+            effectsHandler.selectEffect(curButton, getPos());
         }
-        effectsHandler.selectEffect(curButton, getPos());
     }
 };
 

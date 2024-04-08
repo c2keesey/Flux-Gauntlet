@@ -18,19 +18,10 @@
 
 EffectLibrary::EffectLibrary()
 {
-    setupPresets();
-    setupEffectLibrary();
-    setupPaletteLibrary();
 }
 
 EffectLibrary::~EffectLibrary()
 {
-}
-
-void EffectLibrary::setupPresets()
-{
-    presetMap[Preset::ACTION] = action;
-    presetMap[Preset::TEST] = {EffectInst::FLASH, EffectInst::BLAST, EffectInst::PEW};
 }
 
 BaseEffect *EffectLibrary::getPreset(EffectButton button, Preset preset)
@@ -52,40 +43,20 @@ BaseEffect *EffectLibrary::getPreset(EffectButton button, Preset preset)
     return createEffect(effect);
 }
 
-BaseEffect *EffectLibrary::createEffect(EffectInst effectType)
-{
-    auto it = effectFactories.find(effectType);
-    if (it != effectFactories.end())
-    {
-        return it->second();
-    }
-    return nullptr;
-}
-
-void EffectLibrary::setupPaletteLibrary()
-{
-    palettes.push_back(RainbowColors_p);
-    palettes.push_back(ocean_gp_v2);
-    palettes.push_back(strong_watermellon);
-    palettes.push_back(emerald_dragon_gp);
-    palettes.push_back(valentine);
-}
-
-void EffectLibrary::setupEffectLibrary()
-{
-    for (int i = 0; i < sizeof(primaryEffects) / sizeof(primaryEffects[0]); i++)
-    {
-        primaryEffects.push_back(primaryEffects[i]);
-    }
-    for (int i = 0; i < sizeof(secondaryEffects) / sizeof(secondaryEffects[0]); i++)
-    {
-        secondaryEffects.push_back(secondaryEffects[i]);
-    }
-    for (int i = 0; i < sizeof(specEffects) / sizeof(specEffects[0]); i++)
-    {
-        specEffects.push_back(specEffects[i]);
-    }
-}
+/**
+ * Creates and returns a new effect object based on the given effect type.
+ * The caller is responsible for deleting the returned effect object
+ * when it's no longer needed.
+ */
+// BaseEffect *EffectLibrary::createEffect(EffectInst effectType)
+// {
+//     auto it = effectFactories.find(effectType);
+//     if (it != effectFactories.end())
+//     {
+//         return it->second();
+//     }
+//     return nullptr;
+// }
 
 // void EffectLibrary::setupEffectLibrary()
 // {

@@ -34,7 +34,7 @@ bool *effectButtons[] = {&primaryButtonPressed, &secondaryButtonPressed, &specBu
 g_EffectsHandler effectsHandler;
 
 // Library
-// EffectLibrary effectLibrary;
+EffectLibrary effectLibrary;
 
 // Controls
 ControlHandler controlHandler;

@@ -24,6 +24,13 @@ public:
         PEW
     };
 
+    struct PresetContainer
+    {
+        EffectInst primary;
+        EffectInst secondary;
+        EffectInst spec;
+    };
+
     EffectLibrary();
     ~EffectLibrary();
 
@@ -33,10 +40,6 @@ public:
     int getNumEffects(EffectButton button);
 
 private:
-    void setupPaletteLibrary();
-    void setupEffectLibrary();
-    void setupPresets();
-
     // Effects
     BaseEffect *createEffect(EffectInst effectType);
     static std::vector<EffectInst> primaryEffects;
@@ -46,13 +49,7 @@ private:
     static std::map<EffectInst, std::function<BaseEffect *()>> effectFactories;
 
     // Presets
-    struct PresetContainer
-    {
-        EffectInst primary;
-        EffectInst secondary;
-        EffectInst spec;
-    };
-    std::map<Preset, PresetContainer> presetMap;
+    static std::map<Preset, PresetContainer> presetMap;
     static PresetContainer action;
 
     // Palettes
