@@ -10,9 +10,9 @@
 #include "../../config/config.h"
 #include <vector>
 #include <map>
+
 class EffectLibrary
 {
-
 public:
     enum class EffectInst
     {
@@ -26,31 +26,28 @@ public:
 
     struct PresetContainer
     {
-        EffectInst primary;
-        EffectInst secondary;
-        EffectInst spec;
+        BaseEffect *primary;
+        BaseEffect *secondary;
+        BaseEffect *spec;
     };
 
     EffectLibrary();
     ~EffectLibrary();
 
+    void init();
+
     BaseEffect *getEffect(EffectButton button, int index);
-    CRGBPalette256 getPalette(int index);
     BaseEffect *getPreset(EffectButton button, Preset preset);
     int getNumEffects(EffectButton button);
 
+    CRGBPalette256 getPalette(int index);
+
 private:
     // Effects
-    BaseEffect *createEffect(EffectInst effectType);
-    static std::vector<EffectInst> primaryEffects;
-    static std::vector<EffectInst> secondaryEffects;
-    static std::vector<EffectInst> specEffects;
-    static std::map<EffectButton, std::vector<EffectInst>> buttonEffectMap;
-    static std::map<EffectInst, std::function<BaseEffect *()>> effectFactories;
+    std::map<EffectButton, std::vector<BaseEffect *>> buttonEffectMap;
 
     // Presets
-    static std::map<Preset, PresetContainer> presetMap;
-    static PresetContainer action;
+    std::map<Preset, PresetContainer> presetMap;
 
     // Palettes
     std::vector<CRGBPalette256> palettes;

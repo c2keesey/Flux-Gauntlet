@@ -2,7 +2,6 @@
  * @file EffectLibrary.cpp
  * @brief Implementation of EffectLibrary methods.
  */
-
 #include <FastLED.h>
 #include "EffectLibrary.h"
 #include "effects/BaseEffect.h"
@@ -12,7 +11,6 @@
 #include "effects/RainbowWorm.h"
 #include "effects/Twinkle.h"
 #include "effects/FireworkShow.h"
-
 #include "../../config/config.h"
 #include "palettes.h"
 
@@ -20,27 +18,67 @@ EffectLibrary::EffectLibrary()
 {
 }
 
+void EffectLibrary::init()
+{
+    // Instantiate effects
+    buttonEffectMap[PRIMARY_BUTTON] = std::vector<BaseEffect *>{
+        new Blast(),
+        new Pew(),
+        new Flash()};
+    buttonEffectMap[SECONDARY_BUTTON] = std::vector<BaseEffect *>{new Blast(), new Pew(), new Flash()};
+    buttonEffectMap[SPEC_BUTTON] = std::vector<BaseEffect *>{new Blast(), new Pew(), new Flash()};
+
+    // // Setup presets
+    PresetContainer actionPreset = {buttonEffectMap[PRIMARY_BUTTON][0], buttonEffectMap[SECONDARY_BUTTON][1], buttonEffectMap[SPEC_BUTTON][2]};
+    presetMap[Preset::ACTION] = actionPreset;
+
+    PresetContainer testPreset = {buttonEffectMap[PRIMARY_BUTTON][0], buttonEffectMap[SECONDARY_BUTTON][0], buttonEffectMap[SPEC_BUTTON][0]};
+
+    presetMap[Preset::TEST] = testPreset;
+}
+
 EffectLibrary::~EffectLibrary()
 {
+    // Delete instantiated effects
+    for (const auto &buttonEffects : buttonEffectMap)
+    {
+        for (BaseEffect *effect : buttonEffects.second)
+        {
+            delete effect;
+        }
+    }
 }
 
 BaseEffect *EffectLibrary::getPreset(EffectButton button, Preset preset)
 {
-    PresetContainer p = presetMap[preset];
-    EffectInst effect = p.primary;
     if (button == PRIMARY_BUTTON)
     {
-        effect = p.primary;
+        return presetMap[preset].primary;
     }
     else if (button == SECONDARY_BUTTON)
     {
-        effect = p.secondary;
+        return presetMap[preset].secondary;
     }
     else if (button == SPEC_BUTTON)
     {
-        effect = p.spec;
+        return presetMap[preset].spec;
     }
-    return createEffect(effect);
+}
+
+// TODO: Check index bounds
+BaseEffect *EffectLibrary::getEffect(EffectButton button, int index)
+{
+    return buttonEffectMap[button][index];
+}
+
+CRGBPalette256 EffectLibrary::getPalette(int index)
+{
+    return palettes[index];
+}
+
+int EffectLibrary::getNumEffects(EffectButton button)
+{
+    return buttonEffectMap[button].size();
 }
 
 /**
@@ -105,31 +143,3 @@ BaseEffect *EffectLibrary::getPreset(EffectButton button, Preset preset)
 // library[5][PRIMARY_BUTTON] = new Blast(blue_gp);
 // library[5][SECONDARY_BUTTON] = new Blast(red_gp);
 // }
-
-// TODO: Check index bounds
-BaseEffect *EffectLibrary::getEffect(EffectButton button, int index)
-{
-    if (button == PRIMARY_BUTTON)
-    {
-        return createEffect(primaryEffects[index]);
-    }
-    else if (button == SECONDARY_BUTTON)
-    {
-        return createEffect(secondaryEffects[index]);
-    }
-    else if (button == SPEC_BUTTON)
-    {
-        return createEffect(specEffects[index]);
-    }
-    return nullptr;
-}
-
-CRGBPalette256 EffectLibrary::getPalette(int index)
-{
-    return palettes[index];
-}
-
-int EffectLibrary::getNumEffects(EffectButton button)
-{
-    return buttonEffectMap[button].size();
-}

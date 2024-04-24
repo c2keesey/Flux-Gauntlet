@@ -41,7 +41,7 @@ public:
         clearVleds(vleds);
         for (int i = ringEnd; i > ringEnd - numEffects; i--)
         {
-            vleds[i] = CHSV(0, 100, 10);
+            vleds[i] = CHSV(0, 100, 20);
         }
         vleds[ringEnd - effectIndex] = CHSV(hue, 255, 255);
         hue += 2;

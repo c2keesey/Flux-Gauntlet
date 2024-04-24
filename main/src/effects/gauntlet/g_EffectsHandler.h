@@ -31,10 +31,14 @@ public:
     g_EffectsHandler();
     ~g_EffectsHandler();
 
+    void init();
+
     void handleButtonPress();
     void triggerControl(unsigned long holdTime);
     void cancelControl();
-    void triggerModeChange(int mode);
+    void setSetMode(bool isSet);
+    void triggerEffectMode();
+    void triggerButtonSelectMode();
     void rotatePreset();
     void changeColor(int buttonNumber);
     void selectButton(EffectButton button);

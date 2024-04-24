@@ -11,7 +11,8 @@
 #define MODE_CHANGE_DELAY 200
 #define ENCODER_POLL_RATE 10
 
-#define HOLD_TIME 500
+#define SET_HOLD_TIME 500
+#define PRESET_HOLD_TIME 1000
 
 extern CRGB leds[];
 
@@ -21,19 +22,20 @@ extern bool primaryButtonPressed;
 extern bool specButtonPressed;
 
 extern g_EffectsHandler effectsHandler;
-// extern EffectLibrary effectLibrary;
 
 class ControlHandler
 {
+
 private:
-    int mode = EFFECT_MODE;
     enum ControlState : int
     {
-        NONE,
+        EFFECT,
         BUTTON_SELECT,
         EFFECT_SELECT,
+        PRESET_SELECT
     };
-    ControlState controlState = NONE;
+
+    ControlState controlState = EFFECT;
     int preset = -1;
     EffectButton curButton = NONE_BUTTON;
     CRGB effectSettingColor[3] = {CRGB::Red, CRGB::Green, CRGB::Blue};
@@ -67,19 +69,21 @@ public:
 
     void handleButtonPress()
     {
+        handleAuxButtonPress();
         if (controlState == BUTTON_SELECT)
         {
             handleEffectButtonPress();
         }
         else if (controlState == EFFECT_SELECT)
         {
+            pollEncoder(POLL_RATE);
             handleEncoderChange();
         }
     }
 
-    int getMode()
+    int getControlState()
     {
-        return mode;
+        return controlState;
     }
 
     int getPos()
@@ -95,12 +99,10 @@ public:
         }
         if (primaryButtonPressed)
         {
-            Serial.println("Primary button pressed");
             handleEffectButtonSelect(PRIMARY_BUTTON);
         }
         else if (secondaryButtonPressed)
         {
-            Serial.println("Secondary button pressed");
             handleEffectButtonSelect(SECONDARY_BUTTON);
         }
         else if (specButtonPressed)
@@ -119,23 +121,18 @@ public:
         // effectsHandler.unsuppressEffects();
     }
 
-    void setMode()
+    void setButtonSelect()
     {
-        if (!modeWasSet && lastAuxButtonState && millis() - modeChangeTimer > HOLD_TIME)
+        if (controlState == EFFECT)
         {
-            modeWasSet = true;
-            if (mode == EFFECT_MODE)
-            {
-                mode = SET_MODE;
-                controlState = BUTTON_SELECT;
-            }
-            else
-            {
-                reset();
-                mode = EFFECT_MODE;
-                controlState = NONE;
-            }
-            effectsHandler.triggerModeChange(mode);
+            controlState = BUTTON_SELECT;
+            effectsHandler.triggerButtonSelectMode();
+        }
+        else
+        {
+            reset();
+            controlState = EFFECT;
+            effectsHandler.triggerEffectMode();
         }
     }
 
@@ -145,15 +142,26 @@ public:
         {
             modeChangeTimer = millis();
             lastAuxButtonState = true;
-            effectsHandler.triggerControl(HOLD_TIME);
+            effectsHandler.triggerControl(SET_HOLD_TIME);
         }
         else if (!auxButtonPressed && lastAuxButtonState)
         {
+            unsigned long elapsed = millis() - modeChangeTimer;
+            if (elapsed > PRESET_HOLD_TIME)
+            {
+                controlState = PRESET_SELECT;
+                effectsHandler.triggerEffectMode();
+            }
+            else if (elapsed > SET_HOLD_TIME)
+            {
+                setButtonSelect();
+            }
+            else
+            {
+                effectsHandler.cancelControl();
+            }
             lastAuxButtonState = false;
-            effectsHandler.cancelControl();
-            modeWasSet = false;
         }
-        setMode();
     }
 
     void updateEncoder()
@@ -174,7 +182,7 @@ public:
 
     void pollEncoder(unsigned long interval)
     {
-        if (mode == EFFECT_MODE)
+        if (controlState == EFFECT)
         {
             return;
         }
@@ -187,7 +195,7 @@ public:
 
     void handleEncoderChange()
     {
-        if (encoderPos != lastEncoderPos)
+        if (encoderPos >= lastEncoderPos + 2 || encoderPos <= lastEncoderPos - 2)
         {
             lastEncoderPos = encoderPos;
             effectsHandler.selectEffect(curButton, getPos());

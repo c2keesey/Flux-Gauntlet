@@ -11,8 +11,6 @@
 #include "src/utils/timing.h"
 #include "src/oled/OLEDControl.h"
 
-int mode = EFFECT_MODE;
-
 // OLED
 double fps = 0;
 int displayRate = 1000;

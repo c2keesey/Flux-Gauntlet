@@ -20,7 +20,10 @@ extern EffectLibrary effectLibrary;
 g_EffectsHandler::g_EffectsHandler()
 {
     activeEffects.resize(NUM_EFFECT_BUTTONS, nullptr);
+}
 
+void g_EffectsHandler::init()
+{
     activeEffects[PRIMARY_BUTTON] = effectLibrary.getPreset(PRIMARY_BUTTON, curPreset);
     activeEffects[SECONDARY_BUTTON] = effectLibrary.getPreset(SECONDARY_BUTTON, curPreset);
     activeEffects[SPEC_BUTTON] = effectLibrary.getPreset(SPEC_BUTTON, curPreset);
@@ -36,8 +39,6 @@ g_EffectsHandler::~g_EffectsHandler()
     {
         delete effect;
     }
-    activeEffects.clear();
-
     delete modeChangeEffect;
     delete buttonSelectEffect;
     delete effectSelectEffect;
@@ -95,25 +96,29 @@ void g_EffectsHandler::cancelControl()
     {
         modeChangeEffect->cancel();
         activeEffects.erase(it);
-        delete *it;
     }
 }
 
-void g_EffectsHandler::triggerModeChange(int mode)
+void g_EffectsHandler::setSetMode(bool isSet)
 {
-    if (mode == SET_MODE)
-    {
-        // suppressEffects();
-        addEffect(buttonSelectEffect);
-    }
-    else if (mode == EFFECT_MODE)
-    {
-        // unsuppressEffects();
-        buttonSelectEffect->reset();
-        removeEffect(buttonSelectEffect);
-        effectSelectEffect->reset();
-        removeEffect(effectSelectEffect);
-    }
+    modeChangeEffect->setMode(isSet);
+}
+
+void g_EffectsHandler::triggerButtonSelectMode()
+{
+    // suppressEffects();
+    addEffect(buttonSelectEffect);
+    setSetMode(true);
+}
+
+void g_EffectsHandler::triggerEffectMode()
+{
+    // unsuppressEffects();
+    buttonSelectEffect->reset();
+    removeEffect(buttonSelectEffect);
+    effectSelectEffect->reset();
+    removeEffect(effectSelectEffect);
+    setSetMode(true);
 }
 
 /**
@@ -124,16 +129,8 @@ void g_EffectsHandler::triggerModeChange(int mode)
  */
 void g_EffectsHandler::selectButton(EffectButton button)
 {
-    try
-    {
-        Serial.println("Selecting button");
-        buttonSelectEffect->setButton(button);
-        addEffect(effectSelectEffect);
-    }
-    catch (...)
-    {
-        Serial.println("Error selecting button");
-    }
+    buttonSelectEffect->setButton(button);
+    addEffect(effectSelectEffect);
 }
 
 void g_EffectsHandler::addEffect(BaseEffect *effect)
@@ -150,7 +147,6 @@ void g_EffectsHandler::removeEffect(BaseEffect *effect)
     if (it != activeEffects.end())
     {
         activeEffects.erase(it);
-        delete *it;
     }
 }
 
@@ -166,16 +162,14 @@ void g_EffectsHandler::removeEffect(BaseEffect *effect)
 
 void g_EffectsHandler::selectEffect(EffectButton button, int encoderPos)
 {
-
     int effectIndex = getEffectSelectIndex(button, encoderPos);
-    delete activeEffects[button];
     activeEffects[button] = effectLibrary.getEffect(button, effectIndex);
     effectSelectEffect->setEffect(effectIndex, effectLibrary.getNumEffects(button));
 }
 
 int g_EffectsHandler::getEffectSelectIndex(EffectButton button, int encoderPos)
 {
-    int numEffects = 1;
+    int numEffects = effectLibrary.getNumEffects(button);
     int pos = (encoderPos / 2) % numEffects;
     if (pos < 0)
     {

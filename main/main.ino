@@ -13,7 +13,7 @@
 
 // OLED
 double fps = 0;
-int displayRate = 200;
+int displayRate = 500;
 int lastUpdateDisplay = 0;
 
 OLEDControl oledControl;
@@ -66,7 +66,11 @@ void setup()
     // OLED
     oledControl.init();
 
+    // Library
+    effectLibrary.init(); // make sure to call this before initializing effects
+
     // Effects
+    effectsHandler.init();
 
     // Controls
     controlHandler.reset();
@@ -91,18 +95,12 @@ void loop()
         oledControl.addEncoder(controlHandler.getPos());
         oledControl.addFPS(fps);
         oledControl.addBrightness(fps);
-        oledControl.addMode(controlHandler.getMode());
+        oledControl.addMode(controlHandler.getControlState());
         oledControl.printLines();
     }
     pollButtons(POLL_RATE);
 
-    controlHandler.handleAuxButtonPress();
-
-    if (controlHandler.getMode() == SET_MODE)
-    {
-        controlHandler.pollEncoder(POLL_RATE);
-        controlHandler.handleButtonPress();
-    }
+    controlHandler.handleButtonPress();
 
     effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();

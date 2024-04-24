@@ -18,15 +18,18 @@ private:
     unsigned long prevUpdateMillis = 0;
     Rings rings;
     int ringi = 2;
+    int loop;
+    bool isSetMode = false;
 
 public:
-    ControlRing(CRGBPalette256 pal = DEFAULT_PALETTE, unsigned long holdTime = 1000)
+    ControlRing(CRGBPalette256 pal = DEFAULT_PALETTE, unsigned long holdTime = 500)
         : BaseEffect(pal), rings(vleds)
     {
         ringStart = rings.getRingStart(rings.getRingsLength() - 2);
         ringEnd = rings.getRingEnd(rings.getRingsLength() - 2);
         curPos = ringStart;
         updateRate = holdTime / max(1, (ringEnd - ringStart));
+        loop = 0;
     }
 
     void trigger() override
@@ -39,10 +42,17 @@ public:
         curPos = ringStart;
         triggered = false;
         ringi = 2;
+        loop = 0;
+        isSetMode = false;
         for (int i = 0; i < NUM_LEDS; i++)
         {
             vleds[i] = CRGB::Black;
         }
+    }
+
+    void setMode(bool isSet)
+    {
+        isSetMode = isSet;
     }
 
     void update() override
@@ -51,21 +61,28 @@ public:
         {
             return;
         }
-        if (curPos < ringEnd)
+        if (curPos < ringEnd && !isSetMode)
         {
             // if (millis() - prevUpdateMillis > updateRate)
             // {
+            CRGB loopColor = loop == 0 ? CRGB::White : CRGB::Purple;
             EVERY_N_MILLIS(updateRate)
             {
                 prevUpdateMillis = millis();
-                vleds[curPos] = CRGB::White;
+                vleds[curPos] = loopColor;
                 curPos++;
             }
+        }
+        else if (loop == 0 && !isSetMode)
+        {
+            loop = 1;
+            curPos = ringStart;
         }
         else if (ringi < rings.getRingsLength() - 1)
         {
             clearVleds(vleds);
-            rings.drawRing(rings.getRingsLength() - ringi, CRGB::White);
+            CRGB loopColor = loop == 0 ? CRGB::White : CRGB::Purple;
+            rings.drawRing(rings.getRingsLength() - ringi, loopColor);
             ringi++;
         }
         else

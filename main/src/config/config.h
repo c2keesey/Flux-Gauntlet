@@ -45,10 +45,6 @@ enum EffectButton
     SPEC_BUTTON = 2,
 };
 
-#define EFFECT_MODE 0
-#define SET_MODE 1
-#define PRESET_MODE 2
-
 // OLED
 #define OLED_FRAME_RATE 30
 
