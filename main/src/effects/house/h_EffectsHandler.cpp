@@ -28,7 +28,6 @@ size_t h_EffectsHandler::getEffectCount() const
 void h_EffectsHandler::setupEffectLibrary()
 {
     BaseEffect *effect = new FireworkShow(10, DEFAULT_PALETTE, 0.05f, 40.0f);
-    effect->triggerDelay = 0;
     activeEffects.push_back(effect);
 }
 

@@ -22,9 +22,9 @@ protected:
     uint8_t curPalNum = 0;
     unsigned long prevMillis = 0;
     int speed;
+    int triggerDelay = 100;
 
 public:
-    int triggerDelay = 100;
     BaseEffect(CRGBPalette256 palette = RainbowColors_p);
     virtual void trigger() = 0;
     void triggerWrite();
@@ -35,6 +35,7 @@ public:
     void setPalette(CRGBPalette256 pal);
     uint8_t getPalNum();
     void setPalNum(uint8_t num);
+    void updateVleds(int index, CRGB color);
 };
 
 #endif // BASEEFFECT_H

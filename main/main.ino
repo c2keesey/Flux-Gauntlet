@@ -105,5 +105,8 @@ void loop()
     effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();
 
+    controlHandler.updateEncoder();
+    effectsHandler.test(controlHandler.getPos());
+
     fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }

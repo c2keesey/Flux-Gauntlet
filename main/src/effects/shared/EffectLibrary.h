@@ -14,15 +14,15 @@
 class EffectLibrary
 {
 public:
-    enum class EffectInst
-    {
-        BLAST,
-        FIREWORK_SHOW,
-        RAINBOW_WORM,
-        TWINKLE,
-        FLASH,
-        PEW
-    };
+    // enum class EffectInst
+    // {
+    //     BLAST,
+    //     FIREWORK_SHOW,
+    //     RAINBOW_WORM,
+    //     TWINKLE,
+    //     FLASH,
+    //     PEW
+    // };
 
     struct PresetContainer
     {

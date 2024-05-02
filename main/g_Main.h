@@ -13,7 +13,7 @@
 
 // OLED
 double fps = 0;
-int displayRate = 1000;
+int displayRate = 500;
 int lastUpdateDisplay = 0;
 
 OLEDControl oledControl;
@@ -30,16 +30,14 @@ bool primaryButtonPressed;
 bool encoderButtonPressed;
 bool *effectButtons[] = {&primaryButtonPressed, &secondaryButtonPressed, &specButtonPressed};
 
-unsigned long lastAuxPressedMillis = 0;
-unsigned long auxButtonDelay = 500;
 // Effects
 g_EffectsHandler effectsHandler;
 
+// Library
+EffectLibrary effectLibrary;
+
 // Controls
 ControlHandler controlHandler;
-// int encoderPos = 0;
-// int lastEncoderPos = 0;
-// int lastEncoded = 0;
 
 // LEDs
 
@@ -67,8 +65,15 @@ void setup()
 
     // OLED
     oledControl.init();
-    oledControl.printProjectName("Flux Gauntlet");
+
+    // Library
+    effectLibrary.init(); // make sure to call this before initializing effects
+
     // Effects
+    effectsHandler.init();
+
+    // Controls
+    controlHandler.reset();
 
     // Serial
     Serial.begin(9600);
@@ -80,62 +85,25 @@ void ind()
     FastLED.show();
 }
 
-unsigned long lastMillis = 0;
-#define NO_BUTTON 255
-int curButton = NO_BUTTON;
-CRGB effectSettingColor[3] = {CRGB::Red, CRGB::Green, CRGB::Blue};
-int curEffects[] = {0, 1, 2};
-unsigned long lastColorChangeTime = 0;
-unsigned long colorChangeDelay = 300;
 void loop()
 {
-    controlHandler.pollEncoder(POLL_RATE);
-    Serial.println(controlHandler.getPos());
     double dStart = millis() / 1000.0;
     if (millis() - lastUpdateDisplay > displayRate)
     {
         lastUpdateDisplay = millis();
-        oledControl.displayFPSOLED(fps);
+        oledControl.clearLines();
+        oledControl.addEncoder(controlHandler.getPos());
+        oledControl.addFPS(fps);
+        oledControl.addBrightness(fps);
+        oledControl.addMode(controlHandler.getControlState());
+        oledControl.printLines();
     }
     pollButtons(POLL_RATE);
 
-    if (auxButtonPressed && (millis() - lastAuxPressedMillis > auxButtonDelay))
-    {
-        lastAuxPressedMillis = millis();
-        effectsHandler.rotatePreset();
-    }
+    controlHandler.handleButtonPress();
 
     effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();
-    // if (mode == EFFECT_MODE)
-    // {
-    //     if (auxButtonPressed && millis() - lastAuxPressedMillis > auxButtonDelay)
-    //     {
-    //         lastAuxPressedMillis = millis();
-    //         mode = SET_MODE;
-    //     }
-    //     else
-    //     {
-    //         effectsHandler.handleButtonPress();
-    //         effectsHandler.drawFrame();
-    //     }
-    // }
-    // else
-    // {
-    //     ind();
-    //     controlHandler.pollEncoder(POLL_RATE);
-    //     if (auxButtonPressed && millis() - lastAuxPressedMillis > auxButtonDelay)
-    //     {
-    //         lastAuxPressedMillis = millis();
-    //         controlHandler.reset();
-    //         mode = EFFECT_MODE;
-    //     }
-    //     else
-    //     {
-    //         controlHandler.handleButtonPress();
-    //         controlHandler.drawFrame();
-    //     }
-    // }
 
     fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }

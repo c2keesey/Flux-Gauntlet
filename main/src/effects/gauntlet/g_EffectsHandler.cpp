@@ -17,6 +17,8 @@ extern bool *effectButtons[];
 extern bool auxButtonPressed;
 extern EffectLibrary effectLibrary;
 
+#include "g_effects/Casimir.h"
+
 g_EffectsHandler::g_EffectsHandler()
 {
     activeEffects.resize(NUM_EFFECT_BUTTONS, nullptr);

@@ -42,5 +42,20 @@ public:
     {
         return breakpoints[ringi + 1];
     }
+    int getRingFromIndex(int index)
+    {
+        for (int i = 0; i < ringsLength; i++)
+        {
+            if (index >= breakpoints[i] && index < breakpoints[i + 1])
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    int getRingLength(int ringi)
+    {
+        return rings[ringi];
+    }
 };
 #endif // RINGS_H

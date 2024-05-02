@@ -14,11 +14,7 @@ void BaseEffect::triggerWrite()
 }
 void BaseEffect::draw()
 {
-    if (millis() - prevMillis > 1)
-    {
-        prevMillis = millis();
-        update();
-    }
+    update();
 }
 
 CRGB *BaseEffect::getVleds()
@@ -37,6 +33,16 @@ void BaseEffect::setPalNum(uint8_t num)
 {
     curPalNum = num;
 }
+
+void BaseEffect::updateVleds(int index, CRGB color)
+{
+    if (index < 0 || index >= NUM_LEDS)
+    {
+        return;
+    }
+    vleds[index] = color;
+}
+
 // int getUpdatePeriod()
 // {
 //     if (fps > minFpsThreshold)
