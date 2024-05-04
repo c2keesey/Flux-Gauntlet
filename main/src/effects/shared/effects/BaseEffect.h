@@ -35,6 +35,8 @@ public:
     void setPalette(CRGBPalette256 pal);
     uint8_t getPalNum();
     void setPalNum(uint8_t num);
+
+    // Safely update vleds avoiding out of bounds
     void updateVleds(int index, CRGB color);
 };
 

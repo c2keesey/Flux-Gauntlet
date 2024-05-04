@@ -164,18 +164,34 @@ void g_EffectsHandler::removeEffect(BaseEffect *effect)
 
 void g_EffectsHandler::selectEffect(EffectButton button, int encoderPos)
 {
-    int effectIndex = getEffectSelectIndex(button, encoderPos);
+    int numEffects = effectLibrary.getNumEffects(button);
+    int effectIndex = getSelectIndex(numEffects, encoderPos);
     activeEffects[button] = effectLibrary.getEffect(button, effectIndex);
-    effectSelectEffect->setEffect(effectIndex, effectLibrary.getNumEffects(button));
+    effectSelectEffect->setEffect(effectIndex, numEffects);
 }
 
-int g_EffectsHandler::getEffectSelectIndex(EffectButton button, int encoderPos)
+int g_EffectsHandler::getSelectIndex(int numEffects, int encoderPos)
 {
-    int numEffects = effectLibrary.getNumEffects(button);
+
     int pos = (encoderPos / 2) % numEffects;
     if (pos < 0)
     {
         pos += numEffects;
     }
     return pos;
+}
+
+void g_EffectsHandler::triggerPresetSelectMode()
+{
+    addEffect(effectSelectEffect);
+}
+
+void g_EffectsHandler::selectPreset(int encoderPos)
+{
+    int numPresets = effectLibrary.getNumPresets();
+    int presetIndex = getSelectIndex(numPresets, encoderPos);
+    activeEffects[PRIMARY_BUTTON] = effectLibrary.getPresetFromI(PRIMARY_BUTTON, presetIndex);
+    activeEffects[SECONDARY_BUTTON] = effectLibrary.getPresetFromI(SECONDARY_BUTTON, presetIndex);
+    activeEffects[SPEC_BUTTON] = effectLibrary.getPresetFromI(SPEC_BUTTON, presetIndex);
+    effectSelectEffect->setEffect(presetIndex, numPresets);
 }

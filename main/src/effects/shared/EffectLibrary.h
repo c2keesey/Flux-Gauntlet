@@ -37,8 +37,11 @@ public:
     void init();
 
     BaseEffect *getEffect(EffectButton button, int index);
-    BaseEffect *getPreset(EffectButton button, Preset preset);
+    BaseEffect *getPreset(EffectButton button, Preset preset) const;
+    BaseEffect *getPresetFromI(EffectButton button, int index) const;
+
     int getNumEffects(EffectButton button);
+    int getNumPresets();
 
     CRGBPalette256 getPalette(int index);
 

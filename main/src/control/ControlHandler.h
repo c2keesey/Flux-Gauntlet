@@ -74,7 +74,7 @@ public:
         {
             handleEffectButtonPress();
         }
-        else if (controlState == EFFECT_SELECT)
+        else if (controlState == EFFECT_SELECT || controlState == PRESET_SELECT)
         {
             pollEncoder(POLL_RATE);
             handleEncoderChange();
@@ -130,9 +130,27 @@ public:
         }
         else
         {
-            reset();
-            controlState = EFFECT;
-            effectsHandler.triggerEffectMode();
+            setEffectMode();
+        }
+    }
+
+    void setEffectMode()
+    {
+        reset();
+        controlState = EFFECT;
+        effectsHandler.triggerEffectMode();
+    }
+
+    void setPresetMode()
+    {
+        if (controlState == EFFECT)
+        {
+            controlState = PRESET_SELECT;
+            effectsHandler.triggerPresetSelectMode();
+        }
+        else
+        {
+            setEffectMode();
         }
     }
 
@@ -149,8 +167,7 @@ public:
             unsigned long elapsed = millis() - modeChangeTimer;
             if (elapsed > PRESET_HOLD_TIME)
             {
-                controlState = PRESET_SELECT;
-                effectsHandler.triggerEffectMode();
+                setPresetMode();
             }
             else if (elapsed > SET_HOLD_TIME)
             {
@@ -198,7 +215,14 @@ public:
         if (encoderPos >= lastEncoderPos + 2 || encoderPos <= lastEncoderPos - 2)
         {
             lastEncoderPos = encoderPos;
-            effectsHandler.selectEffect(curButton, getPos());
+            if (controlState == PRESET_SELECT)
+            {
+                effectsHandler.selectPreset(getPos());
+            }
+            else
+            {
+                effectsHandler.selectEffect(curButton, getPos());
+            }
         }
     }
 };

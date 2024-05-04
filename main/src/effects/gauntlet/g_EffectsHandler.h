@@ -43,7 +43,9 @@ public:
     void changeColor(int buttonNumber);
     void selectButton(EffectButton button);
     void selectEffect(EffectButton button, int effectIndex);
-    int getEffectSelectIndex(EffectButton button, int encoderPos);
+    int getSelectIndex(int numEffects, int encoderPos);
+    void triggerPresetSelectMode();
+    void selectPreset(int encoderPos);
     // void suppressEffects();
     // void unsuppressEffects();
 };

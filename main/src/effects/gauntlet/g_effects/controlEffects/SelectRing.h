@@ -7,6 +7,7 @@
 #include "../../Rings.h"
 #include "../../../shared/EffectHelpers.h"
 
+// Effect for selecting an effect or preset using the encoder.
 class SelectRing : public BaseEffect
 {
 private:
