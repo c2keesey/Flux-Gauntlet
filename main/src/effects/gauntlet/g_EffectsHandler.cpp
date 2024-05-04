@@ -116,6 +116,7 @@ void g_EffectsHandler::triggerButtonSelectMode()
 void g_EffectsHandler::triggerEffectMode()
 {
     // unsuppressEffects();
+    // modeChangeEffect->cancel(); TODO: fix bug where it wont trigger again
     buttonSelectEffect->reset();
     removeEffect(buttonSelectEffect);
     effectSelectEffect->reset();

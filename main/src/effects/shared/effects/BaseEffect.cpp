@@ -43,6 +43,11 @@ void BaseEffect::updateVleds(int index, CRGB color)
     vleds[index] = color;
 }
 
+bool BaseEffect::isEffectActive()
+{
+    return isActive;
+}
+
 // int getUpdatePeriod()
 // {
 //     if (fps > minFpsThreshold)
