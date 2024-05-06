@@ -8,6 +8,7 @@
 #include "../gauntlet/g_effects/Blast.h"
 #include "palettes.h"
 #include "../../config/config.h"
+#include "EffectInstances.h"
 #include <vector>
 #include <map>
 
