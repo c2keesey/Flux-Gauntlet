@@ -9,7 +9,7 @@
 class ButtonSelect : public BaseEffect
 {
 private:
-    EffectButton button = NONE_BUTTON;
+    ButtonEnum button = NONE_BUTTON;
     uint8_t hue = 0;
     bool fadeIn = true;
     uint16_t flashVal = 1; // 16-bit to prevent overflow
@@ -24,7 +24,7 @@ public:
         return;
     }
 
-    void setButton(EffectButton button)
+    void setButton(ButtonEnum button)
     {
         this->button = button;
         numFlashes = 0;
@@ -82,15 +82,15 @@ public:
         {
             displayNone();
         }
-        else if (button == PRIMARY_BUTTON)
+        else if (button == MIDDLE)
         {
             signalSelectFlash(1);
         }
-        else if (button == SECONDARY_BUTTON)
+        else if (button == RINGF)
         {
             signalSelectFlash(2);
         }
-        else if (button == SPEC_BUTTON)
+        else if (button == THUMB)
         {
             signalSelectFlash(3);
         }

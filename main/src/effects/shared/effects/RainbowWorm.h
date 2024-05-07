@@ -34,7 +34,6 @@ public:
             if (millis() - prevMillis > speed)
             {
                 prevMillis = millis();
-
                 if (fadeIn)
                 {
                     value += value < 150 ? 2 : 1;
@@ -54,7 +53,7 @@ public:
                 }
                 for (int i = 0; i < NUM_LEDS; i++)
                 {
-                    vleds[i] = ColorFromPalette(palette, move + i * 2);
+                    vleds[i] = CHSV(move + i * 2, 255, value);
                 }
                 move = (move + 2) % 255;
             }
@@ -63,7 +62,8 @@ public:
         {
             for (int i = 0; i < NUM_LEDS; i++)
             {
-                vleds[i].fadeToBlackBy(random(1, 20));
+                vleds[i].val -= random(1, 20);
+                vleds[i].val = max((uint8_t)0, vleds[i].val);
             }
         }
     }

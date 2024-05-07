@@ -27,9 +27,11 @@ public:
 
     struct PresetContainer
     {
-        BaseEffect *primary;
-        BaseEffect *secondary;
-        BaseEffect *spec;
+        BaseEffect *thumb;
+        BaseEffect *index;
+        BaseEffect *middle;
+        BaseEffect *ringf;
+        BaseEffect *pinky;
     };
 
     EffectLibrary();
@@ -37,18 +39,18 @@ public:
 
     void init();
 
-    BaseEffect *getEffect(EffectButton button, int index);
-    BaseEffect *getPreset(EffectButton button, Preset preset) const;
-    BaseEffect *getPresetFromI(EffectButton button, int index) const;
+    BaseEffect *getEffect(ButtonEnum button, int index);
+    BaseEffect *getPreset(ButtonEnum button, Preset preset) const;
+    BaseEffect *getPresetFromI(ButtonEnum button, int index) const;
 
-    int getNumEffects(EffectButton button);
+    int getNumEffects(ButtonEnum button);
     int getNumPresets();
 
     CRGBPalette256 getPalette(int index);
 
 private:
     // Effects
-    std::map<EffectButton, std::vector<BaseEffect *>> buttonEffectMap;
+    std::map<ButtonEnum, std::vector<BaseEffect *>> buttonEffectMap;
 
     // Presets
     std::map<Preset, PresetContainer> presetMap;

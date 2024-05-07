@@ -13,6 +13,7 @@
 #include "effects/FireworkShow.h"
 #include "../../config/config.h"
 #include "palettes.h"
+#include "EffectInstances.h"
 
 EffectLibrary::EffectLibrary()
 {
@@ -21,19 +22,17 @@ EffectLibrary::EffectLibrary()
 void EffectLibrary::init()
 {
     // Instantiate effects
-    buttonEffectMap[PRIMARY_BUTTON] = std::vector<BaseEffect *>{
-        new Blast(),
-        new Pew(),
-        new Flash()};
-    buttonEffectMap[SECONDARY_BUTTON] = std::vector<BaseEffect *>{new Blast(), new Pew(), new Flash()};
-    buttonEffectMap[SPEC_BUTTON] = std::vector<BaseEffect *>{new Blast(), new Pew(), new Flash()};
+    buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{blast1, pew1, flash1};
+    buttonEffectMap[RINGF] = std::vector<BaseEffect *>{blast1, pew1, flash1};
+    buttonEffectMap[THUMB] = std::vector<BaseEffect *>{blast1, pew1, flash1};
+    buttonEffectMap[INDEX] = std::vector<BaseEffect *>{fireworkShow1, blast1};
+    buttonEffectMap[PINKY] = std::vector<BaseEffect *>{casimir1, twinkle1};
 
-    // // Setup presets
-    PresetContainer actionPreset = {buttonEffectMap[PRIMARY_BUTTON][0], buttonEffectMap[SECONDARY_BUTTON][1], buttonEffectMap[SPEC_BUTTON][2]};
+    // Setup presets
+    PresetContainer actionPreset = {flash1, fireworkShow1, blast1, casimir1, pew1};
     presetMap[Preset::ACTION] = actionPreset;
 
-    PresetContainer testPreset = {buttonEffectMap[PRIMARY_BUTTON][0], buttonEffectMap[SECONDARY_BUTTON][0], buttonEffectMap[SPEC_BUTTON][0]};
-
+    PresetContainer testPreset = {blast1, blast1, blast1, blast1, blast1};
     presetMap[Preset::TEST] = testPreset;
 }
 
@@ -49,24 +48,32 @@ EffectLibrary::~EffectLibrary()
     }
 }
 
-BaseEffect *EffectLibrary::getPreset(EffectButton button, Preset preset) const
+BaseEffect *EffectLibrary::getPreset(ButtonEnum button, Preset preset) const
 {
     if (presetMap.count(preset) == 0)
     {
         return nullptr;
     }
 
-    if (button == PRIMARY_BUTTON)
+    if (button == MIDDLE)
     {
-        return presetMap.at(preset).primary;
+        return presetMap.at(preset).middle;
     }
-    else if (button == SECONDARY_BUTTON)
+    else if (button == RINGF)
     {
-        return presetMap.at(preset).secondary;
+        return presetMap.at(preset).ringf;
     }
-    else if (button == SPEC_BUTTON)
+    else if (button == THUMB)
     {
-        return presetMap.at(preset).spec;
+        return presetMap.at(preset).thumb;
+    }
+    else if (button == INDEX)
+    {
+        return presetMap.at(preset).index;
+    }
+    else if (button == PINKY)
+    {
+        return presetMap.at(preset).pinky;
     }
     else
     {
@@ -74,7 +81,7 @@ BaseEffect *EffectLibrary::getPreset(EffectButton button, Preset preset) const
     }
 }
 
-BaseEffect *EffectLibrary::getPresetFromI(EffectButton button, int index) const
+BaseEffect *EffectLibrary::getPresetFromI(ButtonEnum button, int index) const
 {
     if (index < 0 || index >= static_cast<int>(presetMap.size()))
     {
@@ -86,7 +93,7 @@ BaseEffect *EffectLibrary::getPresetFromI(EffectButton button, int index) const
 }
 
 // TODO: Check index bounds
-BaseEffect *EffectLibrary::getEffect(EffectButton button, int index)
+BaseEffect *EffectLibrary::getEffect(ButtonEnum button, int index)
 {
     return buttonEffectMap[button][index];
 }
@@ -96,7 +103,7 @@ CRGBPalette256 EffectLibrary::getPalette(int index)
     return palettes[index];
 }
 
-int EffectLibrary::getNumEffects(EffectButton button)
+int EffectLibrary::getNumEffects(ButtonEnum button)
 {
     return buttonEffectMap[button].size();
 }

@@ -23,7 +23,6 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 
 // Effects
 // #define LIBRARY_SIZE 4
-#define NUM_EFFECT_BUTTONS 3
 
 #define NUM_PRESETS 2
 enum Preset
@@ -37,22 +36,29 @@ enum Preset
 
 #define AUX_BUTTON 3
 
-enum EffectButton
+#define NUM_EFFECT_BUTTONS 5
+enum ButtonEnum
 {
     NONE_BUTTON = -1,
-    PRIMARY_BUTTON = 0,
-    SECONDARY_BUTTON = 1,
-    SPEC_BUTTON = 2,
+    MIDDLE = 0,
+    RINGF = 1,
+    THUMB = 2,
+    INDEX = 3,
+    PINKY = 4,
+    AUX = 5,
 };
 
 // OLED
 #define OLED_FRAME_RATE 30
 
 // Buttons
-#define SPEC_BUTTON_PIN 47      // Blue thumb
-#define AUX_BUTTON_PIN 46       // White wrist
-#define SECONDARY_BUTTON_PIN 45 // Green ring finger
-#define PRIMARY_BUTTON_PIN 41   // Red middle finger
+#define THUMBF_BUTTON_PIN 38
+#define INDEXF_BUTTON_PIN 39
+#define MIDDLEF_BUTTON_PIN 47
+#define RINGF_BUTTON_PIN 45
+#define PINKYF_BUTTON_PIN 41
+
+#define AUX_BUTTON_PIN 46
 #define ENCODER_BUTTON_PIN 40
 
 #define DEBOUNCE_DELAY 50

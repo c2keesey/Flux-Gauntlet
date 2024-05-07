@@ -11,10 +11,16 @@
 #include "g_effects/Pew.h"
 #include "g_effects/Flash.h"
 #include "g_effects/Blast.h"
+#include "../../control/Button.h"
 
 extern CRGB leds[];
-extern bool *effectButtons[];
-extern bool auxButtonPressed;
+
+extern Button thumbButton;
+extern Button indexButton;
+extern Button middleButton;
+extern Button ringfButton;
+extern Button pinkyButton;
+
 extern EffectLibrary effectLibrary;
 
 #include "g_effects/Casimir.h"
@@ -26,9 +32,17 @@ g_EffectsHandler::g_EffectsHandler()
 
 void g_EffectsHandler::init()
 {
-    activeEffects[PRIMARY_BUTTON] = effectLibrary.getPreset(PRIMARY_BUTTON, curPreset);
-    activeEffects[SECONDARY_BUTTON] = effectLibrary.getPreset(SECONDARY_BUTTON, curPreset);
-    activeEffects[SPEC_BUTTON] = effectLibrary.getPreset(SPEC_BUTTON, curPreset);
+    effectButtons[MIDDLE] = &middleButton;
+    effectButtons[RINGF] = &ringfButton;
+    effectButtons[THUMB] = &thumbButton;
+    effectButtons[INDEX] = &indexButton;
+    effectButtons[PINKY] = &pinkyButton;
+
+    activeEffects[MIDDLE] = effectLibrary.getPreset(MIDDLE, curPreset);
+    activeEffects[RINGF] = effectLibrary.getPreset(RINGF, curPreset);
+    activeEffects[THUMB] = effectLibrary.getPreset(THUMB, curPreset);
+    activeEffects[INDEX] = effectLibrary.getPreset(INDEX, curPreset);
+    activeEffects[PINKY] = effectLibrary.getPreset(PINKY, curPreset);
 
     modeChangeEffect = new ControlRing();
     buttonSelectEffect = new ButtonSelect();
@@ -66,15 +80,13 @@ void g_EffectsHandler::handleButtonPress()
     // {
     //     return;
     // }
-    for (int buttonNumber = 0; buttonNumber < NUM_EFFECT_BUTTONS; buttonNumber++)
+    for (Button *button : effectButtons)
     {
-        if (effectButtons[buttonNumber] != nullptr && *effectButtons[buttonNumber] == true)
+        if (button->isPressed())
         {
-            *effectButtons[buttonNumber] = false;
-
-            if (activeEffects[buttonNumber] != nullptr)
+            if (activeEffects[button->getEnumVal()] != nullptr)
             {
-                activeEffects[buttonNumber]->triggerWrite();
+                activeEffects[button->getEnumVal()]->triggerWrite();
             }
         }
     }
@@ -130,7 +142,7 @@ void g_EffectsHandler::triggerEffectMode()
  * @param button button to select effect for
  *
  */
-void g_EffectsHandler::selectButton(EffectButton button)
+void g_EffectsHandler::selectButton(ButtonEnum button)
 {
     buttonSelectEffect->setButton(button);
     addEffect(effectSelectEffect);
@@ -163,7 +175,7 @@ void g_EffectsHandler::removeEffect(BaseEffect *effect)
 //     suppress = false;
 // }
 
-void g_EffectsHandler::selectEffect(EffectButton button, int encoderPos)
+void g_EffectsHandler::selectEffect(ButtonEnum button, int encoderPos)
 {
     int numEffects = effectLibrary.getNumEffects(button);
     int effectIndex = getSelectIndex(numEffects, encoderPos);
@@ -191,8 +203,50 @@ void g_EffectsHandler::selectPreset(int encoderPos)
 {
     int numPresets = effectLibrary.getNumPresets();
     int presetIndex = getSelectIndex(numPresets, encoderPos);
-    activeEffects[PRIMARY_BUTTON] = effectLibrary.getPresetFromI(PRIMARY_BUTTON, presetIndex);
-    activeEffects[SECONDARY_BUTTON] = effectLibrary.getPresetFromI(SECONDARY_BUTTON, presetIndex);
-    activeEffects[SPEC_BUTTON] = effectLibrary.getPresetFromI(SPEC_BUTTON, presetIndex);
+    activeEffects[MIDDLE] = effectLibrary.getPresetFromI(MIDDLE, presetIndex);
+    activeEffects[RINGF] = effectLibrary.getPresetFromI(RINGF, presetIndex);
+    activeEffects[THUMB] = effectLibrary.getPresetFromI(THUMB, presetIndex);
+    activeEffects[INDEX] = effectLibrary.getPresetFromI(INDEX, presetIndex);
+    activeEffects[PINKY] = effectLibrary.getPresetFromI(PINKY, presetIndex);
     effectSelectEffect->setEffect(presetIndex, numPresets);
+}
+
+void g_EffectsHandler::drawFrame()
+{
+    FastLED.clear(false);
+
+    // Draw active effects
+    for (BaseEffect *effect : activeEffects)
+    {
+        if (effect != nullptr && effect->isEffectActive())
+        {
+            effect->draw();
+        }
+    }
+
+    // Combine effect colors
+    for (BaseEffect *effect : activeEffects)
+    {
+        if (effect != nullptr && effect->isEffectActive())
+        {
+            CHSV *copyArray = effect->getVleds();
+            if (copyArray != nullptr)
+            {
+                for (int j = 0; j < NUM_LEDS; j++)
+                {
+                    leds[j] += copyArray[j];
+                }
+            }
+        }
+    }
+
+    // Limit LED brightness
+    for (int i = 0; i < NUM_LEDS; i++)
+    {
+        leds[i].r = min(leds[i].r, (uint8_t)255);
+        leds[i].g = min(leds[i].g, (uint8_t)255);
+        leds[i].b = min(leds[i].b, (uint8_t)255);
+    }
+
+    FastLED.show();
 }

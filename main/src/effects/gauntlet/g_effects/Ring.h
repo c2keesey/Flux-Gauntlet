@@ -8,9 +8,9 @@
 struct Particle
 {
     float pos;
-    CRGB color;
+    CHSV color;
     float speed;
-    Particle(float p, CRGB c, float s) : pos(p), color(c), speed(s) {}
+    Particle(float p, CHSV c, float s) : pos(p), color(c), speed(s) {}
 };
 
 class Ring : public BaseEffect
@@ -30,7 +30,7 @@ public:
 
     void trigger() override
     {
-        CRGB color = ColorFromPalette(palette, random8());
+        CHSV color = CHSV(random8(), 255, 255);
         int ring = random8(ringsLength);
         int start = random8(breakpoints[ring]);
     }

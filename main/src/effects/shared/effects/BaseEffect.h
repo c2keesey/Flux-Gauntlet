@@ -6,6 +6,7 @@
 
 extern double fps;
 
+// TODO: Make CHSV
 struct Beam
 {
     float pos;
@@ -16,7 +17,7 @@ class BaseEffect
 {
 protected:
     // Each effect has its own virtual LED array
-    CRGB vleds[NUM_LEDS] = {0};
+    CHSV vleds[NUM_LEDS] = {CHSV(0, 0, 0)};
     unsigned long lastTrigger = 0;
     CRGBPalette256 palette;
     uint8_t curPalNum = 0;
@@ -32,14 +33,14 @@ public:
     virtual void update() = 0;
     virtual void draw();
 
-    CRGB *getVleds();
+    CHSV *getVleds();
     void setPalette(CRGBPalette256 pal);
     uint8_t getPalNum();
     void setPalNum(uint8_t num);
     virtual bool isEffectActive();
 
     // Safely update vleds avoiding out of bounds
-    void updateVleds(int index, CRGB color);
+    void updateVleds(int index, CHSV color);
 };
 
 #endif // BASEEFFECT_H

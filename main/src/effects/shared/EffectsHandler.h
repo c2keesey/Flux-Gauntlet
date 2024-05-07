@@ -3,8 +3,6 @@
 
 #include "effects/BaseEffect.h"
 
-extern bool *effectButtons[];
-
 class EffectsHandler
 {
 protected:

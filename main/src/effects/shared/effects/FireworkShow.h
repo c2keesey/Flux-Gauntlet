@@ -96,7 +96,7 @@ public:
         }
     }
 
-    void drawFirework(CRGB *vleds)
+    void drawFirework(CHSV *vleds)
     {
         for (auto part = particles.begin(); part != particles.end();)
         {
@@ -106,7 +106,7 @@ public:
             }
             else
             {
-                drawPrecise(part->pos, 1, part->color, vleds);
+                drawPrecise(part->pos, 1, rgb2hsv_approximate(part->color), vleds);
                 ++part;
             }
         }

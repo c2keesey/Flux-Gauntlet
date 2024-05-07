@@ -8,6 +8,7 @@
 #include "g_effects/controlEffects/ButtonSelect.h"
 #include "g_effects/controlEffects/SelectRing.h"
 #include <vector>
+#include "../../control/Button.h"
 
 class g_EffectsHandler : public EffectsHandler
 {
@@ -21,6 +22,8 @@ private:
     unsigned long lastAuxPressedMillis = 0;
     // bool suppress = false;
 
+    Button *effectButtons[NUM_EFFECT_BUTTONS];
+
 protected:
     BaseEffect *getEffect(size_t index) override;
     size_t getEffectCount() const override;
@@ -33,6 +36,7 @@ public:
 
     void init();
 
+    void drawFrame() override;
     void handleButtonPress();
     void triggerControl(unsigned long holdTime);
     void cancelControl();
@@ -41,8 +45,8 @@ public:
     void triggerButtonSelectMode();
     void rotatePreset();
     void changeColor(int buttonNumber);
-    void selectButton(EffectButton button);
-    void selectEffect(EffectButton button, int effectIndex);
+    void selectButton(ButtonEnum button);
+    void selectEffect(ButtonEnum button, int effectIndex);
     int getSelectIndex(int numEffects, int encoderPos);
     void triggerPresetSelectMode();
     void selectPreset(int encoderPos);

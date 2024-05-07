@@ -54,7 +54,7 @@ void h_EffectsHandler::drawFrame()
     {
         if (getEffect(i) != nullptr)
         {
-            CRGB *copyArray = getEffect(i)->getVleds();
+            CHSV *copyArray = getEffect(i)->getVleds();
             for (int j = 0; j < NUM_LEDS; j++)
             {
                 *leds[j] += copyArray[j];

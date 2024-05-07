@@ -1,0 +1,32 @@
+{
+  "Effect Template": {
+    "prefix": "neweff",
+    "body": [
+      "#ifndef ${1/(.*)/${1:/upcase}/}_H",
+      "#define ${1/(.*)/${1:/upcase}/}_H",
+      "",
+      "#include \"../../shared/effects/BaseEffect.h\"",
+      "#include \"../../shared/EffectHelpers.h\"",
+      "#include <vector>",
+      "",
+      "class ${1:ClassName} : public BaseEffect {",
+      "private:",
+      "",
+      "public:",
+      "\t${1:ClassName}(CRGBPalette256 pal = DEFAULT_PALETTE) : BaseEffect(pal) { }",
+      "",
+      "\tvoid trigger() override {",
+      "\t\treturn;",
+      "\t}",
+      "",
+      "\tvoid update() override {",
+      "\t\treturn;",
+      "\t}",
+      "};",
+      "",
+      "#endif // ${1/(.*)/${1:/upcase}/}_H",
+      "$0"
+    ],
+    "description": "Effect Template variable ClassName"
+  }
+}

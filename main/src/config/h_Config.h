@@ -36,19 +36,19 @@ const int NUM_LEDS = NUM_BFR + NUM_BFL;
 #define DEFAULT_PALETTE RainbowColors_p
 #define NUM_PALETTES 6
 
-#define PRIMARY_BUTTON 0
-#define SECONDARY_BUTTON 1
-#define SPEC_BUTTON 2
+#define MIDDLE 0
+#define RINGF 1
+#define THUMB 2
 #define AUX_BUTTON 3
 
 // OLED
 #define OLED_FRAME_RATE 30
 
 // Buttons
-#define SPEC_BUTTON_PIN 34      // Blue thumb
-#define AUX_BUTTON_PIN 47       // White wrist
-#define SECONDARY_BUTTON_PIN 48 // Green ring finger
-#define PRIMARY_BUTTON_PIN 46   // Red middle finger
+#define THUMB_PIN 34      // Blue thumb
+#define AUX_BUTTON_PIN 47 // White wrist
+#define RINGF_PIN 48      // Green ring finger
+#define MIDDLE_PIN 46     // Red middle finger
 #define ENCODER_BUTTON_PIN 45
 #define DEBOUNCE_DELAY 50
 #define POLL_RATE 5

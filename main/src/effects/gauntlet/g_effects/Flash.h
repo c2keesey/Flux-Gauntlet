@@ -8,7 +8,7 @@
 class Flash : public BaseEffect
 {
 private:
-    unsigned long TIMEOUT = 500;
+    unsigned long TIMEOUT = 5000;
     unsigned long lastTrigger = 0;
 
 public:
@@ -34,10 +34,14 @@ public:
     {
         for (int i = 0; i < NUM_LEDS; i++)
         {
-            vleds[i].fadeToBlackBy(random(1, 70));
+            if (vleds[i].v <= 0)
+            {
+                continue;
+            }
+            uint8_t fade_amt = random8(1, 10); // TODO: give each pixel a fade amount to increase fade spread
+            vleds[i].v = qsub8(vleds[i].v, fade_amt);
         }
     }
-
     void update() override
     {
     }

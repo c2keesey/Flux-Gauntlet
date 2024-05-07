@@ -27,7 +27,7 @@ public:
 
     void trigger() override
     {
-        CRGB color = ColorFromPalette(palette, random8());
+        CHSV color = CHSV(random8(), 255, 255);
         for (uint8_t i = 0; i < breakpoints[1]; i++)
         {
             vleds[i] = color;
@@ -42,12 +42,12 @@ public:
             prevMillis = millis();
             for (int i = 0; i < rings[ringsLength - 1]; i++)
             {
-                vleds[NUM_LEDS - i - 1] = CRGB::Black;
+                vleds[NUM_LEDS - i - 1] = CHSV(0, 0, 0);
             }
             int samplePos = NUM_LEDS - 1 - rings[ringsLength - 1];
             for (int i = ringsLength - 1; i > 0; i--)
             {
-                CRGB samplePixel = vleds[samplePos];
+                CHSV samplePixel = vleds[samplePos];
                 for (int j = 0; j < rings[i]; j++)
                 {
                     vleds[samplePos + 1 + j] = samplePixel;
@@ -55,7 +55,7 @@ public:
                 samplePos -= rings[i - 1];
                 for (int j = 0; j < rings[i - 1]; j++)
                 {
-                    vleds[samplePos + 1 + j] = CRGB::Black;
+                    vleds[samplePos + 1 + j] = CHSV(0, 0, 0);
                 }
             }
         }

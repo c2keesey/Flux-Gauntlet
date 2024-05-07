@@ -35,20 +35,23 @@ public:
             fadeMillis = millis();
             for (int i = 0; i < NUM_LEDS; i++)
             {
-                vleds[i].fadeToBlackBy(random(1, 10));
+                vleds[i].val -= random(1, 10);
+                vleds[i].val = max((uint8_t)0, vleds[i].val);
             }
         }
+
         if (!active)
         {
             return;
         }
+
         if (millis() >= prevMillis + speed)
         {
             prevMillis = millis();
             for (int i = 0; i < 5; i++)
             {
-
-                vleds[random16(NUM_LEDS)] = ColorFromPalette(palette, random8());
+                int index = random16(NUM_LEDS);
+                vleds[index] = CHSV(random8(), 255, 255);
             }
         }
     }

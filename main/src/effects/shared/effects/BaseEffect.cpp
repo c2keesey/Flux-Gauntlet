@@ -17,10 +17,11 @@ void BaseEffect::draw()
     update();
 }
 
-CRGB *BaseEffect::getVleds()
+CHSV *BaseEffect::getVleds()
 {
     return vleds;
 }
+
 void BaseEffect::setPalette(CRGBPalette256 pal)
 {
     palette = pal;
@@ -33,8 +34,7 @@ void BaseEffect::setPalNum(uint8_t num)
 {
     curPalNum = num;
 }
-
-void BaseEffect::updateVleds(int index, CRGB color)
+void BaseEffect::updateVleds(int index, CHSV color)
 {
     if (index < 0 || index >= NUM_LEDS)
     {

@@ -1,27 +1,62 @@
 #include "EffectHelpers.h"
 #include "../../config/config.h"
 
-void clearVleds(CRGB *vleds)
+void clearVleds(CHSV *vleds)
 {
     for (int i = 0; i < NUM_LEDS; i++)
     {
-        vleds[i] = CRGB::Black;
+        vleds[i] = BLACK;
     }
 }
 
-CRGB ColorFraction(CRGB colorIn, float fraction)
+// CRGB colorFraction(CRGB colorIn, float fraction)
+// {
+//     fraction = max(0.0f, min(1.0f, fraction));
+//     uint8_t scale = fraction * 255;
+//     return colorIn.nscale8_video(scale);
+// }
+
+// void drawPrecise(float fPos, float len, CRGB color, CRGB *vleds)
+// {
+//     float availFirstPixel = 1.0f - (fPos - (long)fPos);
+//     float amtFirstPixel = min(availFirstPixel, len);
+//     float remaining = max(0.0f, min(len, NUM_LEDS - fPos));
+//     int iPos = fPos;
+//     if (iPos < 0 || iPos >= NUM_LEDS)
+//     {
+//         return;
+//     }
+
+//     if (remaining > 0.0f)
+//     {
+//         vleds[iPos++] += colorFraction(color, amtFirstPixel);
+//         remaining -= amtFirstPixel;
+//     }
+//     while (remaining > 1.0f && iPos < NUM_LEDS)
+//     {
+//         vleds[iPos++] += color;
+//         remaining--;
+//     }
+//     if (remaining > 0.0f && iPos < NUM_LEDS)
+//     {
+//         vleds[iPos] += colorFraction(color, remaining);
+//     }
+// }
+
+CHSV colorFraction(CHSV colorIn, float fraction)
 {
     fraction = max(0.0f, min(1.0f, fraction));
     uint8_t scale = fraction * 255;
-    return colorIn.nscale8_video(scale);
+    return CHSV(colorIn.h, colorIn.s, scale);
 }
 
-void drawPrecise(float fPos, float len, CRGB color, CRGB *vleds)
+void drawPrecise(float fPos, float len, CHSV color, CHSV *vleds)
 {
     float availFirstPixel = 1.0f - (fPos - (long)fPos);
     float amtFirstPixel = min(availFirstPixel, len);
     float remaining = max(0.0f, min(len, NUM_LEDS - fPos));
     int iPos = fPos;
+
     if (iPos < 0 || iPos >= NUM_LEDS)
     {
         return;
@@ -29,17 +64,23 @@ void drawPrecise(float fPos, float len, CRGB color, CRGB *vleds)
 
     if (remaining > 0.0f)
     {
-        vleds[iPos++] += ColorFraction(color, amtFirstPixel);
+        CHSV blendedColor = colorFraction(color, amtFirstPixel);
+        vleds[iPos] = blend(vleds[iPos], blendedColor, amtFirstPixel * 255);
+        iPos++;
         remaining -= amtFirstPixel;
     }
+
     while (remaining > 1.0f && iPos < NUM_LEDS)
     {
-        vleds[iPos++] += color;
+        vleds[iPos] = blend(vleds[iPos], color, 255);
+        iPos++;
         remaining--;
     }
+
     if (remaining > 0.0f && iPos < NUM_LEDS)
     {
-        vleds[iPos] += ColorFraction(color, remaining);
+        CHSV blendedColor = colorFraction(color, remaining);
+        vleds[iPos] = blend(vleds[iPos], blendedColor, remaining * 255);
     }
 }
 

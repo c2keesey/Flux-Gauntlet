@@ -46,7 +46,7 @@ public:
         isSetMode = false;
         for (int i = 0; i < NUM_LEDS; i++)
         {
-            vleds[i] = CRGB::Black;
+            vleds[i] = BLACK;
         }
     }
 
@@ -65,7 +65,7 @@ public:
         {
             // if (millis() - prevUpdateMillis > updateRate)
             // {
-            CRGB loopColor = loop == 0 ? CRGB::White : CRGB::Purple;
+            CHSV loopColor = loop == 0 ? CHSV(0, 0, 255) : CHSV(192, 255, 255);
             EVERY_N_MILLIS(updateRate)
             {
                 prevUpdateMillis = millis();
@@ -81,7 +81,7 @@ public:
         else if (ringi < rings.getRingsLength() - 1)
         {
             clearVleds(vleds);
-            CRGB loopColor = loop == 0 ? CRGB::White : CRGB::Purple;
+            CHSV loopColor = loop == 0 ? CHSV(0, 0, 255) : CHSV(192, 255, 255);
             rings.drawRing(rings.getRingsLength() - ringi, loopColor);
             ringi++;
         }

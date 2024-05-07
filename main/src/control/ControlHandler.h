@@ -6,6 +6,7 @@
 
 #include "../config/config.h"
 #include "../effects/gauntlet/g_EffectsHandler.h"
+#include "Button.h"
 
 #define NO_BUTTON 99
 #define MODE_CHANGE_DELAY 200
@@ -16,10 +17,12 @@
 
 extern CRGB leds[];
 
-extern bool auxButtonPressed;
-extern bool secondaryButtonPressed;
-extern bool primaryButtonPressed;
-extern bool specButtonPressed;
+extern Button thumbButton;
+extern Button ringfButton;
+extern Button middleButton;
+extern Button indexButton;
+extern Button pinkyButton;
+extern Button auxButton;
 
 extern g_EffectsHandler effectsHandler;
 
@@ -37,8 +40,7 @@ private:
 
     ControlState controlState = EFFECT;
     int preset = -1;
-    EffectButton curButton = NONE_BUTTON;
-    CRGB effectSettingColor[3] = {CRGB::Red, CRGB::Green, CRGB::Blue};
+    ButtonEnum curButton = NONE_BUTTON;
     int encoderPos = 5;
     int lastEncoderPos = 0;
     bool lastAuxButtonState = false;
@@ -97,21 +99,29 @@ public:
         {
             return;
         }
-        if (primaryButtonPressed)
+        if (middleButton.isPressed())
         {
-            handleEffectButtonSelect(PRIMARY_BUTTON);
+            handleEffectButtonSelect(MIDDLE);
         }
-        else if (secondaryButtonPressed)
+        else if (ringfButton.isPressed())
         {
-            handleEffectButtonSelect(SECONDARY_BUTTON);
+            handleEffectButtonSelect(RINGF);
         }
-        else if (specButtonPressed)
+        else if (thumbButton.isPressed())
         {
-            handleEffectButtonSelect(SPEC_BUTTON);
+            handleEffectButtonSelect(THUMB);
+        }
+        else if (indexButton.isPressed())
+        {
+            handleEffectButtonSelect(INDEX);
+        }
+        else if (pinkyButton.isPressed())
+        {
+            handleEffectButtonSelect(PINKY);
         }
     }
 
-    void handleEffectButtonSelect(EffectButton button)
+    void handleEffectButtonSelect(ButtonEnum button)
     {
         initSet = false;
         curButton = button;
@@ -156,13 +166,13 @@ public:
 
     void handleAuxButtonPress()
     {
-        if (auxButtonPressed && !lastAuxButtonState)
+        if (auxButton.isPressed() && !lastAuxButtonState)
         {
             modeChangeTimer = millis();
             lastAuxButtonState = true;
             effectsHandler.triggerControl(SET_HOLD_TIME);
         }
-        else if (!auxButtonPressed && lastAuxButtonState)
+        else if (!auxButton.isPressed() && lastAuxButtonState)
         {
             unsigned long elapsed = millis() - modeChangeTimer;
             if (elapsed > PRESET_HOLD_TIME)

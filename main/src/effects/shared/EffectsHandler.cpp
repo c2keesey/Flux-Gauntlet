@@ -29,7 +29,7 @@ void EffectsHandler::drawFrame()
         BaseEffect *effect = getEffect(i);
         if (effect != nullptr && effect->isEffectActive())
         {
-            CRGB *copyArray = effect->getVleds();
+            CHSV *copyArray = effect->getVleds();
             for (int j = 0; j < NUM_LEDS; j++)
             {
                 leds[j] += copyArray[j];

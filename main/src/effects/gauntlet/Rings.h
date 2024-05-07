@@ -11,10 +11,10 @@ private:
     int rings[16] = {21, 27, 25, 23, 23, 22, 20, 19, 19, 19, 17, 16, 15, 12, 12, 10};
     int ringsLength = 16;
     int breakpoints[17] = {0};
-    CRGB *vleds;
+    CHSV *vleds;
 
 public:
-    Rings(CRGB *vleds) : vleds(vleds)
+    Rings(CHSV *vleds) : vleds(vleds)
     {
         for (int i = 0; i < ringsLength; i++)
         {
@@ -27,7 +27,7 @@ public:
         return ringsLength;
     }
 
-    void drawRing(int ringi, CRGB color)
+    void drawRing(int ringi, CHSV color)
     {
         for (int i = breakpoints[ringi]; i < breakpoints[ringi + 1]; i++)
         {

@@ -28,7 +28,7 @@ public:
     void trigger() override
     {
 
-        CRGB color = ColorFromPalette(palette, random8());
+        CHSV color = CHSV(random8(), 255, 255);
         beams.push_back({NUM_LEDS - 1, color});
     }
 
@@ -37,8 +37,7 @@ public:
         clearVleds(vleds);
         for (int i = beams.size() - 1; i >= 0; --i)
         {
-            CRGB color;
-            drawPrecise(beams[i].pos, len, beams[i].color, vleds);
+            drawPrecise(beams[i].pos, len, rgb2hsv_approximate(beams[i].color), vleds);
             beams[i].pos -= 0.01f * speed;
 
             if (beams[i].pos <= 0.0)
