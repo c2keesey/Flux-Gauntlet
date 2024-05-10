@@ -22,7 +22,7 @@ public:
         pinMode(pin, INPUT_PULLUP);
     }
 
-    bool isPressed()
+    bool isPressedDebounced()
     {
         bool reading = digitalRead(pin);
         if (reading != lastState)
@@ -38,6 +38,11 @@ public:
             }
         }
         return false;
+    }
+
+    bool isPressed()
+    {
+        return digitalRead(pin) == LOW;
     }
 
     int getEnumVal()

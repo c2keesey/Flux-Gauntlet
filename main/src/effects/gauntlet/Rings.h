@@ -9,22 +9,22 @@ class Rings
 {
 private:
     int rings[16] = {21, 27, 25, 23, 23, 22, 20, 19, 19, 19, 17, 16, 15, 12, 12, 10};
-    int ringsLength = 16;
+    int numRings = 16;
     int breakpoints[17] = {0};
     CHSV *vleds;
 
 public:
     Rings(CHSV *vleds) : vleds(vleds)
     {
-        for (int i = 0; i < ringsLength; i++)
+        for (int i = 0; i < numRings; i++)
         {
             breakpoints[i + 1] = breakpoints[i] + rings[i];
         }
     }
 
-    int getRingsLength()
+    int getNumRings()
     {
-        return ringsLength;
+        return numRings;
     }
 
     void drawRing(int ringi, CHSV color)
@@ -44,7 +44,7 @@ public:
     }
     int getRingFromIndex(int index)
     {
-        for (int i = 0; i < ringsLength; i++)
+        for (int i = 0; i < numRings; i++)
         {
             if (index >= breakpoints[i] && index < breakpoints[i + 1])
             {

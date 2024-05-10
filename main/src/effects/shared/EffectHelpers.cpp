@@ -46,7 +46,7 @@ void clearVleds(CHSV *vleds)
 CHSV colorFraction(CHSV colorIn, float fraction)
 {
     fraction = max(0.0f, min(1.0f, fraction));
-    uint8_t scale = fraction * 255;
+    uint8_t scale = fraction * colorIn.v;
     return CHSV(colorIn.h, colorIn.s, scale);
 }
 

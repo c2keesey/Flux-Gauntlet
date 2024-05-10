@@ -22,14 +22,14 @@ EffectLibrary::EffectLibrary()
 void EffectLibrary::init()
 {
     // Instantiate effects
-    buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{blast1, pew1, flash1};
-    buttonEffectMap[RINGF] = std::vector<BaseEffect *>{blast1, pew1, flash1};
-    buttonEffectMap[THUMB] = std::vector<BaseEffect *>{blast1, pew1, flash1};
+    buttonEffectMap[THUMB] = std::vector<BaseEffect *>{flash1, panelFlash2, ringFlash};
     buttonEffectMap[INDEX] = std::vector<BaseEffect *>{fireworkShow1, blast1};
+    buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{blast1, flash1};
+    buttonEffectMap[RINGF] = std::vector<BaseEffect *>{blast1, pew1, flash1};
     buttonEffectMap[PINKY] = std::vector<BaseEffect *>{casimir1, twinkle1};
 
     // Setup presets
-    PresetContainer actionPreset = {flash1, fireworkShow1, blast1, casimir1, pew1};
+    PresetContainer actionPreset = {panelFlash2, fireworkShow2, blast1, casimir1, pew1};
     presetMap[Preset::ACTION] = actionPreset;
 
     PresetContainer testPreset = {blast1, blast1, blast1, blast1, blast1};

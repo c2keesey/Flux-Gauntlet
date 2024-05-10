@@ -11,9 +11,9 @@
 struct Particle
 {
     float pos;
-    CRGB color;
+    CHSV color;
     float speed;
-    Particle(float p, CRGB c, float s) : pos(p), color(c), speed(s) {}
+    Particle(float p, CHSV c, float s) : pos(p), color(c), speed(s) {}
 };
 
 class Firework
@@ -77,14 +77,14 @@ public:
             {
                 if (part->speed < deceleration && part->speed > -deceleration)
                 {
-                    part->color.fadeToBlackBy(10);
+                    part->color.v = scale8(part->color.v, 220);
+                    part->color.s = scale8(part->color.s, 240);
                 }
                 else
                 {
-
-                    part->color.fadeToBlackBy(2);
+                    part->color.v = scale8(part->color.v, 250);
                 }
-                if (part->color.getLuma() < 1)
+                if (part->color.v <= 25)
                 {
                     part = particles.erase(part);
                 }
@@ -100,15 +100,8 @@ public:
     {
         for (auto part = particles.begin(); part != particles.end();)
         {
-            if (part->pos < 0 || part->pos > NUM_LEDS - 1)
-            {
-                part = particles.erase(part);
-            }
-            else
-            {
-                drawPrecise(part->pos, 1, rgb2hsv_approximate(part->color), vleds);
-                ++part;
-            }
+            drawPrecise(part->pos, 1, part->color, vleds);
+            ++part;
         }
     }
 
@@ -128,8 +121,8 @@ private:
     float deceleration;
     int fireworkOffset = 50;
 
-public:
-    FireworkShow(int speed = 20, CRGBPalette256 pal = DEFAULT_PALETTE, float deceleration = 0.01f, float explosionStrength = 25.0f)
+public: // TODO: add fade factor and particle spread
+    FireworkShow(CRGBPalette256 pal = DEFAULT_PALETTE, float deceleration = 0.01f, float explosionStrength = 25.0f, uint8_t fade_factor = 128, uint8_t particle_spread = 128)
         : BaseEffect(pal), explosionStrength(explosionStrength), deceleration(deceleration)
     {
         this->speed = speed;

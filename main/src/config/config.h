@@ -39,6 +39,7 @@ enum Preset
 #define NUM_EFFECT_BUTTONS 5
 enum ButtonEnum
 {
+
     NONE_BUTTON = -1,
     MIDDLE = 0,
     RINGF = 1,

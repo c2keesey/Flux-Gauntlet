@@ -22,8 +22,8 @@ public:
     SelectRing(CRGBPalette256 pal = DEFAULT_PALETTE)
         : BaseEffect(pal), rings(vleds)
     {
-        ringStart = rings.getRingStart(rings.getRingsLength() - 2);
-        ringEnd = rings.getRingEnd(rings.getRingsLength() - 2) - 4;
+        ringStart = rings.getRingStart(rings.getNumRings() - 2);
+        ringEnd = rings.getRingEnd(rings.getNumRings() - 2) - 4;
         effectIndex = 0;
     }
 
@@ -42,7 +42,7 @@ public:
         clearVleds(vleds);
         for (int i = ringEnd; i > ringEnd - numEffects; i--)
         {
-            vleds[i] = CHSV(0, 100, 20);
+            vleds[i] = CHSV(0, 0, 50);
         }
         vleds[ringEnd - effectIndex] = CHSV(hue, 255, 255);
         hue += 2;

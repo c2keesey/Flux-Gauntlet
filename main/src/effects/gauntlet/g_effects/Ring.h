@@ -20,7 +20,7 @@ private:
     uint8_t len = 6;
     int speed = 15;
     int rings[16] = {21, 27, 25, 23, 23, 22, 20, 19, 19, 19, 17, 16, 15, 12, 12, 10};
-    int ringsLength = 16;
+    int numRings = 16;
     int breakpoints[17] = {0};
 
 public:
@@ -31,7 +31,7 @@ public:
     void trigger() override
     {
         CHSV color = CHSV(random8(), 255, 255);
-        int ring = random8(ringsLength);
+        int ring = random8(numRings);
         int start = random8(breakpoints[ring]);
     }
 

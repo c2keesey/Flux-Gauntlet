@@ -35,6 +35,8 @@ public:
         vleds[NUM_LEDS - 1] = CHSV(hue, 255, 150);
         vleds[NUM_LEDS - 2] = CHSV(hue + 10, 255, 150);
         vleds[NUM_LEDS - 3] = CHSV(hue + 20, 255, 150);
+        vleds[NUM_LEDS - 4] = CHSV(hue + 30, 255, 150);
+        vleds[NUM_LEDS - 5] = CHSV(hue + 40, 255, 150);
         hue += 2;
     }
 
@@ -82,17 +84,9 @@ public:
         {
             displayNone();
         }
-        else if (button == MIDDLE)
+        else
         {
-            signalSelectFlash(1);
-        }
-        else if (button == RINGF)
-        {
-            signalSelectFlash(2);
-        }
-        else if (button == THUMB)
-        {
-            signalSelectFlash(3);
+            signalSelectFlash(button + 1);
         }
     }
 

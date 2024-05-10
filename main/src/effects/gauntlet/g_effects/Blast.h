@@ -12,14 +12,14 @@ private:
     uint8_t len = 6;
     int speed = 15;
     int rings[16] = {21, 27, 25, 23, 23, 22, 20, 19, 19, 19, 17, 16, 15, 12, 12, 10};
-    int ringsLength = 16;
+    int numRings = 16;
     int breakpoints[17] = {0};
 
 public:
     Blast(CRGBPalette256 pal = DEFAULT_PALETTE)
     {
         palette = pal;
-        for (int i = 0; i < ringsLength; i++)
+        for (int i = 0; i < numRings; i++)
         {
             breakpoints[i + 1] = breakpoints[i] + rings[i];
         }
@@ -40,12 +40,12 @@ public:
         if (millis() - prevMillis > speed)
         {
             prevMillis = millis();
-            for (int i = 0; i < rings[ringsLength - 1]; i++)
+            for (int i = 0; i < rings[numRings - 1]; i++)
             {
                 vleds[NUM_LEDS - i - 1] = CHSV(0, 0, 0);
             }
-            int samplePos = NUM_LEDS - 1 - rings[ringsLength - 1];
-            for (int i = ringsLength - 1; i > 0; i--)
+            int samplePos = NUM_LEDS - 1 - rings[numRings - 1];
+            for (int i = numRings - 1; i > 0; i--)
             {
                 CHSV samplePixel = vleds[samplePos];
                 for (int j = 0; j < rings[i]; j++)

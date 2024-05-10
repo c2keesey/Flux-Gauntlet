@@ -89,6 +89,13 @@ void g_EffectsHandler::handleButtonPress()
                 activeEffects[button->getEnumVal()]->triggerWrite();
             }
         }
+        else
+        {
+            if (activeEffects[button->getEnumVal()] != nullptr)
+            {
+                activeEffects[button->getEnumVal()]->release();
+            }
+        }
     }
 }
 

@@ -25,8 +25,8 @@ public:
     ControlRing(CRGBPalette256 pal = DEFAULT_PALETTE, unsigned long holdTime = 500)
         : BaseEffect(pal), rings(vleds)
     {
-        ringStart = rings.getRingStart(rings.getRingsLength() - 2);
-        ringEnd = rings.getRingEnd(rings.getRingsLength() - 2);
+        ringStart = rings.getRingStart(rings.getNumRings() - 2);
+        ringEnd = rings.getRingEnd(rings.getNumRings() - 2);
         curPos = ringStart;
         updateRate = holdTime / max(1, (ringEnd - ringStart));
         loop = 0;
@@ -78,11 +78,11 @@ public:
             loop = 1;
             curPos = ringStart;
         }
-        else if (ringi < rings.getRingsLength() - 1)
+        else if (ringi < rings.getNumRings() - 1)
         {
             clearVleds(vleds);
             CHSV loopColor = loop == 0 ? CHSV(0, 0, 255) : CHSV(192, 255, 255);
-            rings.drawRing(rings.getRingsLength() - ringi, loopColor);
+            rings.drawRing(rings.getNumRings() - ringi, loopColor);
             ringi++;
         }
         else

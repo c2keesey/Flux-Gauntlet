@@ -23,12 +23,17 @@ protected:
     uint8_t curPalNum = 0;
     unsigned long prevMillis = 0;
     int speed;
-    int triggerDelay = 100;
+    unsigned long triggerDelay = 150; // Hold time until minUpdatePeriod
+    unsigned long minUpdatePeriod = 20;
+    bool lastTriggerState = false;
+    bool isHeld = false;
     bool isActive = true;
 
 public:
     BaseEffect(CRGBPalette256 palette = RainbowColors_p);
     virtual void trigger() = 0;
+    unsigned long getTriggerDelay();
+    void release();
     void triggerWrite();
     virtual void update() = 0;
     virtual void draw();

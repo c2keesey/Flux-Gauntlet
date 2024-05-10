@@ -6,12 +6,36 @@ BaseEffect::BaseEffect(CRGBPalette256 palette) : palette(palette)
 }
 void BaseEffect::triggerWrite()
 {
-    if (millis() - lastTrigger >= triggerDelay)
+    if (millis() - lastTrigger >= getTriggerDelay())
     {
+        if (lastTriggerState)
+        {
+            isHeld = true;
+        }
         trigger();
         lastTrigger = millis();
+        lastTriggerState = true;
     }
 }
+
+unsigned long BaseEffect::getTriggerDelay()
+{
+    if (isHeld)
+    {
+        return minUpdatePeriod;
+    }
+    else
+    {
+        return triggerDelay;
+    }
+}
+
+void BaseEffect::release()
+{
+    lastTriggerState = false;
+    isHeld = false;
+}
+
 void BaseEffect::draw()
 {
     update();

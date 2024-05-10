@@ -75,12 +75,6 @@ void setup()
     Serial.begin(9600);
 }
 
-void ind()
-{
-    leds[NUM_LEDS - 14] = CRGB::Red;
-    FastLED.show();
-}
-
 void loop()
 {
     double dStart = millis() / 1000.0;
