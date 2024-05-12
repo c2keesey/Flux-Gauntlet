@@ -6,7 +6,7 @@
 class Eminate : public BaseEffect
 {
 public:
-    Eminate(CRGBPalette256 palette = RainbowColors_p);
+    Eminate(ColorPalette palette = rainbow_cp);
 
     virtual void update() override;
     virtual void trigger() override;

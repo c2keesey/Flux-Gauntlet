@@ -15,7 +15,7 @@ private:
     bool fadeIn = true;
 
 public:
-    RainbowWorm(CRGBPalette256 pal = DEFAULT_PALETTE)
+    RainbowWorm(ColorPalette pal = rainbow_cp)
     {
         palette = pal;
         triggerDelay = 500;

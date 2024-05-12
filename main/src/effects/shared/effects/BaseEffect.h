@@ -3,6 +3,8 @@
 
 #include <FastLED.h>
 #include "../../../config/config.h"
+#include "../ColorPalette.h"
+#include "../ColorPaletteInstances.h"
 
 extern double fps;
 
@@ -19,7 +21,7 @@ protected:
     // Each effect has its own virtual LED array
     CHSV vleds[NUM_LEDS] = {CHSV(0, 0, 0)};
     unsigned long lastTrigger = 0;
-    CRGBPalette256 palette;
+    ColorPalette palette;
     uint8_t curPalNum = 0;
     unsigned long prevMillis = 0;
     int speed;
@@ -30,7 +32,7 @@ protected:
     bool isActive = true;
 
 public:
-    BaseEffect(CRGBPalette256 palette = RainbowColors_p);
+    BaseEffect(ColorPalette palette = rainbow_cp);
     virtual void trigger() = 0;
     unsigned long getTriggerDelay();
     void release();
@@ -39,9 +41,8 @@ public:
     virtual void draw();
 
     CHSV *getVleds();
-    void setPalette(CRGBPalette256 pal);
-    uint8_t getPalNum();
-    void setPalNum(uint8_t num);
+    void setPalette(ColorPalette pal);
+
     virtual bool isEffectActive();
 
     // Safely update vleds avoiding out of bounds

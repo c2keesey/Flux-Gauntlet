@@ -7,6 +7,7 @@
 #include "../../Rings.h"
 #include "../../../shared/EffectHelpers.h"
 
+// TODO: make FSM
 class ControlRing : public BaseEffect
 {
 private:
@@ -15,6 +16,7 @@ private:
     bool triggered = false;
     int curPos;
     unsigned long updateRate;
+    unsigned long origUpdateRate;
     unsigned long prevUpdateMillis = 0;
     Rings rings;
     int ringi = 2;
@@ -22,13 +24,14 @@ private:
     bool isSetMode = false;
 
 public:
-    ControlRing(CRGBPalette256 pal = DEFAULT_PALETTE, unsigned long holdTime = 500)
+    ControlRing(ColorPalette pal = rainbow_cp, unsigned long holdTime = 500)
         : BaseEffect(pal), rings(vleds)
     {
         ringStart = rings.getRingStart(rings.getNumRings() - 2);
         ringEnd = rings.getRingEnd(rings.getNumRings() - 2);
         curPos = ringStart;
         updateRate = holdTime / max(1, (ringEnd - ringStart));
+        origUpdateRate = updateRate;
         loop = 0;
     }
 
@@ -44,6 +47,7 @@ public:
         ringi = 2;
         loop = 0;
         isSetMode = false;
+        updateRate = origUpdateRate;
         for (int i = 0; i < NUM_LEDS; i++)
         {
             vleds[i] = BLACK;
@@ -65,7 +69,7 @@ public:
         {
             // if (millis() - prevUpdateMillis > updateRate)
             // {
-            CHSV loopColor = loop == 0 ? CHSV(0, 0, 255) : CHSV(192, 255, 255);
+            CHSV loopColor = loop == 0 ? CHSV(0, 0, 50) : CHSV(192, 150, 50);
             EVERY_N_MILLIS(updateRate)
             {
                 prevUpdateMillis = millis();
@@ -73,13 +77,24 @@ public:
                 curPos++;
             }
         }
+        // After first loop
         else if (loop == 0 && !isSetMode)
         {
+            for (int i = ringStart; i < ringEnd; i++)
+            {
+                vleds[i].v = 255;
+            }
             loop = 1;
             curPos = ringStart;
+            updateRate *= 2;
         }
+        // After second loop
         else if (ringi < rings.getNumRings() - 1)
         {
+            for (int i = ringStart; i < ringEnd; i++)
+            {
+                vleds[i].v = 255;
+            }
             clearVleds(vleds);
             CHSV loopColor = loop == 0 ? CHSV(0, 0, 255) : CHSV(192, 255, 255);
             rings.drawRing(rings.getNumRings() - ringi, loopColor);
@@ -89,11 +104,6 @@ public:
         {
             cancel();
         }
-    }
-
-    void setHoldTime(unsigned long holdTime)
-    {
-        updateRate = holdTime / (ringEnd - ringStart);
     }
 };
 #endif // CONTROLRING_H

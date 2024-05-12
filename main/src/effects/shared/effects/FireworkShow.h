@@ -122,8 +122,8 @@ private:
     int fireworkOffset = 50;
 
 public: // TODO: add fade factor and particle spread
-    FireworkShow(CRGBPalette256 pal = DEFAULT_PALETTE, float deceleration = 0.01f, float explosionStrength = 25.0f, uint8_t fade_factor = 128, uint8_t particle_spread = 128)
-        : BaseEffect(pal), explosionStrength(explosionStrength), deceleration(deceleration)
+    FireworkShow(float deceleration = 0.01f, float explosionStrength = 25.0f, uint8_t fade_factor = 128, uint8_t particle_spread = 128)
+        : explosionStrength(explosionStrength), deceleration(deceleration)
     {
         this->speed = speed;
     }

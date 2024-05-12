@@ -25,7 +25,7 @@ private:
     uint8_t fadeRate;
 
 public:
-    RingOscil(CRGBPalette256 pal = DEFAULT_PALETTE, uint8_t fadeRate = 10) : BaseEffect(pal), rings(vleds) {}
+    RingOscil(ColorPalette pal = rainbow_cp, uint8_t fadeRate = 10) : BaseEffect(pal), rings(vleds) {}
 
     void trigger() override
     {

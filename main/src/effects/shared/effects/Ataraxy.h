@@ -5,6 +5,7 @@
 // #define ATARAXY_H
 
 // #include "BaseEffect.h"
+// #include "ColorPaletteInstances.h"
 // #include <vector>
 // #include "../EffectHelpers.h"
 // #include <FastLED.h>
@@ -49,7 +50,7 @@
 //     int updatePulseFrequncy = 50;
 
 // public:
-//     Ataraxy(CRGBPalette256 pal = DEFAULT_PALETTE)
+//     Ataraxy(ColorPalette pal = rainbow_cp)
 //     {
 //         palette = pal;
 //         triggerDelay = 500;

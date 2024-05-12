@@ -46,7 +46,7 @@ public:
     int getNumEffects(ButtonEnum button);
     int getNumPresets();
 
-    CRGBPalette256 getPalette(int index);
+    ColorPalette getPalette(int index);
 
 private:
     // Effects
@@ -56,7 +56,7 @@ private:
     std::map<Preset, PresetContainer> presetMap;
 
     // Palettes
-    std::vector<CRGBPalette256> palettes;
+    std::vector<ColorPalette> palettes;
 };
 
 #endif // EFFECTLIBRARY_H

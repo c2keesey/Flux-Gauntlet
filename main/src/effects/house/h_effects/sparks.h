@@ -14,7 +14,7 @@ struct Spark
 class Sparks : public BaseEffect
 {
 public:
-    Sparks(CRGBPalette256 palette = RainbowColors_p, int rate = 1, int halfLife = 1);
+    Sparks(ColorPalette palette = rainbow_cp, int rate = 1, int halfLife = 1);
 
     virtual void update() override;
     virtual void trigger() override;

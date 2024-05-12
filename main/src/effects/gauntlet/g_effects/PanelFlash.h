@@ -15,7 +15,7 @@ private:
     Rings rings;
 
 public:
-    PanelFlash(CRGBPalette256 pal = DEFAULT_PALETTE, int numPanels = 2) : BaseEffect(pal), rings(vleds)
+    PanelFlash(ColorPalette pal = rainbow_cp, int numPanels = 2) : BaseEffect(pal), rings(vleds)
     {
         minUpdatePeriod = 100;
         if (numPanels < 1)

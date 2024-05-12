@@ -4,7 +4,7 @@
 #define MARQUEE_H
 
 #include "BaseEffect.h"
-#include "EffectHelpers.h"
+#include "../EffectHelpers.h"
 
 class Marquee : public BaseEffect
 {
@@ -14,7 +14,7 @@ private:
     float pos = 0;
 
 public:
-    Marquee(CRGBPalette256 pal = DEFAULT_PALETTE, int speed = 5) : BaseEffect(pal), speed(speed)
+    Marquee(int speed = 5) : speed(speed)
     {
     }
 
@@ -25,19 +25,6 @@ public:
 
     void draw() override
     {
-        if (active)
-        {
-            if (millis() - prevMillis > speed)
-            {
-                prevMillis = millis();
-                for (int i = 0; i < NUM_LEDS; i++)
-                {
-                    vleds[i] = CRGB::Black;
-                }
-                drawPrecise(pos, 3, CRGB::Purple, vleds);
-                pos += 0.1f;
-            }
-        }
     }
 };
 

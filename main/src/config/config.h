@@ -29,9 +29,9 @@ enum Preset
 {
     ACTION,
     TEST,
+    FIREANDICE,
 };
 
-#define DEFAULT_PALETTE RainbowColors_p
 #define NUM_PALETTES 7
 
 #define AUX_BUTTON 3

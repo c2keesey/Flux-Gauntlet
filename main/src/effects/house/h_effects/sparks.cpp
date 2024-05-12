@@ -2,7 +2,7 @@
 // #include "Sparks.h"
 // #include "../h_effect_config.h"
 
-// Sparks::Sparks(CRGBPalette256 palette, int rate, int halfLife) : BaseEffect(palette), rate(rate), halfLife(halfLife)
+// Sparks::Sparks(ColorPalette palette, int rate, int halfLife) : BaseEffect(palette), rate(rate), halfLife(halfLife)
 // {
 //     for (int i = 0; i < 50; i++)
 //     {

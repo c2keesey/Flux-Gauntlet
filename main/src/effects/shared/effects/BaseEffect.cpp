@@ -1,9 +1,10 @@
 #include <FastLED.h>
 #include "BaseEffect.h"
 
-BaseEffect::BaseEffect(CRGBPalette256 palette) : palette(palette)
+BaseEffect::BaseEffect(ColorPalette palette) : palette(palette)
 {
 }
+
 void BaseEffect::triggerWrite()
 {
     if (millis() - lastTrigger >= getTriggerDelay())
@@ -46,18 +47,11 @@ CHSV *BaseEffect::getVleds()
     return vleds;
 }
 
-void BaseEffect::setPalette(CRGBPalette256 pal)
+void BaseEffect::setPalette(ColorPalette pal)
 {
     palette = pal;
 }
-uint8_t BaseEffect::getPalNum()
-{
-    return curPalNum;
-}
-void BaseEffect::setPalNum(uint8_t num)
-{
-    curPalNum = num;
-}
+
 void BaseEffect::updateVleds(int index, CHSV color)
 {
     if (index < 0 || index >= NUM_LEDS)

@@ -4,6 +4,7 @@
 #define TWINKLE_H
 
 #include "BaseEffect.h"
+#include "../ColorPaletteInstances.h"
 #include "../../../config/config.h"
 
 class Twinkle : public BaseEffect
@@ -15,7 +16,7 @@ private:
     int fadeSpeed = 20;
 
 public:
-    Twinkle(int speed = 20, CRGBPalette256 pal = DEFAULT_PALETTE)
+    Twinkle(int speed = 20, ColorPalette pal = rainbow_cp)
         : BaseEffect(pal)
     {
         this->speed = speed;

@@ -2,7 +2,7 @@
 // #include "Eminate.h"
 // #include "../h_effect_config.h"
 
-// Eminate::Eminate(CRGBPalette256 palette) : BaseEffect(palette)
+// Eminate::Eminate(ColorPalette palette) : BaseEffect(palette)
 // {
 // }
 // void Eminate::trigger()

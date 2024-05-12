@@ -25,18 +25,16 @@ private:
     Rings rings;
     int numEffects = 0;
     std::vector<CasimirRing> active;
-    int startColorOffset = 90;
-    int startColorVariation = 20;
 
 public:
-    Casimir(CRGBPalette256 pal = DEFAULT_PALETTE) : BaseEffect(pal), rings(vleds)
+    Casimir(ColorPalette pal = rainbow_cp) : BaseEffect(pal), rings(vleds)
     {
         triggerDelay = 50;
     }
 
     void trigger() override
     {
-        CHSV startColor = CHSV(random8(startColorVariation) + startColorOffset, 255, 255);
+        CHSV startColor = palette.getRandomColor();
         int ringStart = random(NUM_LEDS - 10);
         active.push_back({ringStart, rings.getRingLength(rings.getRingFromIndex(ringStart)), startColor, true});
     }

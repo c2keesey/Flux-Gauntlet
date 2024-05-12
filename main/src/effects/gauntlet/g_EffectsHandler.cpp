@@ -101,7 +101,6 @@ void g_EffectsHandler::handleButtonPress()
 
 void g_EffectsHandler::triggerControl(unsigned long holdTime)
 {
-    modeChangeEffect->setHoldTime(holdTime);
     if (std::find(activeEffects.begin(), activeEffects.end(), modeChangeEffect) == activeEffects.end())
     {
         activeEffects.push_back(modeChangeEffect);

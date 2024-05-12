@@ -220,6 +220,11 @@ public:
         }
     }
 
+    void pollEncoderTest()
+    {
+        updateEncoder();
+    }
+
     void handleEncoderChange()
     {
         if (encoderPos >= lastEncoderPos + 2 || encoderPos <= lastEncoderPos - 2)

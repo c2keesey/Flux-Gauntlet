@@ -22,18 +22,57 @@ EffectLibrary::EffectLibrary()
 void EffectLibrary::init()
 {
     // Instantiate effects
-    buttonEffectMap[THUMB] = std::vector<BaseEffect *>{flash1, panelFlash2, ringFlash};
-    buttonEffectMap[INDEX] = std::vector<BaseEffect *>{fireworkShow1, blast1};
-    buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{blast1, flash1};
-    buttonEffectMap[RINGF] = std::vector<BaseEffect *>{blast1, pew1, flash1};
-    buttonEffectMap[PINKY] = std::vector<BaseEffect *>{casimir1, twinkle1};
+    std::map<std::string, BaseEffect *> effects = initEffects();
+
+    // Assign effects to button maps
+    buttonEffectMap[THUMB] = std::vector<BaseEffect *>{
+        effects["flash_1"],
+        effects["panelFlash_2"],
+        effects["ringFlash"]};
+
+    buttonEffectMap[INDEX] = std::vector<BaseEffect *>{
+        effects["fireworkShow_1"],
+        effects["blast_1"]};
+
+    buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{
+        effects["blast_1"],
+        effects["flash_1"]};
+
+    buttonEffectMap[RINGF] = std::vector<BaseEffect *>{
+        effects["blast_1"],
+        effects["pew_1"],
+        effects["flash_1"]};
+
+    buttonEffectMap[PINKY] = std::vector<BaseEffect *>{
+        effects["casimir_1"],
+        effects["twinkle_1"]};
 
     // Setup presets
-    PresetContainer actionPreset = {panelFlash2, fireworkShow2, blast1, casimir1, pew1};
+    PresetContainer actionPreset = {
+        effects["panelFlash_2"],
+        effects["fireworkShow_2"],
+        effects["blast_america"],
+        effects["casimir_1"],
+        effects["pew_1"]};
     presetMap[Preset::ACTION] = actionPreset;
 
-    PresetContainer testPreset = {blast1, blast1, blast1, blast1, blast1};
+    PresetContainer testPreset = {
+        effects["blast_1"],
+        effects["blast_1"],
+        effects["blast_1"],
+        effects["blast_1"],
+        effects["blast_1"],
+    };
     presetMap[Preset::TEST] = testPreset;
+
+    PresetContainer fireAndIce = {
+        effects["flash_1"],
+        effects["blast_ice"],
+        effects["blast_fire"],
+        effects["pew_fire"],
+        effects["pew_ice"],
+    };
+    presetMap[Preset::FIREANDICE] = fireAndIce;
 }
 
 EffectLibrary::~EffectLibrary()
@@ -98,7 +137,7 @@ BaseEffect *EffectLibrary::getEffect(ButtonEnum button, int index)
     return buttonEffectMap[button][index];
 }
 
-CRGBPalette256 EffectLibrary::getPalette(int index)
+ColorPalette EffectLibrary::getPalette(int index)
 {
     return palettes[index];
 }

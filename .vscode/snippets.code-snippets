@@ -13,7 +13,7 @@
       "private:",
       "",
       "public:",
-      "\t${1:ClassName}(CRGBPalette256 pal = DEFAULT_PALETTE) : BaseEffect(pal) { }",
+      "\t${1:ClassName}(ColorPalette pal = rainbow_cp) : BaseEffect(pal) { }",
       "",
       "\tvoid trigger() override {",
       "\t\treturn;",

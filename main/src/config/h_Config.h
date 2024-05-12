@@ -33,7 +33,6 @@ const int NUM_LEDS = NUM_BFR + NUM_BFL;
 #define ACTION_PRESET 0
 #define AMBIENT_PRESET 1
 
-#define DEFAULT_PALETTE RainbowColors_p
 #define NUM_PALETTES 6
 
 #define MIDDLE 0
