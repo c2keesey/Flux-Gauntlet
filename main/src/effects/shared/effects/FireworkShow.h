@@ -1,5 +1,3 @@
-// Twinkle.h
-
 #ifndef FIREWORKS_H
 #define FIREWORKS_H
 
@@ -23,17 +21,20 @@ private:
     unsigned long lastMove = 0;
     unsigned long lastFade = 0;
     float deceleration;
-    float explosionStrength;
-    int numParticleSpread;
+    float explosionStrength; // TODO: make this more intuitive number
+    int numParticleSpread;   // Variation of particles in the explosion
+    u8_t fadeFactor;
 
     std::vector<Particle> particles;
 
 public:
-    Firework(int pos, float deceleration = 0.01f, float explosionStrength = 25.0f, int numParticleSpread = 15, int nParticles = 0)
+    Firework(int pos, float deceleration = 0.01f, float explosionStrength = 25.0f, int numParticleSpread = 15, int nParticles = 0, u8_t fadeFactor = 250)
     {
         this->deceleration = deceleration;
         this->pos = pos;
         this->explosionStrength = explosionStrength; // TODO: make this a function and validate
+        this->numParticleSpread = numParticleSpread;
+        this->fadeFactor = fadeFactor;
         uint8_t hueSpread = random8(50, 255);
         uint8_t hueStart = random8();
         uint8_t hueEnd = (hueStart + hueSpread) % 255;
@@ -77,14 +78,14 @@ public:
             {
                 if (part->speed < deceleration && part->speed > -deceleration)
                 {
-                    part->color.v = scale8(part->color.v, 220);
-                    part->color.s = scale8(part->color.s, 240);
+                    part->color.v = scale8(part->color.v, fadeFactor - 20);
+                    part->color.s = scale8(part->color.s, fadeFactor);
                 }
                 else
                 {
-                    part->color.v = scale8(part->color.v, 250);
+                    part->color.v = scale8(part->color.v, fadeFactor);
                 }
-                if (part->color.v <= 25)
+                if (part->color.v <= 15)
                 {
                     part = particles.erase(part);
                 }
@@ -113,7 +114,7 @@ public:
 
 class FireworkShow : public BaseEffect
 {
-private:
+protected:
     unsigned long fadeMillis = 0;
     std::vector<Firework> fireworks = {};
     unsigned long triggerMillis = 0;
@@ -122,7 +123,7 @@ private:
     int fireworkOffset = 50;
 
 public: // TODO: add fade factor and particle spread
-    FireworkShow(float deceleration = 0.01f, float explosionStrength = 25.0f, uint8_t fade_factor = 128, uint8_t particle_spread = 128)
+    FireworkShow(float deceleration = 0.01f, float explosionStrength = 25.0f, uint8_t fadeFactor = 128, uint8_t particleSpread = 128)
         : explosionStrength(explosionStrength), deceleration(deceleration)
     {
         this->speed = speed;

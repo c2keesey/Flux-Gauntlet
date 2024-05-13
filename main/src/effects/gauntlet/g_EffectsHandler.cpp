@@ -38,11 +38,11 @@ void g_EffectsHandler::init()
     effectButtons[INDEX] = &indexButton;
     effectButtons[PINKY] = &pinkyButton;
 
-    activeEffects[MIDDLE] = effectLibrary.getPreset(MIDDLE, curPreset);
-    activeEffects[RINGF] = effectLibrary.getPreset(RINGF, curPreset);
-    activeEffects[THUMB] = effectLibrary.getPreset(THUMB, curPreset);
-    activeEffects[INDEX] = effectLibrary.getPreset(INDEX, curPreset);
-    activeEffects[PINKY] = effectLibrary.getPreset(PINKY, curPreset);
+    activeEffects[MIDDLE] = effectLibrary.getEffect(MIDDLE, 0);
+    activeEffects[RINGF] = effectLibrary.getEffect(RINGF, 0);
+    activeEffects[THUMB] = effectLibrary.getEffect(THUMB, 0);
+    activeEffects[INDEX] = effectLibrary.getEffect(INDEX, 0);
+    activeEffects[PINKY] = effectLibrary.getEffect(PINKY, 0);
 
     modeChangeEffect = new ControlRing();
     buttonSelectEffect = new ButtonSelect();

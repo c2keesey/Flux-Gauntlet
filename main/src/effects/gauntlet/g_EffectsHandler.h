@@ -17,7 +17,6 @@ private:
     ControlRing *modeChangeEffect; // TODO: abstract to control parent class
     ButtonSelect *buttonSelectEffect;
     SelectRing *effectSelectEffect;
-    Preset curPreset = Preset::ACTION;
     long lastShow = 0;
     unsigned long lastAuxPressedMillis = 0;
     // bool suppress = false;

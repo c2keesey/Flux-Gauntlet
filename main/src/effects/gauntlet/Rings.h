@@ -5,6 +5,7 @@
 
 #include <FastLED.h>
 
+// TODO: Make this const
 class Rings
 {
 private:

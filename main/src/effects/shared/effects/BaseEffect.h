@@ -12,7 +12,7 @@ extern double fps;
 struct Beam
 {
     float pos;
-    CRGB color;
+    CHSV color;
 };
 
 class BaseEffect

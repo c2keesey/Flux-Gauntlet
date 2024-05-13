@@ -25,12 +25,6 @@ Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 // #define LIBRARY_SIZE 4
 
 #define NUM_PRESETS 2
-enum Preset
-{
-    ACTION,
-    TEST,
-    FIREANDICE,
-};
 
 #define NUM_PALETTES 7
 

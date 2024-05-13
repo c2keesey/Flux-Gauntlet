@@ -110,3 +110,10 @@ float randomVariance(float number, float variancePercent)
     float fraction = static_cast<float>(rand()) / RAND_MAX;
     return number * (1.0f + (fraction - 0.5f) * variancePercent / 100);
 }
+
+int inverseScale(uint8_t value, int min, int max)
+{
+    int range = max - min;
+    float normalizedValue = static_cast<float>(value) / 255.0f;
+    return static_cast<int>(max - (normalizedValue * range));
+}

@@ -6,6 +6,13 @@
 #include "EffectInstances.h"
 #include "effects/BaseEffect.h"
 
+enum Preset
+{
+    FAVORITES,
+    ACTION,
+    FIREANDICE,
+};
+
 std::map<std::string, BaseEffect *> initEffects();
 
 #endif // EFFECTINSTANCES_H

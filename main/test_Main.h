@@ -84,6 +84,15 @@ void drawHues()
     FastLED.show();
 }
 
+void printHeap()
+{
+    uint32_t freeHeap = ESP.getFreeHeap();
+
+    // Print the free heap memory
+    Serial.print("Free Heap: ");
+    Serial.print(freeHeap);
+    Serial.println(" bytes");
+}
 void loop()
 {
     double dStart = millis() / 1000.0;
@@ -106,12 +115,7 @@ void loop()
     effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();
 
-    // uint32_t freeHeap = ESP.getFreeHeap();
-
-    // // Print the free heap memory
-    // Serial.print("Free Heap: ");
-    // Serial.print(freeHeap);
-    // Serial.println(" bytes");
+    // printHeap();
 
     fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }

@@ -66,8 +66,8 @@ std::vector<CHSV> mecha = {
 ColorPalette mecha_cp(mecha);
 
 std::vector<CHSV> ice = {
-    CHSV(134, 255, 255), // Orange
-    CHSV(160, 255, 255), // Cyan
+    CHSV(134, 255, 255), // Light blue
+    CHSV(160, 255, 255), // Full blue
 };
 
 ColorPalette ice_cp(ice);

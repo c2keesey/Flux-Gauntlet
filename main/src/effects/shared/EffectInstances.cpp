@@ -3,10 +3,11 @@
 #include "../gauntlet/g_effects/Flash.h"
 #include "../gauntlet/g_effects/Blast.h"
 #include "../shared/effects/FireworkShow.h"
+#include "../gauntlet/g_effects/BigFirework.h"
 #include "../shared/effects/Twinkle.h"
 #include "../gauntlet/g_effects/Casimir.h"
 #include "../gauntlet/g_effects/PanelFlash.h"
-#include "../gauntlet/g_effects/RingOscil.h"
+#include "../gauntlet/g_effects/Lightning.h"
 
 // Naming convention: effectName + "_" + version
 
@@ -31,6 +32,7 @@ std::map<std::string, BaseEffect *> initEffects()
     // FireworkShow
     effects["fireworkShow_1"] = new FireworkShow();
     effects["fireworkShow_2"] = new FireworkShow(0.1f, 50.0f);
+    effects["big_firework"] = new BigFirework();
 
     // Flash
     effects["flash_1"] = new Flash();
@@ -44,6 +46,9 @@ std::map<std::string, BaseEffect *> initEffects()
     effects["casimir_rainbow"] = new Casimir();
     effects["casimir_1"] = new Casimir(greenDragon_cp);
     effects["casimir_mecha"] = new Casimir(mecha_cp);
+
+    // Lightning
+    effects["lightning_1"] = new Lightning(rainbow_cp);
 
     return effects;
 }
