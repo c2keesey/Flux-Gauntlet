@@ -47,6 +47,7 @@ void g_EffectsHandler::init()
     modeChangeEffect = new ControlRing();
     buttonSelectEffect = new ButtonSelect();
     effectSelectEffect = new SelectRing();
+    paletteSelectEffect = new PaletteRing();
 }
 
 g_EffectsHandler::~g_EffectsHandler()
@@ -139,19 +140,24 @@ void g_EffectsHandler::triggerEffectMode()
     removeEffect(buttonSelectEffect);
     effectSelectEffect->reset();
     removeEffect(effectSelectEffect);
+    paletteSelectEffect->reset();
+    removeEffect(paletteSelectEffect);
     setSetMode(true);
 }
 
-/**
- * In initial SET_MODE, selects the button to select effect for.
- *
- * @param button button to select effect for
- *
- */
 void g_EffectsHandler::selectButton(ButtonEnum button)
 {
     buttonSelectEffect->setButton(button);
+}
+
+void g_EffectsHandler::selectEffectMode()
+{
     addEffect(effectSelectEffect);
+}
+
+void g_EffectsHandler::selectPaletteMode()
+{
+    addEffect(paletteSelectEffect);
 }
 
 void g_EffectsHandler::addEffect(BaseEffect *effect)
@@ -187,6 +193,25 @@ void g_EffectsHandler::selectEffect(ButtonEnum button, int encoderPos)
     int effectIndex = getSelectIndex(numEffects, encoderPos);
     activeEffects[button] = effectLibrary.getEffect(button, effectIndex);
     effectSelectEffect->setEffect(effectIndex, numEffects);
+}
+
+void g_EffectsHandler::selectPalette(ButtonEnum button, int encoderPos)
+{
+    BaseEffect *curEffect = activeEffects[button];
+    curEffect->setRotationPalette();
+    curEffect->rotatePalette(encoderPos);
+    paletteSelectEffect->setHue(encoderPos);
+}
+
+void g_EffectsHandler::resetEffects()
+{
+    for (BaseEffect *effect : activeEffects)
+    {
+        if (effect != nullptr)
+        {
+            effect->reset();
+        }
+    }
 }
 
 int g_EffectsHandler::getSelectIndex(int numEffects, int encoderPos)

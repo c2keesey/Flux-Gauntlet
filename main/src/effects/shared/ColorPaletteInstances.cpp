@@ -71,3 +71,9 @@ std::vector<CHSV> ice = {
 };
 
 ColorPalette ice_cp(ice);
+
+std::vector<CHSV> white = {
+    CHSV(0, 0, 255), // Light blue
+};
+
+ColorPalette white_cp(white);

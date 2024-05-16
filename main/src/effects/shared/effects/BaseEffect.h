@@ -21,7 +21,9 @@ protected:
     // Each effect has its own virtual LED array
     CHSV vleds[NUM_LEDS] = {CHSV(0, 0, 0)};
     unsigned long lastTrigger = 0;
-    ColorPalette palette;
+    ColorPalette *palette;
+    ColorPalette *rotationPalette;
+    ColorPalette *originalPalette;
     uint8_t curPalNum = 0;
     unsigned long prevMillis = 0;
     int speed;
@@ -32,7 +34,10 @@ protected:
     bool isActive = true;
 
 public:
-    BaseEffect(ColorPalette palette = rainbow_cp);
+    u8_t rotPalSpread;
+
+    BaseEffect(ColorPalette *pal = &rainbow_cp, u8_t rotPalSpread = 15);
+    ~BaseEffect();
     virtual void trigger() = 0;
     unsigned long getTriggerDelay();
     void release();
@@ -41,7 +46,11 @@ public:
     virtual void draw();
 
     CHSV *getVleds();
+
     void setPalette(ColorPalette pal);
+    void setRotationPalette();
+    void rotatePalette(int index);
+    void reset();
 
     virtual bool isEffectActive();
 

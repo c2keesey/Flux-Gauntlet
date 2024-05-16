@@ -13,7 +13,7 @@
       "private:",
       "",
       "public:",
-      "\t${1:ClassName}(ColorPalette pal = rainbow_cp) : BaseEffect(pal) { }",
+      "\t${1:ClassName}(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal) { }",
       "",
       "\tvoid trigger() override {",
       "\t\treturn;",
@@ -28,5 +28,37 @@
       "$0"
     ],
     "description": "Effect Template variable ClassName"
+  },
+  "Effect Template Rings": {
+    "prefix": "neweffr",
+    "body": [
+      "#ifndef ${1/(.*)/${1:/upcase}/}_H",
+      "#define ${1/(.*)/${1:/upcase}/}_H",
+      "",
+      "#include \"../../shared/effects/BaseEffect.h\"",
+      "#include \"../../shared/EffectHelpers.h\"",
+      "#include \"../Rings.h\"",
+      "#include <vector>",
+      "",
+      "class ${1:ClassName} : public BaseEffect {",
+      "private:",
+      "Rings rings;",
+      "",
+      "public:",
+      "\t${1:ClassName}(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal), rings(vleds) { }",
+      "",
+      "\tvoid trigger() override {",
+      "\t\treturn;",
+      "\t}",
+      "",
+      "\tvoid update() override {",
+      "\t\treturn;",
+      "\t}",
+      "};",
+      "",
+      "#endif // ${1/(.*)/${1:/upcase}/}_H",
+      "$0"
+    ],
+    "description": "Effect Template with rings variable ClassName"
   }
 }

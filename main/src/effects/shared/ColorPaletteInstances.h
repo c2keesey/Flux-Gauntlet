@@ -12,5 +12,6 @@ extern ColorPalette christmas_cp;
 extern ColorPalette mecha_cp;
 extern ColorPalette fire_cp;
 extern ColorPalette ice_cp;
+extern ColorPalette white_cp;
 
 #endif // COLORPALETTEINSTANCES_H

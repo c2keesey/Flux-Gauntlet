@@ -1,6 +1,5 @@
 include .env
 
-
 # Variables
 BOARD := esp32:esp32:heltec_wifi_kit_32_V3
 PORT := /dev/cu.usbserial-0001
@@ -14,10 +13,10 @@ COMPILE_FLAGS := --fqbn $(BOARD) --verbose
 
 # Default target
 all: compile upload
-ifeq ($(MONITOR), true)
-	make monitor
+ifeq ($(findstring -m,$(MAKECMDGOALS)),)
+else
+all: monitor
 endif
-
 
 # Compile
 compile: copy
@@ -37,7 +36,6 @@ monitor:
 
 # Copy configuration and main files based on PROJ
 copy:
-
 ifeq ($(PROJ), HOUSE)
 	cp $(CONFIG_DIR)/h_Config.h $(CONFIG_DIR)/config.h
 	cp $(PROJECT_DIR)/h_Main.h $(PROJECT_DIR)/main.ino

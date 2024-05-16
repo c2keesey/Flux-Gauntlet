@@ -125,13 +125,13 @@ private:
     Rings rings;
 
 public:
-    Lightning(ColorPalette pal = ice_cp) : BaseEffect(pal), rings(vleds)
+    Lightning(ColorPalette *pal = &ice_cp) : BaseEffect(pal), rings(vleds)
     {
     }
 
     void trigger() override
     {
-        CHSV color = palette.getRandomColor();
+        CHSV color = palette->getRandomColor();
         bolts.push_back(Bolt(&rings, color));
     }
 

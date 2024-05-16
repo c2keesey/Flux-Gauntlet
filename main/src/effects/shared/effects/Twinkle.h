@@ -16,7 +16,7 @@ private:
     int fadeSpeed = 20;
 
 public:
-    Twinkle(int speed = 20, ColorPalette pal = rainbow_cp)
+    Twinkle(int speed = 20, ColorPalette *pal = &rainbow_cp)
         : BaseEffect(pal)
     {
         this->speed = speed;
@@ -52,7 +52,7 @@ public:
             for (int i = 0; i < 5; i++)
             {
                 int index = random16(NUM_LEDS);
-                vleds[index] = CHSV(random8(), 255, 255);
+                vleds[index] = palette->getRandomColor();
             }
         }
     }

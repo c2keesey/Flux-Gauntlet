@@ -16,7 +16,7 @@ private:
     int breakpoints[17] = {0};
 
 public:
-    Blast(ColorPalette pal = rainbow_cp) : BaseEffect(pal)
+    Blast(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal)
     {
         minUpdatePeriod = 50;
         palette = pal;
@@ -28,7 +28,7 @@ public:
 
     void trigger() override
     {
-        CHSV color = palette.getNextColor();
+        CHSV color = palette->getNextColor();
         for (uint8_t i = 0; i < breakpoints[1]; i++)
         {
             vleds[i] = color;

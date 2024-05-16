@@ -27,14 +27,14 @@ private:
     std::vector<CasimirRing> active;
 
 public:
-    Casimir(ColorPalette pal = rainbow_cp) : BaseEffect(pal), rings(vleds)
+    Casimir(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal), rings(vleds)
     {
         triggerDelay = 50;
     }
 
     void trigger() override
     {
-        CHSV startColor = palette.getRandomColor();
+        CHSV startColor = palette->getRandomColor();
         int ringStart = random(NUM_LEDS - 10);
         active.push_back({ringStart, rings.getRingLength(rings.getRingFromIndex(ringStart)), startColor, true});
     }

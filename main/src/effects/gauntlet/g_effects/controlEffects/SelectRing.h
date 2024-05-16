@@ -19,7 +19,7 @@ private:
     uint8_t hue = 0;
 
 public:
-    SelectRing(ColorPalette pal = rainbow_cp)
+    SelectRing(ColorPalette *pal = &rainbow_cp)
         : BaseEffect(pal), rings(vleds)
     {
         ringStart = rings.getRingStart(rings.getNumRings() - 2);

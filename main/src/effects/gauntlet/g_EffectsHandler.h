@@ -9,6 +9,7 @@
 #include "g_effects/controlEffects/SelectRing.h"
 #include <vector>
 #include "../../control/Button.h"
+#include "g_effects/controlEffects/PaletteRing.h"
 
 class g_EffectsHandler : public EffectsHandler
 {
@@ -17,6 +18,7 @@ private:
     ControlRing *modeChangeEffect; // TODO: abstract to control parent class
     ButtonSelect *buttonSelectEffect;
     SelectRing *effectSelectEffect;
+    PaletteRing *paletteSelectEffect;
     long lastShow = 0;
     unsigned long lastAuxPressedMillis = 0;
     // bool suppress = false;
@@ -42,13 +44,16 @@ public:
     void setSetMode(bool isSet);
     void triggerEffectMode();
     void triggerButtonSelectMode();
-    void rotatePreset();
-    void changeColor(int buttonNumber);
     void selectButton(ButtonEnum button);
     void selectEffect(ButtonEnum button, int effectIndex);
+    void selectPalette(ButtonEnum button, int effectIndex);
     int getSelectIndex(int numEffects, int encoderPos);
     void triggerPresetSelectMode();
     void selectPreset(int encoderPos);
+    void selectEffectMode();
+    void selectPaletteMode();
+    void resetEffects();
+
     // void suppressEffects();
     // void unsuppressEffects();
 };

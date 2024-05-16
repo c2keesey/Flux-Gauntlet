@@ -1,8 +1,15 @@
 #include <FastLED.h>
 #include "BaseEffect.h"
+#include "../EffectHelpers.h"
 
-BaseEffect::BaseEffect(ColorPalette palette) : palette(palette)
+BaseEffect::BaseEffect(ColorPalette *palette, u8_t rotPalSpread) : palette(palette), originalPalette(palette), rotPalSpread(rotPalSpread)
 {
+    rotationPalette = new ColorPalette(std::vector<CHSV>{CHSV(0, 255, 255)}, rotPalSpread, 10, 10);
+}
+
+BaseEffect::~BaseEffect()
+{
+    delete rotationPalette;
 }
 
 void BaseEffect::triggerWrite()
@@ -49,7 +56,23 @@ CHSV *BaseEffect::getVleds()
 
 void BaseEffect::setPalette(ColorPalette pal)
 {
-    palette = pal;
+    palette = &pal;
+}
+
+void BaseEffect::setRotationPalette()
+{
+    palette = rotationPalette;
+}
+
+void BaseEffect::rotatePalette(int index)
+{
+    rotationPalette->rotate(index);
+}
+
+void BaseEffect::reset()
+{
+    palette = originalPalette;
+    clearVleds(vleds);
 }
 
 void BaseEffect::updateVleds(int index, CHSV color)

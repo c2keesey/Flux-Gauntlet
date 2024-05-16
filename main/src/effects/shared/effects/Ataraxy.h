@@ -50,7 +50,7 @@
 //     int updatePulseFrequncy = 50;
 
 // public:
-//     Ataraxy(ColorPalette pal = rainbow_cp)
+//     Ataraxy(ColorPalette *pal = &rainbow_cp)
 //     {
 //         palette = pal;
 //         triggerDelay = 500;

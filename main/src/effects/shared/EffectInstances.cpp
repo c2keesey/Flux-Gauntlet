@@ -8,6 +8,7 @@
 #include "../gauntlet/g_effects/Casimir.h"
 #include "../gauntlet/g_effects/PanelFlash.h"
 #include "../gauntlet/g_effects/Lightning.h"
+#include "../gauntlet/g_effects/BitSwitch.h"
 
 // Naming convention: effectName + "_" + version
 
@@ -17,17 +18,17 @@ std::map<std::string, BaseEffect *> initEffects()
 
     // Blast
     effects["blast_1"] = new Blast();
-    effects["blast_america"] = new Blast(america_cp);
-    effects["blast_christmas"] = new Blast(christmas_cp);
-    effects["blast_mecha"] = new Blast(mecha_cp);
-    effects["blast_ice"] = new Blast(ice_cp);
-    effects["blast_fire"] = new Blast(fire_cp);
+    effects["blast_america"] = new Blast(&america_cp);
+    effects["blast_christmas"] = new Blast(&christmas_cp);
+    effects["blast_mecha"] = new Blast(&mecha_cp);
+    effects["blast_ice"] = new Blast(&ice_cp);
+    effects["blast_fire"] = new Blast(&fire_cp);
 
     // Pew
     effects["pew_1"] = new Pew();
-    effects["pew_fire"] = new Pew(fire_cp);
-    effects["pew_purple"] = new Pew(purple_cp);
-    effects["pew_ice"] = new Pew(ice_cp);
+    effects["pew_fire"] = new Pew(&fire_cp);
+    effects["pew_purple"] = new Pew(&purple_cp);
+    effects["pew_ice"] = new Pew(&ice_cp);
 
     // FireworkShow
     effects["fireworkShow_1"] = new FireworkShow();
@@ -37,18 +38,25 @@ std::map<std::string, BaseEffect *> initEffects()
     // Flash
     effects["flash_1"] = new Flash();
     effects["panelFlash_2"] = new PanelFlash();
-    effects["ringFlash"] = new PanelFlash(rainbow_cp, 16);
+    effects["panelFlash_3"] = new PanelFlash(&rainbow_cp, 3);
 
-    // Twinkle
-    effects["twinkle_1"] = new Twinkle();
+    effects["ringFlash"] = new PanelFlash(&white_cp, 16);
 
     // Casimir
     effects["casimir_rainbow"] = new Casimir();
-    effects["casimir_1"] = new Casimir(greenDragon_cp);
-    effects["casimir_mecha"] = new Casimir(mecha_cp);
+    effects["casimir_1"] = new Casimir(&greenDragon_cp);
+    effects["casimir_mecha"] = new Casimir(&mecha_cp);
 
     // Lightning
-    effects["lightning_1"] = new Lightning(rainbow_cp);
+    effects["lightning_1"] = new Lightning(&rainbow_cp);
+
+    // // Ambient effects // //
+    // Twinkle
+    effects["twinkle_1"] = new Twinkle();
+
+    // BitSwitch
+    effects["bitSwitch_carnival"] = new BitSwitch(&rainbow_cp, true);
+    effects["bitSwitch_1"] = new BitSwitch(&ice_cp, true);
 
     return effects;
 }

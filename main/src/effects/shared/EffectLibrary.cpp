@@ -26,13 +26,16 @@ void EffectLibrary::init()
 
     // Assign effects to button maps
     buttonEffectMap[THUMB] = std::vector<BaseEffect *>{
-        effects["flash_1"],
+        effects["bitSwitch_1"],
+        effects["ringFlash"],
         effects["panelFlash_2"],
-        effects["ringFlash"]};
+        effects["panelFlash_3"],
+        effects["flash_1"],
+    };
 
     buttonEffectMap[INDEX] = std::vector<BaseEffect *>{
         effects["lightning_1"],
-        effects["fireworkShow_1"],
+        effects["fireworkShow_2"],
     };
 
     buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{
@@ -51,6 +54,13 @@ void EffectLibrary::init()
     };
 
     // Setup presets
+    PresetContainer favorites = {
+        effects["ringFlash"],
+        effects["lightning_1"],
+        effects["blast_1"],
+        effects["casimir_1"],
+        effects["big_firework"]};
+    presetMap[FAVORITES] = favorites;
 
     PresetContainer actionPreset = {
         effects["panelFlash_2"],

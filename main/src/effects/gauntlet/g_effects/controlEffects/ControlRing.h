@@ -24,7 +24,7 @@ private:
     bool isSetMode = false;
 
 public:
-    ControlRing(ColorPalette pal = rainbow_cp, unsigned long holdTime = 500)
+    ControlRing(ColorPalette *pal = &rainbow_cp, unsigned long holdTime = 500)
         : BaseEffect(pal), rings(vleds)
     {
         ringStart = rings.getRingStart(rings.getNumRings() - 2);

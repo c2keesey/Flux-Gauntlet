@@ -26,14 +26,17 @@ extern Button auxButton;
 
 extern g_EffectsHandler effectsHandler;
 
+// TODO: Determine which functions will change per state, who handles
 class ControlHandler
 {
-
 private:
+    // TODO: Make FSM this is rediculous
     enum ControlState : int
     {
         EFFECT,
         BUTTON_SELECT,
+        SETTING_SELECT,
+        PALETTE_SELECT,
         EFFECT_SELECT,
         PRESET_SELECT
     };
@@ -45,6 +48,7 @@ private:
     int lastEncoderPos = 0;
     bool lastAuxButtonState = false;
     unsigned long modeChangeTimer = 0;
+    unsigned long settingSelectTimer = 0;
     bool modeWasSet = false;
     // Rotary Encoder
     int lastEncoded = 0;
@@ -76,11 +80,42 @@ public:
         {
             handleEffectButtonPress();
         }
-        else if (controlState == EFFECT_SELECT || controlState == PRESET_SELECT)
+        else if (controlState == SETTING_SELECT)
+        {
+            if (millis() - settingSelectTimer > 250)
+            {
+                handleSettingSelect();
+            }
+        }
+        else if (controlState == EFFECT_SELECT || controlState == PRESET_SELECT || controlState == PALETTE_SELECT)
         {
             pollEncoder(POLL_RATE);
             handleEncoderChange();
         }
+    }
+
+    void handleSettingSelect()
+    {
+        if (indexButton.isPressed())
+        {
+            handleSelectEffect();
+        }
+        else if (middleButton.isPressed())
+        {
+            handleSelectPalette();
+        }
+    }
+
+    void handleSelectEffect()
+    {
+        controlState = EFFECT_SELECT;
+        effectsHandler.selectEffectMode();
+    }
+
+    void handleSelectPalette()
+    {
+        controlState = PALETTE_SELECT;
+        effectsHandler.selectPaletteMode();
     }
 
     int getControlState()
@@ -127,7 +162,8 @@ public:
         curButton = button;
         encoderPos = 0;
         effectsHandler.selectButton(button);
-        controlState = EFFECT_SELECT;
+        controlState = SETTING_SELECT;
+        settingSelectTimer = millis();
         // effectsHandler.unsuppressEffects();
     }
 
@@ -160,6 +196,7 @@ public:
         }
         else
         {
+            effectsHandler.resetEffects();
             setEffectMode();
         }
     }
@@ -236,7 +273,14 @@ public:
             }
             else
             {
-                effectsHandler.selectEffect(curButton, getPos());
+                if (controlState == EFFECT_SELECT)
+                {
+                    effectsHandler.selectEffect(curButton, getPos());
+                }
+                else if (controlState == PALETTE_SELECT)
+                {
+                    effectsHandler.selectPalette(curButton, getPos());
+                }
             }
         }
     }

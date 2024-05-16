@@ -15,7 +15,7 @@ private:
     Rings rings;
 
 public:
-    PanelFlash(ColorPalette pal = rainbow_cp, int numPanels = 2) : BaseEffect(pal), rings(vleds)
+    PanelFlash(ColorPalette *pal = &white_cp, int numPanels = 2) : BaseEffect(pal), rings(vleds)
     {
         minUpdatePeriod = 100;
         if (numPanels < 1)
@@ -48,7 +48,7 @@ public:
 
         for (int i = breakPoints[panelIndex]; i < breakPoints[panelIndex + 1]; i++)
         {
-            vleds[i] = CHSV(0, 0, 255);
+            vleds[i] = palette->getRandomColor();
         }
     }
 

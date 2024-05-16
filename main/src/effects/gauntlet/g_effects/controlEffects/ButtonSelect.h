@@ -17,7 +17,7 @@ private:
     uint8_t flashInc = 20;
 
 public:
-    ButtonSelect(ColorPalette pal = rainbow_cp) : BaseEffect(pal) {}
+    ButtonSelect(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal) {}
 
     void trigger() override
     {

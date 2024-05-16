@@ -68,10 +68,10 @@ public:
             CHSV color = colors[index];
 
             int h = color.h + random(-hueVariance, hueVariance);
-            int s = color.s + random(-satVariance, satVariance);
-            int v = color.v + random(-valVariance, valVariance);
+            int s = color.s + random(-satVariance, 0);
+            int v = color.v + random(-valVariance, 0);
 
-            color.h = constrain(h, 0, 255);
+            color.h = h % 255;
             color.s = constrain(s, 0, 255);
             color.v = constrain(v, 0, 255);
 
@@ -132,6 +132,15 @@ public:
     size_t size() const
     {
         return colors.size();
+    }
+
+    void rotate(int index)
+    {
+        if (size() != 1)
+        {
+            return;
+        }
+        colors[0].h = (index % 255);
     }
 };
 

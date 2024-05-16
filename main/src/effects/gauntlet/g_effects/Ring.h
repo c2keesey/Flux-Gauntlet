@@ -24,7 +24,7 @@ private:
     int breakpoints[17] = {0};
 
 public:
-    Ring(ColorPalette pal = rainbow_cp) : BaseEffect(pal)
+    Ring(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal)
     {
     }
 
