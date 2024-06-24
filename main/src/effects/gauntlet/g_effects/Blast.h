@@ -4,6 +4,13 @@
 #define BLAST_H
 
 #include "../../shared/effects/BaseEffect.h"
+#include "../Rings.h"
+
+struct BlastRing
+{
+    int ringI;
+    CHSV color;
+};
 
 class Blast : public BaseEffect
 {
@@ -11,28 +18,19 @@ private:
     uint8_t hue = 0;
     uint8_t len = 6;
     int speed = 15;
-    int rings[16] = {21, 27, 25, 23, 23, 22, 20, 19, 19, 19, 17, 16, 15, 12, 12, 10};
-    int numRings = 16;
-    int breakpoints[17] = {0};
+    Rings rings;
+    std::vector<BlastRing> active;
 
 public:
-    Blast(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal)
+    Blast(ColorPalette *pal = &rainbow_cp) : BaseEffect(pal), rings(vleds)
     {
         minUpdatePeriod = 50;
-        palette = pal;
-        for (int i = 0; i < numRings; i++)
-        {
-            breakpoints[i + 1] = breakpoints[i] + rings[i];
-        }
     }
 
     void trigger() override
     {
         CHSV color = palette->getNextColor();
-        for (uint8_t i = 0; i < breakpoints[1]; i++)
-        {
-            vleds[i] = color;
-        }
+        active.push_back({0, color});
     }
 
     // TODO: Add additional vleds to ends of vleds, and return update BaseEffect getVleds() to draw first ring properly
@@ -41,22 +39,21 @@ public:
         if (millis() - prevMillis > speed)
         {
             prevMillis = millis();
-            for (int i = 0; i < rings[numRings - 1]; i++)
+            clearVleds(vleds);
+            for (auto it = active.begin(); it != active.end();)
             {
-                vleds[NUM_LEDS - i - 1] = CHSV(0, 0, 0);
-            }
-            int samplePos = NUM_LEDS - 1 - rings[numRings - 1];
-            for (int i = numRings - 1; i > 0; i--)
-            {
-                CHSV samplePixel = vleds[samplePos];
-                for (int j = 0; j < rings[i]; j++)
+                for (int i = rings.getRingStart(it->ringI); i < rings.getRingEnd(it->ringI); i++)
                 {
-                    vleds[samplePos + 1 + j] = samplePixel;
+                    updateVleds(i, it->color);
                 }
-                samplePos -= rings[i - 1];
-                for (int j = 0; j < rings[i - 1]; j++)
+                it->ringI++;
+                if (it->ringI >= rings.getNumRings())
                 {
-                    vleds[samplePos + 1 + j] = CHSV(0, 0, 0);
+                    it = active.erase(it);
+                }
+                else
+                {
+                    ++it;
                 }
             }
         }

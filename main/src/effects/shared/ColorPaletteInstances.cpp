@@ -77,3 +77,12 @@ std::vector<CHSV> white = {
 };
 
 ColorPalette white_cp(white);
+
+std::vector<CHSV> simulation = {
+    CHSV(132, 255, 255), // Cyan
+    CHSV(224, 255, 255), // Pink?
+    CHSV(0, 0, 0),
+
+};
+
+ColorPalette simulation_cp(simulation);

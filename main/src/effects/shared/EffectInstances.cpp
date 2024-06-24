@@ -9,6 +9,8 @@
 #include "../gauntlet/g_effects/PanelFlash.h"
 #include "../gauntlet/g_effects/Lightning.h"
 #include "../gauntlet/g_effects/BitSwitch.h"
+#include "../gauntlet/g_effects/BlastCollide.h"
+#include "../gauntlet/g_effects/ReverseTred.h"
 
 // Naming convention: effectName + "_" + version
 
@@ -21,8 +23,7 @@ std::map<std::string, BaseEffect *> initEffects()
     effects["blast_america"] = new Blast(&america_cp);
     effects["blast_christmas"] = new Blast(&christmas_cp);
     effects["blast_mecha"] = new Blast(&mecha_cp);
-    effects["blast_ice"] = new Blast(&ice_cp);
-    effects["blast_fire"] = new Blast(&fire_cp);
+    effects["blastCollide_1"] = new BlastCollide();
 
     // Pew
     effects["pew_1"] = new Pew();
@@ -57,6 +58,13 @@ std::map<std::string, BaseEffect *> initEffects()
     // BitSwitch
     effects["bitSwitch_carnival"] = new BitSwitch(&rainbow_cp, true);
     effects["bitSwitch_1"] = new BitSwitch(&ice_cp, true);
+    effects["bitSwitch_smooth"] = new BitSwitch(&rainbow_cp, false);
+
+    // ReverseTred
+    effects["reverseTred_1"] = new ReverseTred();
+    effects["reverseTred_smallfast"] = new ReverseTred(&rainbow_cp, 0.1f, 5, 2);
+    effects["reverseTred_longslow"] = new ReverseTred(&rainbow_cp, 0.01f, 20, 10);
+    effects["reverseTred_smallfast_vr"] = new ReverseTred(&simulation_cp, 0.1f, 5, 2);
 
     return effects;
 }

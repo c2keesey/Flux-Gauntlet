@@ -43,14 +43,18 @@ void clearVleds(CHSV *vleds)
 //     }
 // }
 
-CHSV colorFraction(CHSV colorIn, float fraction)
+CHSV colorFraction(CHSV colorIn, float fraction, u8_t floor)
 {
     fraction = max(0.0f, min(1.0f, fraction));
     uint8_t scale = fraction * colorIn.v;
+    if (scale < floor)
+    {
+        scale = 0;
+    }
     return CHSV(colorIn.h, colorIn.s, scale);
 }
 
-void drawPrecise(float fPos, float len, CHSV color, CHSV *vleds)
+void drawPrecise(float fPos, float len, CHSV color, CHSV *vleds, u8_t floor)
 {
     float availFirstPixel = 1.0f - (fPos - (long)fPos);
     float amtFirstPixel = min(availFirstPixel, len);
@@ -64,7 +68,7 @@ void drawPrecise(float fPos, float len, CHSV color, CHSV *vleds)
 
     if (remaining > 0.0f)
     {
-        CHSV blendedColor = colorFraction(color, amtFirstPixel);
+        CHSV blendedColor = colorFraction(color, amtFirstPixel, floor);
         vleds[iPos] = blend(vleds[iPos], blendedColor, amtFirstPixel * 255);
         iPos++;
         remaining -= amtFirstPixel;
@@ -79,7 +83,7 @@ void drawPrecise(float fPos, float len, CHSV color, CHSV *vleds)
 
     if (remaining > 0.0f && iPos < NUM_LEDS)
     {
-        CHSV blendedColor = colorFraction(color, remaining);
+        CHSV blendedColor = colorFraction(color, remaining, floor);
         vleds[iPos] = blend(vleds[iPos], blendedColor, remaining * 255);
     }
 }

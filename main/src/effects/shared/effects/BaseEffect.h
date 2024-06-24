@@ -49,7 +49,7 @@ public:
 
     void setPalette(ColorPalette pal);
     void setRotationPalette();
-    void rotatePalette(int index);
+    virtual void rotatePalette(int index);
     void reset();
 
     virtual bool isEffectActive();

@@ -51,6 +51,12 @@ public:
         }
     }
 
+    void rotatePalette(int index) override
+    {
+        BaseEffect::rotatePalette(index);
+        initColors();
+    }
+
     void update() override
     {
         if (!active)

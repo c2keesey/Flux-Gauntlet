@@ -13,7 +13,10 @@ Safety margin ~15%
 Pinout: https://resource.heltec.cn/download/WiFi_Kit_32_V3/HTIT-WB32_V3.png
 
 */
-#define MAX_STRIP_DRAW 500 // TODO: attatch to voltage pin to dynamically adjust
+
+// Set to 2400 for battery use
+#define MAX_STRIP_DRAW 2400 // TODO: attatch to voltage pin to dynamically adjust?
+
 #define LED_BUILTIN 35
 
 // LED Strip

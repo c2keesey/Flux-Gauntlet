@@ -26,7 +26,6 @@ void EffectLibrary::init()
 
     // Assign effects to button maps
     buttonEffectMap[THUMB] = std::vector<BaseEffect *>{
-        effects["bitSwitch_1"],
         effects["ringFlash"],
         effects["panelFlash_2"],
         effects["panelFlash_3"],
@@ -39,19 +38,29 @@ void EffectLibrary::init()
     };
 
     buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{
+        effects["blastCollide_1"],
         effects["blast_1"],
+        effects["blast_america"],
+        effects["blast_christmas"],
+        effects["blast_mecha"],
     };
 
     buttonEffectMap[RINGF] = std::vector<BaseEffect *>{
         effects["casimir_1"],
         effects["casimir_mecha"],
+        effects["reverseTred_smallfast_vr"],
     };
 
     buttonEffectMap[PINKY] = std::vector<BaseEffect *>{
+        effects["reverseTred_smallfast"],
+        effects["reverseTred_longslow"],
+        effects["reverseTred_1"],
+        effects["reverseTred_smallfast_vr"],
         effects["big_firework"],
         effects["twinkle_1"],
         effects["pew_1"],
-    };
+        effects["bitSwitch_carnival"],
+        effects["bitSwitch_smooth"]};
 
     // Setup presets
     PresetContainer favorites = {
@@ -78,6 +87,15 @@ void EffectLibrary::init()
         effects["pew_ice"],
     };
     presetMap[FIREANDICE] = fireAndIce;
+
+    PresetContainer ambient = {
+        effects["flash_1"],
+        effects["blast_ice"],
+        effects["blast_fire"],
+        effects["pew_fire"],
+        effects["pew_ice"],
+    };
+    presetMap[AMBIENT] = ambient;
 }
 
 EffectLibrary::~EffectLibrary()

@@ -1,0 +1,1 @@
+#define MAX_STRIP_DRAW 500 // TODO: attatch to voltage pin to dynamically adjust?

@@ -19,7 +19,6 @@ OLEDControl oledControl;
 
 // LEDs
 CRGB leds[NUM_LEDS] = {0};
-int hue = 100;
 
 // Buttons
 Button thumbButton(THUMBF_BUTTON_PIN, THUMB);
@@ -75,6 +74,25 @@ void setup()
     Serial.begin(9600);
 }
 
+void drawHues()
+{
+    u8_t hue = controlHandler.getPos();
+    for (int i = NUM_LEDS - 1; i > NUM_LEDS - 50; i--)
+    {
+        leds[i] = CHSV(hue, 255, 255);
+    }
+    FastLED.show();
+}
+
+void printHeap()
+{
+    uint32_t freeHeap = ESP.getFreeHeap();
+
+    // Print the free heap memory
+    Serial.print("Free Heap: ");
+    Serial.print(freeHeap);
+    Serial.println(" bytes");
+}
 void loop()
 {
     double dStart = millis() / 1000.0;
@@ -90,16 +108,14 @@ void loop()
     }
 
     controlHandler.handleButtonPress();
+    controlHandler.pollEncoderTest();
+
+    // drawHues();
 
     effectsHandler.handleButtonPress();
     effectsHandler.drawFrame();
 
-    // uint32_t freeHeap = ESP.getFreeHeap();
-
-    // // Print the free heap memory
-    // Serial.print("Free Heap: ");
-    // Serial.print(freeHeap);
-    // Serial.println(" bytes");
+    // printHeap();
 
     fps = FramesPerSecond(millis() / 1000.0 - dStart);
 }

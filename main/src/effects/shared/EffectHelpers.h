@@ -9,10 +9,10 @@ const CHSV BLACK(0, 0, 0);
 void clearVleds(CHSV *vleds);
 
 // Helper for drawPrecise
-CHSV colorFraction(CHSV colorIn, float fraction);
+CHSV colorFraction(CHSV colorIn, float fraction, u8_t floor);
 
 // Draw a segment that appears to move between LEDs in vleds.
-void drawPrecise(float fPos, float len, CHSV color, CHSV *vleds);
+void drawPrecise(float fPos, float len, CHSV color, CHSV *vleds, u8_t floor = 0);
 
 // Outputs a random number in the range [-x, -y], [y, x]
 float randomAbsRange(float x, float y);
