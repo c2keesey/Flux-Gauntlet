@@ -1,0 +1,12 @@
+#ifndef WIFI_CONFIG_H
+#define WIFI_CONFIG_H
+
+const char *ssid = "YourWiFiSSID";
+const char *password = "YourWiFiPassword";
+
+// Los Angeles coordinates and UTC offset
+#define LATITUDE 34.0522
+#define LONGITUDE -118.2437
+#define UTC_OFFSET -8
+
+#endif // WIFI_CONFIG_H

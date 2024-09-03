@@ -12,10 +12,6 @@ COMPILE_FLAGS := --fqbn $(BOARD) --verbose
 
 # Default target
 all: compile upload
-ifeq ($(findstring -m,$(MAKECMDGOALS)),)
-else
-all: monitor
-endif
 
 # Compile
 compile: copy
@@ -48,4 +44,7 @@ ifeq ($(DEV), true)
 	cp $(DIR)/test_Main.h $(DIR)/main.ino
 endif
 
-.PHONY: all compile upload clean copy monitor pre-compile post-compile
+# New target for compile, upload, and monitor
+am: all monitor
+
+.PHONY: all compile upload clean copy monitor am

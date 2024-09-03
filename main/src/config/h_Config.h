@@ -35,11 +35,6 @@ const int NUM_LEDS = NUM_BFR + NUM_BFL;
 
 #define NUM_PALETTES 6
 
-#define MIDDLE 0
-#define RINGF 1
-#define THUMB 2
-#define AUX_BUTTON 3
-
 // OLED
 #define OLED_FRAME_RATE 30
 
@@ -55,5 +50,20 @@ const int NUM_LEDS = NUM_BFR + NUM_BFL;
 // Rotary Encoder
 #define ENCODER_PIN_A 33
 #define ENCODER_PIN_B 26
+
+// From g_Config.h for compilation
+
+#define NUM_EFFECT_BUTTONS 5
+enum ButtonEnum
+{
+
+    NONE_BUTTON = -1,
+    MIDDLE = 0,
+    RINGF = 1,
+    THUMB = 2,
+    INDEX = 3,
+    PINKY = 4,
+    AUX = 5,
+};
 
 #endif // H_CONFIG_H
