@@ -43,6 +43,7 @@ void clearVleds(CHSV *vleds)
 //     }
 // }
 
+// floor is the minimum brightness to draw the pixel at
 CHSV colorFraction(CHSV colorIn, float fraction, u8_t floor)
 {
     fraction = max(0.0f, min(1.0f, fraction));

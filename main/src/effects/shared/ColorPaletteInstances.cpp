@@ -90,6 +90,7 @@ ColorPalette simulation_cp(simulation);
 std::vector<CHSV> halloween = {
     CHSV(17, 255, 255),  // Orange
     CHSV(191, 255, 255), // Purple
+    CHSV(0, 0, 0),       // Not spread
 };
 
 ColorPalette halloween_cp(halloween);

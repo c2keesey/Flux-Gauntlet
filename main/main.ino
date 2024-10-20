@@ -278,7 +278,8 @@ void loop()
     if (currentTime - lastActivationCheck >= 600000 || lastActivationCheck == 0)
     {
         testWiFiConnection();
-        isActive = isActivationTime();
+        // isActive = isActivationTime();
+        isActive = true;
         lastActivationCheck = currentTime;
 
         // Clear and turn off LEDs when transitioning to inactive state

@@ -10,13 +10,21 @@
 
 struct TwinkleLED
 {
-    int pos;
+    float pos;
     CHSV color;
     bool fadeIn;
     int fadeSpeed;
+    int size;
+    float drift; // Changed from int to float
     // float pos; // TODO: Movement
     // int lifetime; // TODO: Decay
-    TwinkleLED(int p, CHSV c, int fs, bool f = true) : pos(p), color(c), fadeIn(f), fadeSpeed(fs) {}
+    TwinkleLED(float p, CHSV c, int fs, int s = 1, float d = 0.0f, bool f = true) : pos(p), color(c), fadeIn(f), fadeSpeed(fs), size(s), drift(d)
+    {
+        if (s == 0)
+        {
+            size = random(1, 4);
+        }
+    }
 };
 
 class Twinkle : public BaseEffect
@@ -25,14 +33,16 @@ private:
     unsigned long fadeMillis = 0;
     uint8_t value = 0;
     bool active = false;
-    int fadeRate = 20;
-    int spawnRate = 50;
+    int updateRate = 20;
+    int spawnRate = 20; // 40ms = 25fps
     std::vector<TwinkleLED> tleds;
     CHSV orange = CHSV(17, 255, 255);
     CHSV purple = CHSV(191, 255, 255);
+    const int hueVariance = 5;
 
     void updateTwinkles()
     {
+        clearVleds(vleds);
         for (auto it = tleds.begin(); it != tleds.end();)
         {
             if (it->fadeIn)
@@ -49,7 +59,7 @@ private:
                 it->color.value = qsub8(it->color.value, it->fadeSpeed);
                 if (it->color.value == 0)
                 {
-                    updateVleds(it->pos, it->color);
+
                     it = tleds.erase(it);
                 }
                 else
@@ -57,6 +67,7 @@ private:
                     ++it;
                 }
             }
+            it->pos += it->drift;
         }
     }
 
@@ -64,7 +75,10 @@ private:
     {
         for (auto it = tleds.begin(); it != tleds.end(); it++)
         {
-            updateVleds(it->pos, it->color);
+            for (int i = 0; i < it->size; i++)
+            {
+                drawPrecise(it->pos + i, it->size, it->color, vleds, 10);
+            }
         }
     }
 
@@ -80,6 +94,13 @@ public:
         active = !active;
     }
 
+    CHSV getColor()
+    {
+        CHSV color = palette->getExactRandomColor();
+        color.h += random(-hueVariance, hueVariance);
+        return color;
+    }
+
     void update() override
     {
         if (!active)
@@ -88,11 +109,12 @@ public:
         }
         EVERY_N_MILLIS(spawnRate)
         {
-            CHSV color = random(2) == 0 ? orange : purple;
+            CHSV color = getColor();
             color.v = 0;
-            tleds.push_back(TwinkleLED(random(NUM_LEDS), color, random(1, 5)));
+            float randomDrift = static_cast<float>(random(-300, 300)) / 10000.0f; // Generate random float between -1 and 1
+            tleds.push_back(TwinkleLED(random(NUM_LEDS), color, random(1, 7), 1, randomDrift));
         }
-        EVERY_N_MILLIS(fadeRate)
+        EVERY_N_MILLIS(updateRate)
         {
             updateTwinkles();
             drawTwinkles();

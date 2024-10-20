@@ -27,12 +27,14 @@ public:
         valVariance = valVar;
 
         colors = colorList;
-        std::vector<CHSV>::const_iterator it = std::find(colorList.begin(), colorList.end(), CHSV(0, 0, 0));
-        if (it != colorList.end())
-        {
-            isTwoColorSpread = false;
-            colors.erase(it);
-        }
+
+        // Remove CHSV(0, 0, 0) using a lambda for accurate comparison
+        auto it = std::remove_if(colors.begin(), colors.end(), [](const CHSV &c)
+                                 { return (c.h == 0 && c.s == 0 && c.v == 0); });
+        colors.erase(it, colors.end());
+
+        // Determine if it's a two-color spread based on the remaining colors
+        isTwoColorSpread = (colors.size() == 2);
     }
 
     CHSV getExactColor(size_t index) const
