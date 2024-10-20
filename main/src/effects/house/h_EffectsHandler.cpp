@@ -7,7 +7,7 @@
 #include "../house/h_effects/Sparks.h"
 #include "../shared/effects/FireworkShow.h"
 #include "../shared/effects/Ataraxy.h"
-
+#include "../shared/effects/Twinkle.h"
 extern CRGB *leds[];
 
 h_EffectsHandler::h_EffectsHandler() : EffectsHandler()
@@ -29,6 +29,10 @@ void h_EffectsHandler::setupEffectLibrary()
 {
     BaseEffect *effect = new FireworkShow(0.05f, 40.0f);
     activeEffects.push_back(effect);
+
+    BaseEffect *effect2 = new Twinkle(20, &halloween_cp);
+    effect2->trigger();
+    activeEffects.push_back(effect2);
 }
 
 void h_EffectsHandler::setupTestLibrary()
@@ -47,7 +51,6 @@ void h_EffectsHandler::drawFrame()
     FastLED.clear(false);
     for (size_t i = 0; i < getEffectCount(); i++)
     {
-
         getEffect(i)->draw();
     }
     for (size_t i = 0; i < getEffectCount(); i++)

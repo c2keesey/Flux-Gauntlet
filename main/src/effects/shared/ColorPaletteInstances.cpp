@@ -86,3 +86,10 @@ std::vector<CHSV> simulation = {
 };
 
 ColorPalette simulation_cp(simulation);
+
+std::vector<CHSV> halloween = {
+    CHSV(17, 255, 255),  // Orange
+    CHSV(191, 255, 255), // Purple
+};
+
+ColorPalette halloween_cp(halloween);

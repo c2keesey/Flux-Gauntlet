@@ -140,7 +140,7 @@ bool isActivationTime()
     sun.setCurrentDate(year(), month(), day());
     int sunset = static_cast<int>(sun.calcSunset());
     int activationStart = sunset + 30;         // 30 minutes after sunset
-    int activationEnd = activationStart + 300; // 5 hours after activation start
+    int activationEnd = activationStart + 480; // 8 hours after activation start
 
     int currentMinute = hour() * 60 + minute();
 
@@ -218,9 +218,7 @@ void printTimeDebug()
     Serial.println(" hours");
 
     Serial.print("Current time (local): ");
-    // Replace the following line:
-    // Serial.println(timeClient.getFormattedTime());
-    // With:
+
     Serial.println(getFormattedTime());
 
     Serial.print("Sunrise time (local): ");
@@ -238,56 +236,84 @@ void printTimeDebug()
     Serial.println("-------------------");
 }
 
-void loop()
+double calculateFPS(unsigned long currentLoopStart, unsigned long lastLoopStart)
 {
-    EVERY_N_SECONDS(5)
+    if (lastLoopStart != 0)
     {
-        printTimeDebug();
+        double loopTime = (currentLoopStart - lastLoopStart) / 1000.0;
+        if (loopTime > 0)
+        {
+            return FramesPerSecond(loopTime);
+        }
+    }
+    return 0.0;
+}
+
+void activateFireworks()
+{
+
+    EVERY_N_SECONDS(random(2, 5))
+    {
+        effectsHandler.triggerEffect(0);
     }
 
-    if (isActivationTime())
+    EVERY_N_MINUTES(random(5, 10))
     {
-        static unsigned long lastLoopStart = 0;
-        unsigned long loopStart = millis();
-        double loopTime = 0;
-
-        if (lastLoopStart != 0)
-        {
-            loopTime = (loopStart - lastLoopStart) / 1000.0;
-            if (loopTime > 0)
-            {
-                fps = FramesPerSecond(loopTime);
-            }
-        }
-
-        lastLoopStart = loopStart;
-        EVERY_N_SECONDS(random(2, 5))
+        for (int i = 0; i < 10; i++)
         {
             effectsHandler.triggerEffect(0);
         }
+    }
+}
 
-        EVERY_N_MINUTES(random(5, 10))
+void loop()
+{
+    static unsigned long lastActivationCheck = 0;
+    static bool isActive = false;
+    static unsigned long lastLoopStart = 0;
+
+    unsigned long currentTime = millis();
+
+    // Check activation status every 10 minutes
+    if (currentTime - lastActivationCheck >= 600000 || lastActivationCheck == 0)
+    {
+        testWiFiConnection();
+        isActive = isActivationTime();
+        lastActivationCheck = currentTime;
+
+        // Clear and turn off LEDs when transitioning to inactive state
+        if (!isActive)
         {
-            for (int i = 0; i < 10; i++)
-            {
-                effectsHandler.triggerEffect(0);
-            }
+            FastLED.clear();
+            FastLED.show();
+            FastLED.setBrightness(0);
         }
-        effectsHandler.drawFrame();
+        else
+        {
+            // Restore brightness when becoming active
+            FastLED.setBrightness(BRIGHTNESS);
+        }
+    }
 
-        // if (millis() - lastUpdateDisplay > displayRate)
-        // {
-        //     lastUpdateDisplay = millis();
-        //     oledControl.displayFPSOLED(fps);
-        //     sendStats();
-        // }
+    if (isActive)
+    {
+        // FPS
+        unsigned long loopStart = millis();
+        fps = calculateFPS(loopStart, lastLoopStart);
+        lastLoopStart = loopStart;
+
+        // Effects
+        // activateFireworks();
+
+        effectsHandler.drawFrame();
+        FastLED.show(); // Make sure to show the updated LEDs
     }
     else
     {
-        delay(60000); // Check every minute if it's activation time
+        delay(60000); // Check every 1 minute if it's activation time
     }
 
-    EVERY_N_MINUTES(60)
+    EVERY_N_MINUTES(1)
     {
         testWiFiConnection();
     }
