@@ -19,6 +19,9 @@ Safety margin ~15%
 // Balcony Front Left and Right strips
 #define NUM_BFR 263
 #define NUM_BFL 298
+#define BFL_CORNER 123
+#define BFR_CORNER 439
+#define BF_CENTER 281
 const int NUM_LEDS = NUM_BFR + NUM_BFL;
 
 #define PIN_BFL 1

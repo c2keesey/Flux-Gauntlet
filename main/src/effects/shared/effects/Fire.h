@@ -18,6 +18,32 @@
 #include "../EffectHelpers.h"
 #include "BaseEffect.h"
 
+CHSV HeatColorHSV(uint8_t temperature)
+{
+    CHSV heatColor;
+
+    if (temperature > 170)
+    {                                                     // Top third (170-255): white to yellow
+        heatColor.h = 60;                                 // Yellow hue
+        heatColor.s = map(temperature, 170, 255, 255, 0); // Decreasing saturation (more white)
+        heatColor.v = 255;                                // Full brightness
+    }
+    else if (temperature > 40)
+    {                                                   // Middle third (85-170): yellow to red
+        heatColor.h = map(temperature, 40, 170, 0, 60); // Red to yellow hue
+        heatColor.s = 255;                              // Full saturation
+        heatColor.v = 255;                              // Full brightness
+    }
+    else
+    {                                                  // Bottom third (0-85): red to black
+        heatColor.h = 0;                               // Red hue
+        heatColor.s = 255;                             // Full saturation
+        heatColor.v = map(temperature, 0, 85, 0, 255); // Increasing brightness
+    }
+
+    return heatColor;
+}
+
 class FireEffectSmooth : public BaseEffect
 {
 protected:
@@ -86,19 +112,121 @@ public:
         }
         for (int i = 0; i < Size; i++)
         {
-            vleds[i] = rgb2hsv_approximate(HeatColor(240 * min(1.0f, Temperatures[i])));
+            vleds[i] = HeatColorHSV(240 * min(1.0f, Temperatures[i]));
         }
     }
 };
 
+// class ClassicFireEffectRBG : public BaseEffect
+// {
+// protected:
+//     int Size;
+//     int Cooling;
+//     int Sparks;
+//     int SparkHeight;
+//     int Sparking;
+//     bool bReversed;
+//     bool bMirrored;
+
+//     byte *heat;
+
+//     // When diffusing the fire upwards, these control how much to blend in from the cells below (ie: downward neighbors)
+//     // You can tune these coefficients to control how quickly and smoothly the fire spreads.
+
+//     static const byte BlendSelf = 2;
+//     static const byte BlendNeighbor1 = 3;
+//     static const byte BlendNeighbor2 = 2;
+//     static const byte BlendNeighbor3 = 1;
+//     static const byte BlendTotal = (BlendSelf + BlendNeighbor1 + BlendNeighbor2 + BlendNeighbor3);
+
+//     CRGB *vledsRGB = new CRGB[NUM_LEDS];
+
+// public:
+//     // Lower sparking -> more flicker.  Higher sparking -> more consistent flame
+
+//     ClassicFireEffectRGB(int size, int cooling = 20, int sparking = 20, int sparks = 3, int sparkHeight = 10, bool breversed = true, bool bmirrored = true)
+//         : BaseEffect(),
+//           Size(size),
+//           Cooling(cooling),
+//           Sparks(sparks),
+//           SparkHeight(sparkHeight),
+//           Sparking(sparking),
+//           bReversed(breversed),
+//           bMirrored(bmirrored)
+//     {
+//         if (bMirrored)
+//             Size = Size / 2;
+
+//         heat = new byte[size]{0};
+//     }
+
+//     virtual ~ClassicFireEffect()
+//     {
+//         delete[] heat;
+//     }
+
+//     void trigger() override {}
+
+//     void update() override
+//     {
+//         clearVleds(vleds);
+//         for (int i = 0; i < NUM_LEDS; i++)
+//         {
+//             vledsRGB[i] = CRGB(0, 0, 0);
+//         }
+//         // First cool each cell by a little bit
+//         for (int i = 0; i < Size; i++)
+//             heat[i] = max(0L, heat[i] - random(0, ((Cooling * 10) / Size) + 2));
+
+//         // Next drift heat up and diffuse it a little but
+//         for (int i = 0; i < Size; i++)
+//             heat[i] = (heat[i] * BlendSelf +
+//                        heat[(i + 1) % Size] * BlendNeighbor1 +
+//                        heat[(i + 2) % Size] * BlendNeighbor2 +
+//                        heat[(i + 3) % Size] * BlendNeighbor3) /
+//                       BlendTotal;
+
+//         // Randomly ignite new sparks down in the flame kernel
+//         for (int i = 0; i < Sparks; i++)
+//         {
+//             if (random(255) < Sparking)
+//             {
+//                 int y = Size - 1 - random(SparkHeight);
+//                 heat[y] = heat[y] + random(160, 255); // This randomly rolls over sometimes of course, and that's essential to the effect
+//             }
+//         }
+
+//         // Finally convert heat to a color
+//         for (int i = 0; i < Size; i++)
+//         {
+//             CRGB color = HeatColor(heat[i]);
+//             int j = bReversed ? (Size - 1 - i) : i;
+//             drawPreciseRGB(j, 1, color, vledsRGB);
+//             if (bMirrored)
+//             {
+//                 int j2 = !bReversed ? (2 * Size - 1 - i) : Size + i;
+//                 drawPreciseRGB(j2, 1, color, vledsRGB);
+//             }
+//         }
+
+//         for (int i = 0; i < Size; i++)
+//         {
+//             vleds[i] = rgb2hsv_approximate(vledsRGB[i]);
+//         }
+//     }
+// };
+
 class ClassicFireEffect : public BaseEffect
 {
 protected:
+    int Start;
+    int End;
     int Size;
     int Cooling;
     int Sparks;
     int SparkHeight;
-    int Sparking;
+    int Sparking; // Threshold for sparking, higher = more sparks
+    int DriftSpeed;
     bool bReversed;
     bool bMirrored;
 
@@ -113,25 +241,26 @@ protected:
     static const byte BlendNeighbor3 = 1;
     static const byte BlendTotal = (BlendSelf + BlendNeighbor1 + BlendNeighbor2 + BlendNeighbor3);
 
-    CRGB *vledsRGB = new CRGB[NUM_LEDS];
-
 public:
     // Lower sparking -> more flicker.  Higher sparking -> more consistent flame
 
-    ClassicFireEffect(int size, int cooling = 20, int sparking = 20, int sparks = 3, int sparkHeight = 10, bool breversed = true, bool bmirrored = true)
+    ClassicFireEffect(int start, int end, int cooling = 10, int sparking = 50, int sparks = 5, int sparkHeight = 5, int driftPeriod = 20, bool breversed = true, bool bmirrored = true)
         : BaseEffect(),
-          Size(size),
+          Start(start),
+          End(end),
+          Size(end - start),
           Cooling(cooling),
           Sparks(sparks),
           SparkHeight(sparkHeight),
           Sparking(sparking),
+          DriftSpeed(driftPeriod),
           bReversed(breversed),
           bMirrored(bmirrored)
     {
         if (bMirrored)
             Size = Size / 2;
 
-        heat = new byte[size]{0};
+        heat = new byte[Size]{0};
     }
 
     virtual ~ClassicFireEffect()
@@ -144,15 +273,15 @@ public:
     void update() override
     {
         clearVleds(vleds);
-        for (int i = 0; i < NUM_LEDS; i++)
-        {
-            vledsRGB[i] = CRGB(0, 0, 0);
-        }
+
         // First cool each cell by a little bit
         for (int i = 0; i < Size; i++)
             heat[i] = max(0L, heat[i] - random(0, ((Cooling * 10) / Size) + 2));
 
         // Next drift heat up and diffuse it a little but
+        // Macro doesnt work when terhe are multiple instances!!
+        // EVERY_N_MILLIS(DriftSpeed)
+        // {
         for (int i = 0; i < Size; i++)
             heat[i] = (heat[i] * BlendSelf +
                        heat[(i + 1) % Size] * BlendNeighbor1 +
@@ -173,19 +302,15 @@ public:
         // Finally convert heat to a color
         for (int i = 0; i < Size; i++)
         {
-            CRGB color = HeatColor(heat[i]);
+            CHSV color = HeatColorHSV(heat[i]);
             int j = bReversed ? (Size - 1 - i) : i;
-            drawPreciseRGB(j, 1, color, vledsRGB);
+            drawPrecise(Start + j, 1, color, vleds);
             if (bMirrored)
             {
                 int j2 = !bReversed ? (2 * Size - 1 - i) : Size + i;
-                drawPreciseRGB(j2, 1, color, vledsRGB);
+                drawPrecise(Start + j2, 1, color, vleds);
             }
         }
-
-        for (int i = 0; i < Size; i++)
-        {
-            vleds[i] = rgb2hsv_approximate(vledsRGB[i]);
-        }
+        // }
     }
 };
