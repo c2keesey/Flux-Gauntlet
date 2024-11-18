@@ -23,4 +23,13 @@ float randomVariance(float number, float variancePercent);
 // Inverse scale a uint8_t value for speed and period timing
 int inverseScale(uint8_t value, int min, int max);
 
+// Random float between 0 and 1 with high precision
+float RandomFloat();
+
+// Fade a color by a fraction
+CRGB colorFractionRGB(CRGB colorIn, float fraction);
+
+// Draw a segment that appears to move between LEDs in vleds.
+void drawPreciseRGB(float fPos, float count, CRGB color, CRGB *vleds);
+
 #endif // EFFECTHELPERS_H

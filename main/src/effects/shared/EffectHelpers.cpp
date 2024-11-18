@@ -9,39 +9,39 @@ void clearVleds(CHSV *vleds)
     }
 }
 
-// CRGB colorFraction(CRGB colorIn, float fraction)
-// {
-//     fraction = max(0.0f, min(1.0f, fraction));
-//     uint8_t scale = fraction * 255;
-//     return colorIn.nscale8_video(scale);
-// }
+CRGB colorFractionRGB(CRGB colorIn, float fraction)
+{
+    fraction = max(0.0f, min(1.0f, fraction));
+    uint8_t scale = fraction * 255;
+    return colorIn.nscale8_video(scale);
+}
 
-// void drawPrecise(float fPos, float len, CRGB color, CRGB *vleds)
-// {
-//     float availFirstPixel = 1.0f - (fPos - (long)fPos);
-//     float amtFirstPixel = min(availFirstPixel, len);
-//     float remaining = max(0.0f, min(len, NUM_LEDS - fPos));
-//     int iPos = fPos;
-//     if (iPos < 0 || iPos >= NUM_LEDS)
-//     {
-//         return;
-//     }
+void drawPreciseRGB(float fPos, float len, CRGB color, CRGB *vleds)
+{
+    float availFirstPixel = 1.0f - (fPos - (long)fPos);
+    float amtFirstPixel = min(availFirstPixel, len);
+    float remaining = max(0.0f, min(len, NUM_LEDS - fPos));
+    int iPos = fPos;
+    if (iPos < 0 || iPos >= NUM_LEDS)
+    {
+        return;
+    }
 
-//     if (remaining > 0.0f)
-//     {
-//         vleds[iPos++] += colorFraction(color, amtFirstPixel);
-//         remaining -= amtFirstPixel;
-//     }
-//     while (remaining > 1.0f && iPos < NUM_LEDS)
-//     {
-//         vleds[iPos++] += color;
-//         remaining--;
-//     }
-//     if (remaining > 0.0f && iPos < NUM_LEDS)
-//     {
-//         vleds[iPos] += colorFraction(color, remaining);
-//     }
-// }
+    if (remaining > 0.0f)
+    {
+        vleds[iPos++] += colorFractionRGB(color, amtFirstPixel);
+        remaining -= amtFirstPixel;
+    }
+    while (remaining > 1.0f && iPos < NUM_LEDS)
+    {
+        vleds[iPos++] += color;
+        remaining--;
+    }
+    if (remaining > 0.0f && iPos < NUM_LEDS)
+    {
+        vleds[iPos] += colorFractionRGB(color, remaining);
+    }
+}
 
 // floor is the minimum brightness to draw the pixel at
 CHSV colorFraction(CHSV colorIn, float fraction, u8_t floor)
@@ -121,4 +121,10 @@ int inverseScale(uint8_t value, int min, int max)
     int range = max - min;
     float normalizedValue = static_cast<float>(value) / 255.0f;
     return static_cast<int>(max - (normalizedValue * range));
+}
+
+float RandomFloat()
+{
+    float r = random(1000000L) / 1000000.0f;
+    return r;
 }
