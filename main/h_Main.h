@@ -14,6 +14,9 @@
 #include "src/oled/OLEDControl.h"
 #include "src/config/wifi_config.h"
 
+// Env vars
+static const bool TIME_OF_DAY_ENABLED = false;
+
 // Wifi and Timing
 SunSet sun;
 double latitude = LATITUDE;
@@ -139,7 +142,7 @@ bool isActivationTime()
 {
     sun.setCurrentDate(year(), month(), day());
     int sunset = static_cast<int>(sun.calcSunset());
-    int activationStart = sunset + 30;         // 30 minutes after sunset
+    int activationStart = sunset - 15;
     int activationEnd = activationStart + 480; // 8 hours after activation start
 
     int currentMinute = hour() * 60 + minute();
@@ -157,6 +160,9 @@ bool isActivationTime()
 
 void setup()
 {
+    Serial.begin(9600);
+    delay(1000);
+
     pinMode(PIN_BFL, OUTPUT);
     pinMode(PIN_BFR, OUTPUT);
 
@@ -194,8 +200,9 @@ void setup()
     Udp.begin(localPort);
 
     // Serial
-    Serial.begin(9600);
     randomSeed(analogRead(0));
+
+    printTimeDebug();
 }
 
 // Add this function to format the current time
@@ -278,8 +285,14 @@ void loop()
     if (currentTime - lastActivationCheck >= 600000 || lastActivationCheck == 0)
     {
         testWiFiConnection();
-        isActive = isActivationTime();
-        // isActive = true;
+        if (TIME_OF_DAY_ENABLED)
+        {
+            isActive = isActivationTime();
+        }
+        else
+        {
+            isActive = true;
+        }
         lastActivationCheck = currentTime;
 
         // Clear and turn off LEDs when transitioning to inactive state
