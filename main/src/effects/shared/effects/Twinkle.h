@@ -45,6 +45,14 @@ private:
         clearVleds(vleds);
         for (auto it = tleds.begin(); it != tleds.end();)
         {
+            it->pos += it->drift;
+
+            if (it->pos < 0 || it->pos >= NUM_LEDS)
+            {
+                it = tleds.erase(it); // Erase if out of bounds
+                continue;             // Skip to the next iteration
+            }
+
             if (it->fadeIn)
             {
                 it->color.value = qadd8(it->color.value, it->fadeSpeed);
@@ -59,7 +67,6 @@ private:
                 it->color.value = qsub8(it->color.value, it->fadeSpeed);
                 if (it->color.value == 0)
                 {
-
                     it = tleds.erase(it);
                 }
                 else
@@ -67,7 +74,6 @@ private:
                     ++it;
                 }
             }
-            it->pos += it->drift;
         }
     }
 
