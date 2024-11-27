@@ -38,7 +38,7 @@ private:
     std::vector<TwinkleLED> tleds;
     CHSV orange = CHSV(17, 255, 255);
     CHSV purple = CHSV(191, 255, 255);
-    const int hueVariance = 5;
+    const u8_t hueVariance = 10;
 
     void updateTwinkles()
     {
@@ -94,10 +94,18 @@ public:
         active = !active;
     }
 
+    // CHSV getColor()
+    // {
+    //     CHSV color = palette->getExactRandomColor();
+    //     color.h += random(-hueVariance, hueVariance);
+    //     return color;
+    // }
+
     CHSV getColor()
     {
-        CHSV color = palette->getExactRandomColor();
-        color.h += random(-hueVariance, hueVariance);
+        u8_t randSat = random(230, 255);
+        CHSV color = random8() > 128 ? CHSV(0, randSat, 255) : CHSV(20, randSat, 255);
+        color.h = qadd8(color.h, random8(0, hueVariance));
         return color;
     }
 
