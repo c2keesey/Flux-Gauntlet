@@ -29,28 +29,33 @@ size_t h_EffectsHandler::getEffectCount() const
 
 void h_EffectsHandler::setupEffectLibrary()
 {
-    BaseEffect *effect = new FireworkShow(0.05f, 40.0f);
+    // BaseEffect *effect = new FireworkShow(0.05f, 40.0f);
+    // activeEffects.push_back(effect);
+
+    // BaseEffect *effect2 = new Twinkle(20, &halloween_cp);
+
+    // // effect2->trigger();
+
+    // // Top
+    // BaseEffect *effect3 = new ClassicFireEffect(BFL_CORNER, BFR_CORNER, 5, 100);
+    // // Left
+    // BaseEffect *effect4 = new ClassicFireEffect(0, BFL_CORNER);
+    // // Right
+    // BaseEffect *effect5 = new ClassicFireEffect(BFR_CORNER, NUM_LEDS);
+
+    // //     activeEffects.push_back(effect3);
+    // //     activeEffects.push_back(effect4);
+    // // activeEffects.push_back(effect5);
+
+    // BaseEffect *effect6 = new Twinkle(20, &ice_cp);
+    // effect6->trigger();
+
+    // activeEffects.push_back(effect6);
+}
+
+void h_EffectsHandler::addEffect(BaseEffect *effect)
+{
     activeEffects.push_back(effect);
-
-    BaseEffect *effect2 = new Twinkle(20, &halloween_cp);
-
-    // effect2->trigger();
-
-    // Top
-    BaseEffect *effect3 = new ClassicFireEffect(BFL_CORNER, BFR_CORNER, 5, 100);
-    // Left
-    BaseEffect *effect4 = new ClassicFireEffect(0, BFL_CORNER);
-    // Right
-    BaseEffect *effect5 = new ClassicFireEffect(BFR_CORNER, NUM_LEDS);
-
-    //     activeEffects.push_back(effect3);
-    //     activeEffects.push_back(effect4);
-    // activeEffects.push_back(effect5);
-
-    BaseEffect *effect6 = new Twinkle(20, &ice_cp);
-    effect6->trigger();
-
-    activeEffects.push_back(effect6);
 }
 
 void h_EffectsHandler::setupTestLibrary()

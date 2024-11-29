@@ -26,38 +26,48 @@ void EffectLibrary::init()
 
     // Assign effects to button maps
     buttonEffectMap[THUMB] = std::vector<BaseEffect *>{
+        effects["flash_1"],
         effects["ringFlash"],
         effects["panelFlash_2"],
         effects["panelFlash_3"],
-        effects["flash_1"],
+        effects["panelFlash_rainbow"],
     };
 
     buttonEffectMap[INDEX] = std::vector<BaseEffect *>{
         effects["lightning_1"],
+        effects["blast_1"],
+        effects["blast_simulation"],
+        effects["lightning_simulation"],
         effects["fireworkShow_2"],
     };
 
     buttonEffectMap[MIDDLE] = std::vector<BaseEffect *>{
-        effects["blastCollide_1"],
         effects["blast_1"],
+        effects["blastCollide_1"],
         effects["blast_america"],
         effects["blast_christmas"],
         effects["blast_mecha"],
+        effects["casimir_rainbow"],
+        effects["casimir_mecha"],
     };
 
     buttonEffectMap[RINGF] = std::vector<BaseEffect *>{
+        effects["fireworkShow_1"],
         effects["casimir_1"],
+        effects["fire_1"],
+        effects["fire_mirrored"],
         effects["casimir_mecha"],
-        effects["reverseTred_smallfast_vr"],
     };
 
     buttonEffectMap[PINKY] = std::vector<BaseEffect *>{
+        effects["twinkle_rainbow_background"],
+        effects["twinkle_rainbow"],
+        effects["twinkle_1"],
         effects["reverseTred_smallfast"],
         effects["reverseTred_longslow"],
         effects["reverseTred_1"],
         effects["reverseTred_smallfast_vr"],
         effects["big_firework"],
-        effects["twinkle_1"],
         effects["pew_1"],
         effects["bitSwitch_carnival"],
         effects["bitSwitch_smooth"]};
@@ -67,35 +77,44 @@ void EffectLibrary::init()
         effects["ringFlash"],
         effects["lightning_1"],
         effects["blast_1"],
-        effects["casimir_1"],
+        effects["fire_1"],
         effects["big_firework"]};
     presetMap[FAVORITES] = favorites;
 
     PresetContainer actionPreset = {
         effects["panelFlash_2"],
-        effects["big_firework"],
         effects["lightning_1"],
+        effects["blast_1"],
         effects["casimir_1"],
-        effects["pew_1"]};
+        effects["fireworkShow_2"]};
     presetMap[ACTION] = actionPreset;
 
     PresetContainer fireAndIce = {
-        effects["flash_1"],
+        effects["ringFlash"],
         effects["blast_ice"],
         effects["blast_fire"],
-        effects["pew_fire"],
-        effects["pew_ice"],
+        effects["fire_1"],
+        effects["casimir_ice"],
     };
     presetMap[FIREANDICE] = fireAndIce;
 
-    PresetContainer ambient = {
-        effects["flash_1"],
-        effects["blast_ice"],
-        effects["blast_fire"],
-        effects["pew_fire"],
-        effects["pew_ice"],
+    PresetContainer fireMirrored = {
+        effects["panelFlash_3"],
+        effects["fireworkShow_1"],
+        effects["fire_mirrored"],
+        effects["casimir_1"],
+        effects["blast_white"],
     };
-    presetMap[AMBIENT] = ambient;
+    presetMap[FIRE_MIRRORED] = fireMirrored;
+
+    PresetContainer simulation = {
+        effects["ringFlash"],
+        effects["lightning_simulation"],
+        effects["blast_pink"],
+        effects["blast_cyan"],
+        effects["big_firework"],
+    };
+    presetMap[SIMULATION] = simulation;
 }
 
 EffectLibrary::~EffectLibrary()

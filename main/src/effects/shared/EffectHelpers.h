@@ -32,4 +32,7 @@ CRGB colorFractionRGB(CRGB colorIn, float fraction);
 // Draw a segment that appears to move between LEDs in vleds.
 void drawPreciseRGB(float fPos, float count, CRGB color, CRGB *vleds);
 
+// Convert a temperature value to a color using HSV
+CHSV HeatColorHSV(uint8_t temperature);
+
 #endif // EFFECTHELPERS_H

@@ -66,4 +66,11 @@ enum ButtonEnum
 #define ENCODER_PIN_A 33
 #define ENCODER_PIN_B 34
 
+// For compiler to be happy
+#define NUM_BFR 263
+#define NUM_BFL 298
+#define BFL_CORNER 123
+#define BFR_CORNER 439
+#define BF_CENTER 281
+
 #endif // G_CONFIG_H

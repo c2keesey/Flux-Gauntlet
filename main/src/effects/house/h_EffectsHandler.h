@@ -17,6 +17,7 @@ public:
     h_EffectsHandler();
 
     void setupEffectLibrary();
+    void addEffect(BaseEffect *effect);
     void setupTestLibrary();
     void triggerEffect(size_t index);
     void drawFrame() override;

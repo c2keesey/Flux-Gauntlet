@@ -11,7 +11,8 @@ enum Preset
     FAVORITES,
     ACTION,
     FIREANDICE,
-    AMBIENT,
+    FIRE_MIRRORED,
+    SIMULATION,
 };
 
 std::map<std::string, BaseEffect *> initEffects();

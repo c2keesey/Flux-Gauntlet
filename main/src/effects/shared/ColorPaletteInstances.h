@@ -15,5 +15,7 @@ extern ColorPalette ice_cp;
 extern ColorPalette white_cp;
 extern ColorPalette simulation_cp;
 extern ColorPalette halloween_cp;
+extern ColorPalette cyan_cp;
+extern ColorPalette pink_cp;
 
 #endif // COLORPALETTEINSTANCES_H

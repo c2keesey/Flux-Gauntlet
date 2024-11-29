@@ -128,3 +128,29 @@ float RandomFloat()
     float r = random(1000000L) / 1000000.0f;
     return r;
 }
+
+CHSV HeatColorHSV(uint8_t temperature)
+{
+    CHSV heatColor;
+
+    if (temperature > 170)
+    {                                                     // Top third (170-255): white to yellow
+        heatColor.h = 60;                                 // Yellow hue
+        heatColor.s = map(temperature, 170, 255, 255, 0); // Decreasing saturation (more white)
+        heatColor.v = 255;                                // Full brightness
+    }
+    else if (temperature > 40)
+    {                                                   // Middle third (85-170): yellow to red
+        heatColor.h = map(temperature, 40, 170, 0, 60); // Red to yellow hue
+        heatColor.s = 255;                              // Full saturation
+        heatColor.v = 255;                              // Full brightness
+    }
+    else
+    {                                                  // Bottom third (0-85): red to black
+        heatColor.h = 0;                               // Red hue
+        heatColor.s = 255;                             // Full saturation
+        heatColor.v = map(temperature, 0, 85, 0, 255); // Increasing brightness
+    }
+
+    return heatColor;
+}

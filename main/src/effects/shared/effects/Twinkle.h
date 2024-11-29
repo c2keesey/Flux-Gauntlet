@@ -33,12 +33,19 @@ private:
     unsigned long fadeMillis = 0;
     uint8_t value = 0;
     bool active = false;
+    bool rainbowMode = false;
     int updateRate = 20;
-    int spawnRate = 20; // 40ms = 25fps
+    int spawnRate = 20;
     std::vector<TwinkleLED> tleds;
     CHSV orange = CHSV(17, 255, 255);
     CHSV purple = CHSV(191, 255, 255);
     const u8_t hueVariance = 10;
+
+    // Add these new variables for rainbow mode
+    uint8_t hueOffset1 = 0;
+    uint8_t hueOffset2 = 128; // Start 180 degrees opposite
+    uint8_t hueSpeed1 = 1;
+    uint8_t hueSpeed2 = 3; // Different speed for interesting combinations
 
     void updateTwinkles()
     {
@@ -89,45 +96,89 @@ private:
     }
 
 public:
-    Twinkle(int speed = 20, ColorPalette *pal = &rainbow_cp)
-        : BaseEffect(pal)
+    Twinkle(int speed = 20, ColorPalette *pal = &rainbow_cp, bool rainbow = false, int spawn_rate = 20)
+        : BaseEffect(pal), rainbowMode(rainbow)
     {
         this->speed = speed;
+        this->spawnRate = spawn_rate; // 20 is good for
+        hueOffset1 = random8();
+        hueOffset2 = random8();
     }
 
     void trigger() override
     {
+        if (!active)
+        {
+            clearVleds(vleds);
+        }
+        else
+        {
+            // When turning off, increase fade speed of all existing twinkles
+            for (auto &tled : tleds)
+            {
+                tled.fadeIn = false;
+                tled.fadeSpeed += 2; // Increased fade speed for faster fadeout
+            }
+        }
         active = !active;
     }
 
-    // CHSV getColor()
-    // {
-    //     CHSV color = palette->getExactRandomColor();
-    //     color.h += random(-hueVariance, hueVariance);
-    //     return color;
-    // }
-
     CHSV getColor()
     {
+        if (!rainbowMode)
+        {
+            u8_t randSat = random(230, 255);
+            CHSV color = random8() > 128 ? CHSV(0, randSat, 255) : CHSV(20, randSat, 255);
+            color.h = qadd8(color.h, random8(0, hueVariance));
+            return color;
+        }
+
+        // Rainbow mode color selection
         u8_t randSat = random(230, 255);
-        CHSV color = random8() > 128 ? CHSV(0, randSat, 255) : CHSV(20, randSat, 255);
+        CHSV color;
+
+        if (random8() > 128)
+        {
+            color = CHSV(hueOffset1, randSat, 255);
+        }
+        else
+        {
+            color = CHSV(hueOffset2, randSat, 255);
+        }
+
+        // Add slight variance to the hue
         color.h = qadd8(color.h, random8(0, hueVariance));
+
+        // Update the rotating hues
+        EVERY_N_MILLIS(1000)
+        {
+            hueOffset1 += hueSpeed1;
+            hueOffset2 += hueSpeed2;
+        }
+
         return color;
     }
 
     void update() override
     {
-        if (!active)
+        // Return if inactive and no twinkles left to fade out
+        if (!active && tleds.empty())
         {
             return;
         }
-        EVERY_N_MILLIS(spawnRate)
+
+        // Only spawn new twinkles if active
+        if (active)
         {
-            CHSV color = getColor();
-            color.v = 0;
-            float randomDrift = static_cast<float>(random(-300, 300)) / 10000.0f; // Generate random float between -1 and 1
-            tleds.push_back(TwinkleLED(random(NUM_LEDS), color, random(1, 7), 1, randomDrift));
+            EVERY_N_MILLIS(spawnRate)
+            {
+                CHSV color = getColor();
+                color.v = 0;
+                float randomDrift = static_cast<float>(random(-300, 300)) / 10000.0f;
+                tleds.push_back(TwinkleLED(random(NUM_LEDS), color, random(1, 7), 1, randomDrift));
+            }
         }
+
         EVERY_N_MILLIS(updateRate)
         {
             updateTwinkles();

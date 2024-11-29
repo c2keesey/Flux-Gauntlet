@@ -73,7 +73,7 @@ std::vector<CHSV> ice = {
 ColorPalette ice_cp(ice);
 
 std::vector<CHSV> white = {
-    CHSV(0, 0, 255), // Light blue
+    CHSV(0, 0, 255),
 };
 
 ColorPalette white_cp(white);
@@ -94,3 +94,15 @@ std::vector<CHSV> halloween = {
 };
 
 ColorPalette halloween_cp(halloween);
+
+std::vector<CHSV> cyan = {
+    CHSV(132, 255, 255), // Cyan
+};
+
+ColorPalette cyan_cp(cyan);
+
+std::vector<CHSV> pink = {
+    CHSV(224, 255, 255), // Pink
+};
+
+ColorPalette pink_cp(pink);

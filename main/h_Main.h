@@ -13,9 +13,10 @@
 #include "src/utils/timing.h"
 #include "src/oled/OLEDControl.h"
 #include "src/config/wifi_config.h"
+#include "src/effects/shared/effects/Twinkle.h"
 
 // Env vars
-static const bool TIME_OF_DAY_ENABLED = false;
+static const bool TIME_OF_DAY_ENABLED = true;
 
 // Wifi and Timing
 SunSet sun;
@@ -203,6 +204,10 @@ void setup()
     randomSeed(analogRead(0));
 
     printTimeDebug();
+
+    BaseEffect *effect = new Twinkle(20, &rainbow_cp, true, 20);
+    effect->trigger();
+    effectsHandler.addEffect(effect);
 }
 
 // Add this function to format the current time
